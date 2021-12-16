@@ -32,7 +32,7 @@
     <div class="container-fluid mt-3">
       <h1>Bobos Smart-Contract Backend</h1>
       <h4><a href="https://rinkeby.etherscan.io/address/0x17327b822ab6ca02b4c89622c00bb54a112fa903" target="_blank">0x17327b822Ab6Ca02b4c89622C00BB54a112Fa903</a></h4>
-      <button class="btn btn-md btn-primary mt-2 metamask-button">connect</button>
+      <button class="btn btn-md btn-primary mt-2 test-metamask-button">connect</button>
       <button class="btn btn-md btn-primary mt-2" onclick="mintPresale(1)">
         Presale Mint 1
       </button>
@@ -79,7 +79,7 @@
       <div class="alert"></div>
       <div class="net_version_alert"></div>
     </div>
-    <script src="/dist/main-oW17.js"></script>
+    <script src="/dist/main-iE8Y.js"></script>
     <script>
       //moniter sales changes
 
@@ -93,11 +93,11 @@
 
       let state = onboardObj.getState();
 
-      $(".metamask-button").click(function () {
+      $(".test-metamask-button").click(function () {
         if (onboardObj.getState().address != undefined) {
           walletReset();
           console.log("reseting wallet");
-          $(".metamask-button").text("Connect");
+          $(".test-metamask-button").text("Connect");
         } else {
           implementWallet();
         }

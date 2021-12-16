@@ -1,12 +1,5 @@
 export const abi = [
-  {
-    inputs: [
-      { internalType: "string", name: "baseURI", type: "string" },
-      { internalType: "bytes32", name: "merkleroot", type: "bytes32" },
-    ],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
+  { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   {
     anonymous: false,
     inputs: [
@@ -185,6 +178,26 @@ export const abi = [
   },
   {
     inputs: [
+      { internalType: "address", name: "addr", type: "address" },
+      { internalType: "uint256", name: "mintCount", type: "uint256" },
+    ],
+    name: "mintOwnerPresale",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "addr", type: "address" },
+      { internalType: "uint256", name: "mintCount", type: "uint256" },
+    ],
+    name: "mintOwnerPublic",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
       { internalType: "uint256", name: "mintCount", type: "uint256" },
       { internalType: "bytes32[]", name: "proof", type: "bytes32[]" },
     ],
@@ -292,6 +305,13 @@ export const abi = [
   {
     inputs: [{ internalType: "uint256", name: "limit", type: "uint256" }],
     name: "setPerWalletPresale",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "supply", type: "uint256" }],
+    name: "setPresaleSupply",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

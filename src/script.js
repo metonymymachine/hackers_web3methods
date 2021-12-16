@@ -69,12 +69,12 @@ const web3 = createAlchemyWeb3(
 );
 
 const contractABI = abi;
-const contractAddress = "0x17327b822Ab6Ca02b4c89622C00BB54a112Fa903";
+const contractAddress = "0xb7f9F07F5643A9AE5aE692949205103419F31179";
 
 const theContract = new web3.eth.Contract(contractABI, contractAddress);
 
-const publicprice = "40000000000000000";
-const presaleprice = "35000000000000000";
+const publicprice = "50000000000000000";
+const presaleprice = "37500000000000000";
 
 const loadCurrentSupply = async () => {
   const supply = await theContract.methods.getCurrentId().call();
@@ -148,6 +148,7 @@ export const connectWallet = async () => {
       .getState()
       .address.slice(onboard.getState().address.length - 2)}`
   );
+  $(".test-metamask-button").text(`${onboard.getState().address}`);
 };
 
 export const walletReset = () => {
