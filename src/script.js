@@ -20,7 +20,10 @@ const APP_NAME = "onboardjs";
 const whitelistAddresses = addresses;
 
 const leafNodes = whitelistAddresses.map((addr) => keccak256(addr));
-const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true });
+const merkleTree = new MerkleTree(leafNodes, keccak256, {
+  sortPairs: true,
+  duplicateOdd: true,
+});
 
 //wallet options to provide to users
 const wallets = [
@@ -95,8 +98,7 @@ setInterval(() => {
 }, 3000);
 
 export const loadPreSaleStatus = async () => {
-  const preSaleActive = await theContract.methods.PresaleIsActive
-    .call()
+  const preSaleActive = await theContract.methods.PresaleIsActive.call()
     .call()
     .then(function (res) {
       return res.toString();

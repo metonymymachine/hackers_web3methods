@@ -2,6 +2,10 @@
 const { MerkleTree } = require("merkletreejs");
 const keccak256 = require("keccak256");
 const { addresses } = require("./src/whiteListed");
+// get the Console class
+const { Console } = require("console");
+// get fs module for creating write streams
+const fs = require("fs");
 //create arr of whitelisted addreses
 const whitelistAddresses = addresses;
 
@@ -22,4 +26,11 @@ const claimingAddress = leafNodes[1];
 //get the proof for the whitelisted address
 const hexProof = merkleTree.getHexProof(claimingAddress);
 
+// make a new logger
+const myLogger = new Console({
+  stdout: fs.createWriteStream("./src/merkle_root.txt")
+});
+
+// saving to merkle_root.txt file
+myLogger.log(merkleTree.getHexRoot());
 console.log(merkleTree.getHexRoot());
