@@ -1,3 +1,4 @@
+//import libs
 import Onboard from "bnc-onboard";
 import Web3 from "web3";
 import { abi } from "./abi";
@@ -6,8 +7,13 @@ import { addresses } from "./whiteListed";
 var WAValidator = require("wallet-validator");
 const { MerkleTree } = require("merkletreejs");
 const keccak256 = require("keccak256");
+const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
+const web3 = createAlchemyWeb3(
+  "wss://eth-rinkeby.alchemyapi.io/v2/59kESS0j2TfE3vAK8-aCcoUggCc3WTaL"
+);
 let web;
 
+//configs
 const FORTMATIC_KEY = "pk_live_7CFC103369096AD4";
 const PORTIS_KEY = "Your Portis key here";
 const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
@@ -53,6 +59,7 @@ const wallets = [
   { walletName: "gnosis" },
 ];
 
+//onboarjs setup
 export const onboard = Onboard({
   dappId: "e57157dd-aa3a-4b2a-a88d-36520d0193d9", // [String] The API key created by step one above
   networkId: 4, // [Integer] The Ethereum network ID your Dapp uses.
@@ -65,11 +72,6 @@ export const onboard = Onboard({
     wallets: wallets,
   },
 });
-
-const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
-const web3 = createAlchemyWeb3(
-  "wss://eth-rinkeby.alchemyapi.io/v2/59kESS0j2TfE3vAK8-aCcoUggCc3WTaL"
-);
 
 const contractABI = abi;
 const contractAddress = "0xb7f9F07F5643A9AE5aE692949205103419F31179";

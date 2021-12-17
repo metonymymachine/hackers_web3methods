@@ -28,13 +28,23 @@
     <title>Bobos Smart Contract Backend</title>
   </head>
   <body>
-    
     <div class="container-fluid mt-3">
       <h1>Bobos Smart-Contract Backend</h1>
-      <h4><a href="https://rinkeby.etherscan.io/address/0x17327b822ab6ca02b4c89622c00bb54a112fa903" target="_blank">0x17327b822Ab6Ca02b4c89622C00BB54a112Fa903</a></h4>
-      <button class="btn btn-md btn-primary mt-2 test-metamask-button">connect</button>
+      <h4>
+        <a
+          href="https://rinkeby.etherscan.io/address/0xb7f9f07f5643a9ae5ae692949205103419f31179"
+          target="_blank"
+          >0xb7f9F07F5643A9AE5aE692949205103419F31179</a
+        >
+      </h4>
+      <button class="btn btn-md btn-primary mt-2 test-metamask-button">
+        connect
+      </button>
       <button class="btn btn-md btn-primary mt-2" onclick="mintPresale(1)">
         Presale Mint 1
+      </button>
+      <button class="btn btn-md btn-primary mt-2" onclick="mintPresale(2)">
+        Presale Mint 2
       </button>
       <button class="btn btn-md btn-primary mt-2" onclick="mintPresale(3)">
         Presale Mint 3
@@ -73,21 +83,27 @@
       <div class="h6 mt-3">
         <div><strong>Supply:</strong> <small class="supply"></small></div>
         <div>Current <strong>Root:</strong> <small class="root"></small></div>
-        <div>Current <strong>Presale</strong> Status: <small class="pre_sale_status"></small></div>
-        <div>Current <strong>Public Sale</strong> Status: <small class="sale_status"></small></div>
+        <div>
+          Current <strong>Presale</strong> Status:
+          <small class="pre_sale_status"></small>
+        </div>
+        <div>
+          Current <strong>Public Sale</strong> Status:
+          <small class="sale_status"></small>
+        </div>
       </div>
       <div class="alert"></div>
       <div class="net_version_alert"></div>
     </div>
-    <script src="/dist/main-iE8Y.js"></script>
+    <script src="/dist/main-dgfC.js"></script>
     <script>
       //moniter sales changes
 
-      setInterval(()=>{
+      setInterval(() => {
         root();
         pre_sale_status();
         sale_status();
-      },1000)
+      }, 1000);
 
       walletChanges();
 
