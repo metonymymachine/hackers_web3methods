@@ -18,8 +18,7 @@ const leafNodes = whitelistAddresses.map((addr) =>
 
 //create a merkle tree using our converted keccak addres hash providing the algo we used
 const merkleTree = new MerkleTree(leafNodes, keccak256, {
-  sortPairs: true,
-  duplicateOdd: true,
+  sortPairs: true
 });
 
 //the above proccess is finshed we needed for generating a tree

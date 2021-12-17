@@ -30,8 +30,8 @@ const leafNodes = whitelistAddresses.map((addr) =>
   keccak256(web3.utils.toChecksumAddress(addr))
 );
 const merkleTree = new MerkleTree(leafNodes, keccak256, {
-  sortPairs: true,
-  duplicateOdd: true,
+  sortPairs: true
+//  duplicateOdd: true,
 });
 
 //wallet options to provide to users
