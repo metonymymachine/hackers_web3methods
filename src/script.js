@@ -19,7 +19,10 @@ const APP_NAME = "onboardjs";
 //merkletree config
 const whitelistAddresses = addresses;
 
-const leafNodes = whitelistAddresses.map((addr) => keccak256(addr));
+const leafNodes = whitelistAddresses.map((addr) =>
+  //format to checksum address and apply keccak256 hash
+  keccak256(web3.utils.toChecksumAddress(addr))
+);
 const merkleTree = new MerkleTree(leafNodes, keccak256, {
   sortPairs: true,
   duplicateOdd: true,
@@ -188,12 +191,13 @@ export const getCurrentWalletConnected = async () => {
 };
 
 export const mintPresale = async (amount) => {
-  //create the merkletree
-  //setup merkletreejs
-
-  //console.log(merkleTree.getHexRoot())
-
-  const claimingAddress = keccak256(onboard.getState().address);
+  //grab the connected address
+  //convert to checkum format
+  //apply keccak256
+  //return as a claiming address to find the proof
+  const claimingAddress = keccak256(
+    web3.utils.toChecksumAddress(onboard.getState().address)
+  );
 
   //get the root for the whitelisted address
   const hexProof = merkleTree.getHexProof(claimingAddress);
