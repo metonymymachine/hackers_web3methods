@@ -74,7 +74,7 @@ export const onboard = Onboard({
 });
 
 const contractABI = abi;
-const contractAddress = "0xb7f9F07F5643A9AE5aE692949205103419F31179";
+const contractAddress = "0x10547Ff913f25bd3F6104537dA1D436b43e56E7F";
 
 const theContract = new web3.eth.Contract(contractABI, contractAddress);
 
