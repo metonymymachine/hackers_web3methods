@@ -17,8 +17,8 @@ let web;
 const FORTMATIC_KEY = "pk_live_7CFC103369096AD4";
 const PORTIS_KEY = "Your Portis key here";
 const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
-const APP_URL = "https://www.kvltzombies.xyz/kvlt-zombies-minting-mobile";
-const CONTACT_EMAIL = "muhammadhamza2965@gmail.com";
+const APP_URL = "https://www.bobocomics.xyz";
+const CONTACT_EMAIL = "dev@metonymy-machine.com";
 const RPC_URL = `https://mainnet.infura.io/v3/${INFURA_KEY}`;
 const APP_NAME = "onboardjs";
 
