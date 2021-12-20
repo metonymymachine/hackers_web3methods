@@ -402,7 +402,7 @@ export const addWalletListener = () => {
         )}..${addressArray[0].slice(length - 2)}`;
         $(".alert").hide();
         //add alert to btn
-        $(".metamask-button").text(`CONNECTED (${useraddress})`);
+        $(".metamask-button-text").text(`Connected (${useraddress})`);
         console.log(useraddress);
       } else {
         $(".alert").text("Please connect a wallet");
