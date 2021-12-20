@@ -201,44 +201,53 @@ export const getCurrentWalletConnected = async () => {
 };
 
 export const mintPresale = async (amount) => {
-  //grab the connected address
-  //convert to checkum format
-  //apply keccak256
-  //return as a claiming address to find the proof
-  const claimingAddress = keccak256(
-    web3.utils.toChecksumAddress(onboard.getState().address)
-  );
-
-  //get the root for the whitelisted address
-  const hexProof = merkleTree.getHexProof(claimingAddress);
-
-  //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
-  const transactionParameters = {
-    from: onboard.getState().address,
-    to: contractAddress,
-    value: web3.utils.toHex(presaleprice * amount),
-    data: theContract.methods.mintPresale(amount, hexProof).encodeABI(),
-  };
-  try {
-    const txHash = await window.ethereum.request({
-      method: "eth_sendTransaction",
-      params: [transactionParameters],
-    });
-    $(".alert").show();
-    $(".alert").text(
-      "✅ Check out your transaction on Etherscan: https://etherscan.io/tx/" +
-        txHash
+  //check if onboard address is empty then connect wallet
+  if (onboard.getState().address) {
+    //grab the connected address
+    //convert to checkum format
+    //apply keccak256
+    //return as a claiming address to find the proof
+    const claimingAddress = keccak256(
+      web3.utils.toChecksumAddress(onboard.getState().address)
     );
-  } catch (error) {
-    if (error.code == 4001) {
+
+    //get the root for the whitelisted address
+    const hexProof = merkleTree.getHexProof(claimingAddress);
+
+    //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
+    const transactionParameters = {
+      from: onboard.getState().address,
+      to: contractAddress,
+      value: web3.utils.toHex(presaleprice * amount),
+      data: theContract.methods.mintPresale(amount, hexProof).encodeABI(),
+    };
+    try {
+      const txHash = await window.ethereum.request({
+        method: "eth_sendTransaction",
+        params: [transactionParameters],
+      });
       $(".alert").show();
-      console.log(error.message);
-      $(".alert").text(`Transacion Denied!.`);
-    } else {
-      $(".alert").show();
-      console.log(error.message);
-      $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
+      $(".alert").text(
+        "✅ Check out your transaction on Etherscan: https://etherscan.io/tx/" +
+          txHash
+      );
+    } catch (error) {
+      if (error.code == 4001) {
+        $(".alert").show();
+        console.log(error.message);
+        $(".alert").text(`Transacion Denied!.`);
+      } else {
+        $(".alert").show();
+        //open wallet to connect automatically if not connected
+        connectWallet();
+        console.log(error.message);
+        $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
+      }
     }
+  } else {
+    connectWallet();
+
+    console.log("connecting wallet...");
   }
 };
 
@@ -281,6 +290,8 @@ export const mintBundlePrice = async (amount) => {
     } else {
       $(".alert").show();
       console.log(error.message);
+      //open wallet to connect automatically if not connected
+      connectWallet();
       $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
     }
   }
@@ -312,6 +323,8 @@ export const mintPublic = async (amount) => {
     } else {
       $(".alert").show();
       console.log(error.message);
+      //open wallet to connect automatically if not connected
+      connectWallet();
       $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
     }
   }
@@ -409,28 +422,10 @@ export const addWalletListener = () => {
         $(".alert").hide();
         //add alert to btn
         $(".metamask-button-text").text(`Connected (${useraddress})`);
-
-        //check the whitlist of account
-        //check if user address if whitelisted alse display a message
-        let addr = keccak256(
-          web3.utils.toChecksumAddress(onboard.getState().address)
-        );
-        let proof = merkleTree.getHexProof(addr);
-
-        if (proof.length == 0) {
-          $(".whitelist-alert").text(
-            "Sorry, your wallet is not whitelisted for the pre-sale. The public sale starts on December 23rd"
-          );
-          $(".whitlist-check").hide();
-        }
-
-        if (proof.length > 0) {
-          $(".whitelist-alert").text(
-            "Your wallet is whitelisted for the pre-sale. You can mint up to 3 x Bobos."
-          );
-          $(".whitlist-check").hide();
-        }
-
+        //just to check if address is whitelisted or not
+        setTimeout(() => {
+          whitListAlert();
+        }, 2000);
         console.log(useraddress);
       } else {
         $(".alert").text("Please connect a wallet");
@@ -458,3 +453,27 @@ if (window.ethereum) {
     }
   });
 }
+
+//show the whitelist alert
+const whitListAlert = () => {
+  //check the whitlist of account
+  //check if user address if whitelisted alse display a message
+  let addr = keccak256(
+    web3.utils.toChecksumAddress(onboard.getState().address)
+  );
+  let proof = merkleTree.getHexProof(addr);
+
+  if (proof.length == 0) {
+    $(".whitelist-alert").text(
+      "Sorry, your wallet is not whitelisted for the pre-sale. The public sale starts on December 23rd"
+    );
+    $(".whitlist-check").hide();
+  }
+
+  if (proof.length > 0) {
+    $(".whitelist-alert").text(
+      "Your wallet is whitelisted for the pre-sale. You can mint up to 3 x Bobos."
+    );
+    $(".whitlist-check").hide();
+  }
+};
