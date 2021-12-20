@@ -6,6 +6,7 @@ import {
   loadSaleStatus,
   metonymyHodlerMint,
   mint,
+  mintBundlePrice,
   mintPresale,
   mintPublic,
   onboard,
@@ -30,6 +31,12 @@ global.mintPublic = (amount) => {
 //Presale mint
 global.mintPresale = (amount) => {
   mintPresale(amount);
+};
+
+//bundle price minting
+
+global.mint_bunlde_price = (amount) => {
+  mintBundlePrice(amount);
 };
 
 //wallet event listener

@@ -177,13 +177,10 @@ export const abi = [
     type: "function",
   },
   {
-    inputs: [
-      { internalType: "address", name: "addr", type: "address" },
-      { internalType: "uint256", name: "mintCount", type: "uint256" },
-    ],
-    name: "mintOwnerPresale",
+    inputs: [{ internalType: "uint256", name: "mintCount", type: "uint256" }],
+    name: "mintBackup",
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -191,7 +188,7 @@ export const abi = [
       { internalType: "address", name: "addr", type: "address" },
       { internalType: "uint256", name: "mintCount", type: "uint256" },
     ],
-    name: "mintOwnerPublic",
+    name: "mintOwner",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -231,6 +228,13 @@ export const abi = [
     inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
     name: "ownerOf",
     outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "presaleBackupActive",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
   },
@@ -347,6 +351,13 @@ export const abi = [
   {
     inputs: [],
     name: "togglePresale",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "togglePresaleBackup",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

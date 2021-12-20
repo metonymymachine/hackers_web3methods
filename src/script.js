@@ -30,8 +30,8 @@ const leafNodes = whitelistAddresses.map((addr) =>
   keccak256(web3.utils.toChecksumAddress(addr))
 );
 const merkleTree = new MerkleTree(leafNodes, keccak256, {
-  sortPairs: true
-//  duplicateOdd: true,
+  sortPairs: true,
+  //  duplicateOdd: true,
 });
 
 //wallet options to provide to users
@@ -40,23 +40,8 @@ const wallets = [
   {
     walletName: "walletConnect",
     infuraKey: INFURA_KEY,
+    preferred: true,
   },
-  { walletName: "coinbase", preferred: true },
-  {
-    walletName: "ledger",
-    rpcUrl: RPC_URL,
-  },
-  {
-    walletName: "trezor",
-    appUrl: APP_URL,
-    email: CONTACT_EMAIL,
-    rpcUrl: RPC_URL,
-  },
-  {
-    walletName: "fortmatic",
-    apiKey: FORTMATIC_KEY,
-  },
-  { walletName: "gnosis" },
 ];
 
 //onboarjs setup
@@ -69,12 +54,14 @@ export const onboard = Onboard({
     },
   },
   walletSelect: {
+    explanation:
+      "We do not own your private keys and cannot access your funds without your confirmation.",
     wallets: wallets,
   },
 });
 
 const contractABI = abi;
-const contractAddress = "0xb7f9F07F5643A9AE5aE692949205103419F31179";
+const contractAddress = "0x10547Ff913f25bd3F6104537dA1D436b43e56E7F";
 
 const theContract = new web3.eth.Contract(contractABI, contractAddress);
 
@@ -147,12 +134,27 @@ export const connectWallet = async () => {
   await onboard.walletSelect();
   await onboard.walletCheck();
 
-  //window.alert(onboard.getState().address);
-  $(".metamask-button").text(
-    `Disconnect ${onboard.getState().address.substring(0, 2)}...${onboard
-      .getState()
-      .address.slice(onboard.getState().address.length - 2)}`
+  //check if user address if whitelisted alse display a message
+  let addr = keccak256(
+    web3.utils.toChecksumAddress(onboard.getState().address)
   );
+  let proof = merkleTree.getHexProof(addr);
+
+  if (proof.length == 0) {
+    $(".whitelist-alert").text("Your are not whitelisted for minting!");
+  }
+
+  if (proof.length > 0) {
+    $(".whitelist-alert").text("Your are whitelisted for minting!");
+  }
+
+  //window.alert(onboard.getState().address);
+  $(".metamask-button-text").text(
+    `Connected (${onboard.getState().address.substring(0, 2)}...${onboard
+      .getState()
+      .address.slice(onboard.getState().address.length - 2)})`
+  );
+  //hide please connect wallet text
   $(".test-metamask-button").text(`${onboard.getState().address}`);
 };
 
@@ -209,6 +211,50 @@ export const mintPresale = async (amount) => {
     from: onboard.getState().address,
     to: contractAddress,
     value: web3.utils.toHex(presaleprice * amount),
+    data: theContract.methods.mintPresale(amount, hexProof).encodeABI(),
+  };
+  try {
+    const txHash = await window.ethereum.request({
+      method: "eth_sendTransaction",
+      params: [transactionParameters],
+    });
+    $(".alert").show();
+    $(".alert").text(
+      "✅ Check out your transaction on Etherscan: https://etherscan.io/tx/" +
+        txHash
+    );
+  } catch (error) {
+    if (error.code == 4001) {
+      $(".alert").show();
+      console.log(error.message);
+      $(".alert").text(`Transacion Denied!.`);
+    } else {
+      $(".alert").show();
+      console.log(error.message);
+      $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
+    }
+  }
+};
+
+//bunle price minting
+export const mintBundlePrice = async (amount) => {
+  //grab the connected address
+  //convert to checkum format
+  //apply keccak256
+  //return as a claiming address to find the proof
+  const claimingAddress = keccak256(
+    web3.utils.toChecksumAddress(onboard.getState().address)
+  );
+
+  //get the root for the whitelisted address
+  const hexProof = merkleTree.getHexProof(claimingAddress);
+  //custom bundle price for 3 bobos
+  let bundlePrice = "100000000000000000";
+  //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
+  const transactionParameters = {
+    from: onboard.getState().address,
+    to: contractAddress,
+    value: web3.utils.toHex(bundlePrice),
     data: theContract.methods.mintPresale(amount, hexProof).encodeABI(),
   };
   try {
