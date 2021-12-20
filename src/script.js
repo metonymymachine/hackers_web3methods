@@ -141,11 +141,17 @@ export const connectWallet = async () => {
   let proof = merkleTree.getHexProof(addr);
 
   if (proof.length == 0) {
-    $(".whitelist-alert").text("Your are not whitelisted for minting!");
+    $(".whitelist-alert").text(
+      "Sorry, your wallet is not whitelisted for the pre-sale. The public sale starts on December 23rd"
+    );
+    $(".whitlist-check").hide();
   }
 
   if (proof.length > 0) {
-    $(".whitelist-alert").text("Your are whitelisted for minting!");
+    $(".whitelist-alert").text(
+      "Your wallet is whitelisted for the pre-sale. You can mint up to 3 x Bobos."
+    );
+    $(".whitlist-check").hide();
   }
 
   //window.alert(onboard.getState().address);
@@ -403,6 +409,28 @@ export const addWalletListener = () => {
         $(".alert").hide();
         //add alert to btn
         $(".metamask-button-text").text(`Connected (${useraddress})`);
+
+        //check the whitlist of account
+        //check if user address if whitelisted alse display a message
+        let addr = keccak256(
+          web3.utils.toChecksumAddress(onboard.getState().address)
+        );
+        let proof = merkleTree.getHexProof(addr);
+
+        if (proof.length == 0) {
+          $(".whitelist-alert").text(
+            "Sorry, your wallet is not whitelisted for the pre-sale. The public sale starts on December 23rd"
+          );
+          $(".whitlist-check").hide();
+        }
+
+        if (proof.length > 0) {
+          $(".whitelist-alert").text(
+            "Your wallet is whitelisted for the pre-sale. You can mint up to 3 x Bobos."
+          );
+          $(".whitlist-check").hide();
+        }
+
         console.log(useraddress);
       } else {
         $(".alert").text("Please connect a wallet");
