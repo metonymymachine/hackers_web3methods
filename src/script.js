@@ -228,14 +228,14 @@ export const mintPresale = async (amount) => {
       });
       $(".alert").show();
       $(".alert").text(
-        "✅ Check out your transaction on Etherscan: https://etherscan.io/tx/" +
+        "The transaction has been confirmed. You can view it here: https://etherscan.io/tx/" +
           txHash
       );
     } catch (error) {
       if (error.code == 4001) {
         $(".alert").show();
         console.log(error.message);
-        $(".alert").text(`Transacion Denied!.`);
+        $(".alert").text(`The transaction was aborted`);
       } else {
         $(".alert").show();
         //open wallet to connect automatically if not connected
@@ -279,14 +279,14 @@ export const mintBundlePrice = async (amount) => {
     });
     $(".alert").show();
     $(".alert").text(
-      "✅ Check out your transaction on Etherscan: https://etherscan.io/tx/" +
+      "The transaction has been confirmed. You can view it here: https://etherscan.io/tx/" +
         txHash
     );
   } catch (error) {
     if (error.code == 4001) {
       $(".alert").show();
       console.log(error.message);
-      $(".alert").text(`Transacion Denied!.`);
+      $(".alert").text(`The transaction was aborted`);
     } else {
       $(".alert").show();
       console.log(error.message);
@@ -312,14 +312,14 @@ export const mintPublic = async (amount) => {
     });
     $(".alert").show();
     $(".alert").text(
-      "✅ Check out your transaction on Etherscan: https://etherscan.io/tx/" +
+      "The transaction has been confirmed. You can view it here: https://etherscan.io/tx/" +
         txHash
     );
   } catch (error) {
     if (error.code == 4001) {
       $(".alert").show();
       console.log(error.message);
-      $(".alert").text(`Transacion Denied!.`);
+      $(".alert").text(`The transaction was aborted`);
     } else {
       $(".alert").show();
       console.log(error.message);
@@ -346,7 +346,7 @@ export const togglePresale = async () => {
     return {
       success: true,
       status:
-        "✅ Check out your transaction on Etherscan: https://etherscan.io/tx/" +
+        "The transaction has been confirmed. You can view it here: https://etherscan.io/tx/" +
         txHash,
     };
   } catch (error) {
@@ -372,7 +372,7 @@ export const toggleSale = async () => {
     return {
       success: true,
       status:
-        "✅ Check out your transaction on Etherscan: https://etherscan.io/tx/" +
+        "The transaction has been confirmed. You can view it here: https://etherscan.io/tx/" +
         txHash,
     };
   } catch (error) {
@@ -398,7 +398,7 @@ export const withdraw = async () => {
     return {
       success: true,
       status:
-        "✅ Check out your transaction on Etherscan: https://etherscan.io/tx/" +
+        "The transaction has been confirmed. You can view it here: https://etherscan.io/tx/" +
         txHash,
     };
   } catch (error) {
