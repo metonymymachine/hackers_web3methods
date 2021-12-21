@@ -227,9 +227,9 @@ export const mintPresale = async (amount) => {
         params: [transactionParameters],
       });
       $(".alert").show();
-      $(".alert").text(
-        "The transaction has been confirmed. You can view it here: https://etherscan.io/tx/" +
-          txHash
+      $(".alert").text("The transaction is initiated. You can view it here: ");
+      $(".alert").append(
+        `<a href='https://etherscan.io/tx/${txHash}' target='_blank' >Etherscan</a>`
       );
     } catch (error) {
       if (error.code == 4001) {
@@ -278,9 +278,9 @@ export const mintBundlePrice = async (amount) => {
       params: [transactionParameters],
     });
     $(".alert").show();
-    $(".alert").text(
-      "The transaction has been confirmed. You can view it here: https://etherscan.io/tx/" +
-        txHash
+    $(".alert").text("The transaction is initiated. You can view it here: ");
+    $(".alert").append(
+      `<a href='https://etherscan.io/tx/${txHash}' target='_blank' >Etherscan</a>`
     );
   } catch (error) {
     if (error.code == 4001) {
@@ -311,9 +311,9 @@ export const mintPublic = async (amount) => {
       params: [transactionParameters],
     });
     $(".alert").show();
-    $(".alert").text(
-      "The transaction has been confirmed. You can view it here: https://etherscan.io/tx/" +
-        txHash
+    $(".alert").text("The transaction is initiated. You can view it here: ");
+    $(".alert").append(
+      `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
     );
   } catch (error) {
     if (error.code == 4001) {
@@ -346,7 +346,7 @@ export const togglePresale = async () => {
     return {
       success: true,
       status:
-        "The transaction has been confirmed. You can view it here: https://etherscan.io/tx/" +
+        "The transaction is initiated. You can view it here: https://etherscan.io/tx/" +
         txHash,
     };
   } catch (error) {
@@ -372,7 +372,7 @@ export const toggleSale = async () => {
     return {
       success: true,
       status:
-        "The transaction has been confirmed. You can view it here: https://etherscan.io/tx/" +
+        "The transaction is initiated. You can view it here: https://etherscan.io/tx/" +
         txHash,
     };
   } catch (error) {
@@ -398,7 +398,7 @@ export const withdraw = async () => {
     return {
       success: true,
       status:
-        "The transaction has been confirmed. You can view it here: https://etherscan.io/tx/" +
+        "The transaction is initiated. You can view it here: https://etherscan.io/tx/" +
         txHash,
     };
   } catch (error) {
