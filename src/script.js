@@ -134,7 +134,7 @@ export const connectWallet = async () => {
   await onboard.walletSelect();
   await onboard.walletCheck();
 
-   //don't need this in public sale to check whitelist
+  //don't need this in public sale to check whitelist
 
   //check if user address if whitelisted alse display a message
   //let addr = keccak256(
@@ -142,7 +142,6 @@ export const connectWallet = async () => {
   //);
   //let proof = merkleTree.getHexProof(addr);
 
- 
   // if (proof.length == 0) {
   //   $(".whitelist-alert").text(
   //     "Sorry, your wallet is not whitelisted for the pre-sale. The public sale starts on December 23rd"
@@ -163,6 +162,7 @@ export const connectWallet = async () => {
       .getState()
       .address.slice(onboard.getState().address.length - 2)})`
   );
+  $(".alert").hide();
   //hide please connect wallet text
   $(".test-metamask-button").text(`${onboard.getState().address}`);
 };
@@ -340,6 +340,8 @@ export const mintPublic = async (amount) => {
   } else {
     //if user isn't connect - connect wallet.
     connectWallet();
+    //hide the connect wallet alert
+    $('.alert').hide();
   }
 };
 
@@ -435,7 +437,7 @@ export const addWalletListener = () => {
         $(".alert").hide();
         //add alert to btn
         $(".metamask-button-text").text(`Connected (${useraddress})`);
-       //don't need this in public sale to check whitelist
+        //don't need this in public sale to check whitelist
         // //just to check if address is whitelisted or not
         // setTimeout(() => {
         //   whitListAlert();
