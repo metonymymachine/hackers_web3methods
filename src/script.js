@@ -134,11 +134,7 @@ export const connectWallet = async () => {
   await onboard.walletSelect();
   await onboard.walletCheck();
 
-  $(".metamask-button-text").text(
-    `Connected (${onboard.getState().address.substring(0, 2)}...${onboard
-      .getState()
-      .address.slice(onboard.getState().address.length - 2)})`
-  );
+  $(".metamask-button-text").text('Mint');
   $(".alert").hide();
   //hide please connect wallet text
   $(".test-metamask-button").text(`${onboard.getState().address}`);
