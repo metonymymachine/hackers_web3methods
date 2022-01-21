@@ -14,7 +14,7 @@
   "dependencies": {
     "@alch/alchemy-web3": "^1.1.7",
     "babel-polyfill": "^6.26.0",
-    "bnc-onboard": "^1.35.3",
+    "bnc-onboard": "^1.19.2",
     "clean-webpack-plugin": "^4.0.0",
     "jquery": "^3.6.0",
     "keccak256": "^1.0.3",
