@@ -47,7 +47,7 @@ const wallets = [
 //onboarjs setup
 export const onboard = Onboard({
   dappId: "e57157dd-aa3a-4b2a-a88d-36520d0193d9", // [String] The API key created by step one above
-  networkId: 1, // [Integer] The Ethereum network ID your Dapp uses.
+  networkId: 4, // [Integer] The Ethereum network ID your Dapp uses.
   subscriptions: {
     wallet: (wallet) => {
       web = new Web3(wallet.provider);
@@ -65,7 +65,7 @@ const contractAddress = "0x019f5629A978bdcB6e26Dc164f5922508703f63c";
 
 const theContract = new web3.eth.Contract(contractABI, contractAddress);
 
-const publicprice  = "20000000000000000";
+const publicprice  = "15000000000000000";
 const presaleprice = "00000000000000000";
 
 const loadCurrentSupply = async () => {
