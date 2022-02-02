@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@alch/alchemy-web3": "^1.1.7",
+    "@walletconnect/web3-provider": "^1.7.1",
     "babel-polyfill": "^6.26.0",
     "bnc-onboard": "^1.19.2",
     "clean-webpack-plugin": "^4.0.0",
@@ -23,6 +24,7 @@
     "randomstring": "^1.2.1",
     "wallet-validator": "^0.3.8",
     "web3": "^1.6.0",
+    "web3modal": "^1.9.5",
     "webpack": "^5.61.0",
     "webpack-dev-server": "^4.4.0",
     "webpack-node-externals": "^3.0.0"

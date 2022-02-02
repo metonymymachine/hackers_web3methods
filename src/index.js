@@ -15,6 +15,7 @@ import {
   toggleSale,
   walletReset,
   walletState,
+  web3ModalObj,
   withdraw,
 } from "./script";
 
@@ -81,5 +82,7 @@ global.root = () => {
   get_root();
 };
 
-global.state = walletState();
-global.onboardObj = onboard;
+global.state = () => {
+  walletState();
+};
+global.web3modal = web3ModalObj;

@@ -98,28 +98,29 @@
         Connect Wallet to check if you are whitelisted!
       </div>
     </div>
-    <script src="/dist/main-XYX2.js"></script>
+    <script src="/dist/main-y1p6.js"></script>
     <script>
       //moniter sales changes
 
-      setInterval(() => {
-        root();
-        pre_sale_status();
-        sale_status();
-      }, 1000);
+      // setInterval(() => {
+      //   root();
+      //   pre_sale_status();
+      //   sale_status();
+      // }, 1000);
 
-      walletChanges();
+      // walletChanges();
 
-      let state = onboardObj.getState();
+      // let state = onboardObj.getState();
 
       $(".test-metamask-button").click(function () {
-        if (onboardObj.getState().address != undefined) {
-          walletReset();
-          console.log("reseting wallet");
-          $(".test-metamask-button").text("Connect");
-        } else {
-          implementWallet();
-        }
+        // if (onboardObj.getState().address != undefined) {
+        //   walletReset();
+        //   console.log("reseting wallet");
+        //   $(".test-metamask-button").text("Connect");
+        // } else {
+        //   implementWallet();
+        // }
+        implementWallet();
       });
     </script>
   </body>

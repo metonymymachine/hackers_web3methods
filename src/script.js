@@ -7,65 +7,49 @@ import { addresses } from "./whiteListed";
 var WAValidator = require("wallet-validator");
 const { MerkleTree } = require("merkletreejs");
 const keccak256 = require("keccak256");
+import WalletConnectProvider from "@walletconnect/web3-provider";
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
-const web3 = createAlchemyWeb3(
-  "wss://eth-rinkeby.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC"
-);
-let web;
+import Web3Modal from "web3modal";
+// const web3 = createAlchemyWeb3(
+//   "wss://eth-rinkeby.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC"
+// );
+var web3;
+var web3Modal;
+var provider = null;
+var firstAccount;
 
-//configs
-const FORTMATIC_KEY = "pk_live_7CFC103369096AD4";
-const PORTIS_KEY = "Your Portis key here";
 const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
-const APP_URL = "https://www.bobocomics.xyz";
-const CONTACT_EMAIL = "dev@metonymy-machine.com";
-const RPC_URL = `https://mainnet.infura.io/v3/${INFURA_KEY}`;
-const APP_NAME = "onboardjs";
 
 //merkletree config
-const whitelistAddresses = addresses;
+// const whitelistAddresses = addresses;
 
-const leafNodes = whitelistAddresses.map((addr) =>
-  //format to checksum address and apply keccak256 hash
-  keccak256(web3.utils.toChecksumAddress(addr))
-);
-const merkleTree = new MerkleTree(leafNodes, keccak256, {
-  sortPairs: true,
-  //  duplicateOdd: true,
-});
+// const leafNodes = whitelistAddresses.map((addr) =>
+//   //format to checksum address and apply keccak256 hash
+//   keccak256(web3.utils.toChecksumAddress(addr))
+// );
+// const merkleTree = new MerkleTree(leafNodes, keccak256, {
+//   sortPairs: true,
+//   //  duplicateOdd: true,
+// });
 
 //wallet options to provide to users
-const wallets = [
-  { walletName: "metamask", preferred: true },
-  {
-    walletName: "walletConnect",
-    infuraKey: INFURA_KEY,
-    preferred: true,
-  },
-];
+// const wallets = [
+//   { walletName: "metamask", preferred: true },
+//   {
+//     walletName: "walletConnect",
+//     infuraKey: INFURA_KEY,
+//     preferred: true,
+//   },
+// ];
 
 //onboarjs setup
-export const onboard = Onboard({
-  dappId: "e57157dd-aa3a-4b2a-a88d-36520d0193d9", // [String] The API key created by step one above
-  networkId: 4, // [Integer] The Ethereum network ID your Dapp uses.
-  subscriptions: {
-    wallet: (wallet) => {
-      web = new Web3(wallet.provider);
-    },
-  },
-  walletSelect: {
-    explanation:
-      "We do not own your private keys and cannot access your funds without your confirmation.",
-    wallets: wallets,
-  },
-});
+export const web3ModalObj = web3Modal;
 
 const contractABI = abi;
 const contractAddress = "0x019f5629A978bdcB6e26Dc164f5922508703f63c";
+let theContract;
 
-const theContract = new web3.eth.Contract(contractABI, contractAddress);
-
-const publicprice  = "15000000000000000";
+const publicprice = "15000000000000000";
 const presaleprice = "00000000000000000";
 
 const loadCurrentSupply = async () => {
@@ -74,185 +58,221 @@ const loadCurrentSupply = async () => {
   return supply;
 };
 
-//Get the supply and attach
-//run this function every 3 sec
-//class required to display would be .supply
+// Get the supply and attach
+// run this function every 3 sec
+// class required to display would be .supply
 setInterval(() => {
-  loadCurrentSupply()
-    .then((val) => {
-      $(".supply").text(`${6666 - val}/6.666`);
-      console.log(val, "Running supply");
-    })
-    .catch((err) => {
-      console.log(err);
-      $(".supply").text("Sorry error occured!");
-    });
+  if (provider != null) {
+    loadCurrentSupply()
+      .then((val) => {
+        $(".supply").text(`${6666 - val}/6.666`);
+        console.log(val, "Running supply");
+      })
+      .catch((err) => {
+        console.log(err);
+        $(".supply").text("Sorry error occured!");
+      });
+  }
 }, 3000);
 
 export const loadPreSaleStatus = async () => {
-  const preSaleActive = await theContract.methods.PresaleIsActive.call()
-    .call()
-    .then(function (res) {
-      return res.toString();
-    });
-  $(".pre_sale_status").text(`${preSaleActive}`);
+  if (provider != null) {
+    const preSaleActive = await theContract.methods.PresaleIsActive.call()
+      .call()
+      .then(function (res) {
+        return res.toString();
+      });
+    $(".pre_sale_status").text(`${preSaleActive}`);
+  }
 };
 
 //sale status
 export const loadSaleStatus = async () => {
-  const SaleActive = await theContract.methods.saleIsActive
-    .call()
-    .call()
-    .then(function (res) {
-      return res.toString();
-    });
-  $(".sale_status").text(`${SaleActive}`);
+  if (provider != null) {
+    const SaleActive = await theContract.methods.saleIsActive
+      .call()
+      .call()
+      .then(function (res) {
+        return res.toString();
+      });
+    $(".sale_status").text(`${SaleActive}`);
+  }
 };
 
 //get root
 export const get_root = async () => {
-  const root = await theContract.methods.root
-    .call()
-    .call()
-    .then(function (res) {
-      return res.toString();
-    });
-  $(".root").text(`${root}`);
-};
-
-const loadBalanceContract = async () => {
-  const balanceContractWei = await web3.eth
-    .getBalance(contractAddress)
-    .then(function (res) {
-      return res.toString();
-    });
-  const balanceContract = web3.utils.fromWei(balanceContractWei, "ether");
-  return balanceContract;
-};
-
-export const connectWallet = async () => {
-  await onboard.walletSelect();
-  await onboard.walletCheck();
-
-  $(".metamask-button-text").text('Mint');
-  $(".alert").hide();
-  //hide please connect wallet text
-  $(".test-metamask-button").text(`${onboard.getState().address}`);
-};
-
-export const walletReset = () => {
-  onboard.walletReset();
-};
-
-export const walletState = () => {
-  const currentState = onboard.getState();
-
-  console.log(currentState);
-  return currentState;
-};
-
-export const getCurrentWalletConnected = async () => {
-  if (window.ethereum) {
-    try {
-      const addressArray = await window.ethereum.request({
-        method: "eth_accounts",
+  if (provider != null) {
+    const root = await theContract.methods.root
+      .call()
+      .call()
+      .then(function (res) {
+        return res.toString();
       });
-      if (addressArray.length > 0) {
-        return {
-          address: addressArray[0],
-          status: "",
-        };
-      } else {
-        return {
-          address: "",
-          status: "🦊 Connect to Metamask using the top right button.",
-        };
-      }
-    } catch (err) {
-      $(".alert").text(`${err.message}`);
-    }
-  } else {
-    $(".alert").text("Please connect a wallet");
+    $(".root").text(`${root}`);
   }
 };
 
+const loadBalanceContract = async () => {
+  if (provider != null) {
+    const balanceContractWei = await web3.eth
+      .getBalance(contractAddress)
+      .then(function (res) {
+        return res.toString();
+      });
+    const balanceContract = web3.utils.fromWei(balanceContractWei, "ether");
+    return balanceContract;
+  }
+};
+
+export const connectWallet = async () => {
+  try {
+    let providerOptions = {
+      walletconnect: {
+        package: WalletConnectProvider,
+        options: {
+          // Mikko's test key - don't copy as your mileage may vary
+          infuraId: "5b3b303e5c124bdfb7029389b1a0d599",
+        },
+      },
+      // metamask: {
+      //   id: "injected",
+      //   name: "MetaMask",
+      //   type: "injected",
+      //   check: "isMetaMask",
+      // },
+    };
+    web3Modal = new Web3Modal({
+      network: "rinkeby", // optional
+      cacheProvider: true,
+      providerOptions, // required
+    });
+    web3Modal.clearCachedProvider();
+    provider = await web3Modal.connect();
+    // web3 = new Web3(provider);
+
+    web3 = createAlchemyWeb3(
+      "wss://eth-rinkeby.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC",
+      { writeProvider: provider }
+    );
+    theContract = new web3.eth.Contract(contractABI, contractAddress);
+    firstAccount = await web3.eth.getAccounts().then((data) => data);
+    console.log(firstAccount);
+  } catch (e) {
+    console.log("Could not get a wallet connection", e);
+    return;
+  }
+};
+
+export const walletReset = () => {
+  //onboard.walletReset();
+  console.log("reseting wallet");
+  web3Modal.clearCachedProvider();
+  provider = null;
+};
+
+export const walletState = () => {
+  if (provider != null) {
+    const currentState = web3; // onboard.getState();
+    console.log(provider);
+    console.log(web3Modal);
+    console.log(web3);
+    //console.log(currentState);
+    return currentState;
+  }else{
+    console.log('Null');
+  }
+};
+
+// export const getCurrentWalletConnected = async () => {
+//   if (window.ethereum) {
+//     try {
+//       const addressArray = await window.ethereum.request({
+//         method: "eth_accounts",
+//       });
+//       if (addressArray.length > 0) {
+//         return {
+//           address: addressArray[0],
+//           status: "",
+//         };
+//       } else {
+//         return {
+//           address: "",
+//           status: "🦊 Connect to Metamask using the top right button.",
+//         };
+//       }
+//     } catch (err) {
+//       $(".alert").text(`${err.message}`);
+//     }
+//   } else {
+//     $(".alert").text("Please connect a wallet");
+//   }
+// };
+
 export const mintPresale = async (amount) => {
   //check if onboard address is empty then connect wallet
-  if (onboard.getState().address) {
-    //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
-    const transactionParameters = {
-      from: onboard.getState().address,
-      to: contractAddress,
-      value: web3.utils.toHex(presaleprice * amount),
-      data: theContract.methods.mintPresale(amount).encodeABI(),
-    };
-    try {
-      const txHash = await window.ethereum.request({
-        method: "eth_sendTransaction",
-        params: [transactionParameters],
-      });
-      $(".alert").show();
-      $(".alert").text("The transaction is initiated. You can view it here: ");
-      $(".alert").append(
-        `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
-      );
-    } catch (error) {
-      if (error.code == 4001) {
-        $(".alert").show();
-        console.log(error.message);
-        $(".alert").text(`The transaction was aborted`);
-      } else {
-        $(".alert").show();
-        //open wallet to connect automatically if not connected
-        connectWallet();
-        console.log(error.message);
-        $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
-      }
-    }
-  } else {
-    connectWallet();
 
-    console.log("connecting wallet...");
+  //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
+  const transactionParameters = {
+    from: firstAccount[0],
+    to: contractAddress,
+    value: web3.utils.toHex(presaleprice * amount),
+    data: theContract.methods.mintPresale(amount).encodeABI(),
+  };
+  try {
+    const txHash = await window.ethereum.request({
+      method: "eth_sendTransaction",
+      params: [transactionParameters],
+    });
+    $(".alert").show();
+    $(".alert").text("The transaction is initiated. You can view it here: ");
+    $(".alert").append(
+      `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
+    );
+  } catch (error) {
+    if (error.code == 4001) {
+      $(".alert").show();
+      console.log(error.message);
+      $(".alert").text(`The transaction was aborted`);
+    } else {
+      $(".alert").show();
+      //open wallet to connect automatically if not connected
+      connectWallet();
+      console.log(error.message);
+      $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
+    }
   }
 };
 
 export const mintPublic = async (amount) => {
-  if (onboard.getState().address) {
-    //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
-    const transactionParameters = {
-      from: onboard.getState().address,
-      to: contractAddress,
-      value: web3.utils.toHex(publicprice * amount),
-      data: theContract.methods.mintPublic(amount).encodeABI(),
-    };
-    try {
-      const txHash = await window.ethereum.request({
-        method: "eth_sendTransaction",
-        params: [transactionParameters],
-      });
+  //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
+  const transactionParameters = {
+    from: firstAccount[0],
+    to: contractAddress,
+    value: web3.utils.toHex(publicprice * amount),
+    data: theContract.methods.mintPublic(amount).encodeABI(),
+  };
+  try {
+    const txHash = await window.ethereum.request({
+      method: "eth_sendTransaction",
+      params: [transactionParameters],
+    });
+    $(".alert").show();
+    $(".alert").text("The transaction is initiated. You can view it here: ");
+    $(".alert").append(
+      `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
+    );
+  } catch (error) {
+    if (error.code == 4001) {
       $(".alert").show();
-      $(".alert").text("The transaction is initiated. You can view it here: ");
-      $(".alert").append(
-        `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
-      );
-    } catch (error) {
-      if (error.code == 4001) {
-        $(".alert").show();
-        console.log(error.message);
-        $(".alert").text(`The transaction was aborted`);
-      } else {
-        $(".alert").show();
-        console.log(error.message);
-        //open wallet to connect automatically if not connected
-        connectWallet();
-        $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
-      }
+      console.log(error.message);
+      $(".alert").text(`The transaction was aborted`);
+    } else {
+      $(".alert").show();
+      console.log(error.message);
+      //open wallet to connect automatically if not connected
+      connectWallet();
+      $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
     }
-  } else {
-    //if user isn't connect - connect wallet.
-    connectWallet();
-    //hide the connect wallet alert
-    $(".alert").hide();
   }
 };
 
@@ -381,26 +401,26 @@ if (window.ethereum) {
   });
 }
 
-//show the whitelist alert
-const whitListAlert = () => {
-  //check the whitlist of account
-  //check if user address if whitelisted alse display a message
-  let addr = keccak256(
-    web3.utils.toChecksumAddress(onboard.getState().address)
-  );
-  let proof = merkleTree.getHexProof(addr);
+// //show the whitelist alert
+// const whitListAlert = () => {
+//   //check the whitlist of account
+//   //check if user address if whitelisted alse display a message
+//   let addr = keccak256(
+//     web3.utils.toChecksumAddress(onboard.getState().address)
+//   );
+//   let proof = merkleTree.getHexProof(addr);
 
-  if (proof.length == 0) {
-    $(".whitelist-alert").text(
-      "Sorry, your wallet is not whitelisted for the pre-sale. The public sale starts on December 23rd"
-    );
-    $(".whitlist-check").hide();
-  }
+//   if (proof.length == 0) {
+//     $(".whitelist-alert").text(
+//       "Sorry, your wallet is not whitelisted for the pre-sale. The public sale starts on December 23rd"
+//     );
+//     $(".whitlist-check").hide();
+//   }
 
-  if (proof.length > 0) {
-    $(".whitelist-alert").text(
-      "Your wallet is whitelisted for the pre-sale. You can mint up to 3 x Bobos."
-    );
-    $(".whitlist-check").hide();
-  }
-};
+//   if (proof.length > 0) {
+//     $(".whitelist-alert").text(
+//       "Your wallet is whitelisted for the pre-sale. You can mint up to 3 x Bobos."
+//     );
+//     $(".whitlist-check").hide();
+//   }
+// };
