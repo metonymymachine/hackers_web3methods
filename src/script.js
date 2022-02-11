@@ -10,9 +10,7 @@ const keccak256 = require("keccak256");
 import WalletConnectProvider from "@walletconnect/web3-provider";
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 import Web3Modal from "web3modal";
-// const web3 = createAlchemyWeb3(
-//   "wss://eth-rinkeby.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC"
-// );
+
 var web3;
 var web3Modal;
 var provider = null;
@@ -20,29 +18,6 @@ var firstAccount;
 
 const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
 
-//merkletree config
-// const whitelistAddresses = addresses;
-
-// const leafNodes = whitelistAddresses.map((addr) =>
-//   //format to checksum address and apply keccak256 hash
-//   keccak256(web3.utils.toChecksumAddress(addr))
-// );
-// const merkleTree = new MerkleTree(leafNodes, keccak256, {
-//   sortPairs: true,
-//   //  duplicateOdd: true,
-// });
-
-//wallet options to provide to users
-// const wallets = [
-//   { walletName: "metamask", preferred: true },
-//   {
-//     walletName: "walletConnect",
-//     infuraKey: INFURA_KEY,
-//     preferred: true,
-//   },
-// ];
-
-//onboarjs setup
 export const web3ModalObj = web3Modal;
 
 const contractABI = abi;
@@ -157,6 +132,8 @@ export const connectWallet = async () => {
     theContract = new web3.eth.Contract(contractABI, contractAddress);
     firstAccount = await web3.eth.getAccounts().then((data) => data);
     console.log(firstAccount);
+    //window.alert(firstAccount);
+    $(".metamask-button-text").text(`Connected `);
   } catch (e) {
     console.log("Could not get a wallet connection", e);
     return;
@@ -178,35 +155,10 @@ export const walletState = () => {
     console.log(web3);
     //console.log(currentState);
     return currentState;
-  }else{
-    console.log('Null');
+  } else {
+    console.log("Null");
   }
 };
-
-// export const getCurrentWalletConnected = async () => {
-//   if (window.ethereum) {
-//     try {
-//       const addressArray = await window.ethereum.request({
-//         method: "eth_accounts",
-//       });
-//       if (addressArray.length > 0) {
-//         return {
-//           address: addressArray[0],
-//           status: "",
-//         };
-//       } else {
-//         return {
-//           address: "",
-//           status: "🦊 Connect to Metamask using the top right button.",
-//         };
-//       }
-//     } catch (err) {
-//       $(".alert").text(`${err.message}`);
-//     }
-//   } else {
-//     $(".alert").text("Please connect a wallet");
-//   }
-// };
 
 export const mintPresale = async (amount) => {
   //check if onboard address is empty then connect wallet
@@ -368,12 +320,6 @@ export const addWalletListener = () => {
         $(".alert").hide();
         //add alert to btn
         $(".metamask-button-text").text(`Connected (${useraddress})`);
-        //don't need this in public sale to check whitelist
-        // //just to check if address is whitelisted or not
-        // setTimeout(() => {
-        //   whitListAlert();
-        // }, 2000);
-        // console.log(useraddress);
       } else {
         $(".alert").text("Please connect a wallet");
       }
@@ -400,27 +346,3 @@ if (window.ethereum) {
     }
   });
 }
-
-// //show the whitelist alert
-// const whitListAlert = () => {
-//   //check the whitlist of account
-//   //check if user address if whitelisted alse display a message
-//   let addr = keccak256(
-//     web3.utils.toChecksumAddress(onboard.getState().address)
-//   );
-//   let proof = merkleTree.getHexProof(addr);
-
-//   if (proof.length == 0) {
-//     $(".whitelist-alert").text(
-//       "Sorry, your wallet is not whitelisted for the pre-sale. The public sale starts on December 23rd"
-//     );
-//     $(".whitlist-check").hide();
-//   }
-
-//   if (proof.length > 0) {
-//     $(".whitelist-alert").text(
-//       "Your wallet is whitelisted for the pre-sale. You can mint up to 3 x Bobos."
-//     );
-//     $(".whitlist-check").hide();
-//   }
-// };

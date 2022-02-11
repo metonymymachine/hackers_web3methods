@@ -1,5 +1,5 @@
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
-
+const webpack = require("webpack");
 const path = require("path");
 var randomstring = require("randomstring");
 module.exports = {
@@ -15,5 +15,10 @@ module.exports = {
       http: require.resolve("stream-http"),
     },
   },
-  plugins: [new NodePolyfillPlugin()],
+  plugins: [
+    new NodePolyfillPlugin(),
+    new webpack.optimize.LimitChunkCountPlugin({
+      maxChunks: 1,
+    }),
+  ],
 };
