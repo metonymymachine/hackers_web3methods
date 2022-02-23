@@ -6,7 +6,8 @@
   "scripts": {
     "dev:build": "npx webpack --mode=development",
     "prod:build": "npx webpack --mode=production",
-    "merkle": "node MerkleGeneration.js"
+    "merkle": "node MerkleGeneration.js",
+    "sign": "cd src && node sign.js"
   },
   "keywords": [],
   "author": "",
@@ -17,8 +18,9 @@
     "babel-polyfill": "^6.26.0",
     "bnc-onboard": "^1.19.2",
     "clean-webpack-plugin": "^4.0.0",
+    "dotenv": "^16.0.0",
     "jquery": "^3.6.0",
-    "keccak256": "^1.0.3",
+    "keccak256": "^1.0.6",
     "merkletreejs": "^0.2.26",
     "path-browserify": "^1.0.1",
     "randomstring": "^1.2.1",

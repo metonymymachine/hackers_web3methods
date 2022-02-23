@@ -9,6 +9,7 @@ const { MerkleTree } = require("merkletreejs");
 const keccak256 = require("keccak256");
 import WalletConnectProvider from "@walletconnect/web3-provider";
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
+const signature_data = require("./output.json");
 import Web3Modal from "web3modal";
 
 var web3;
@@ -161,37 +162,46 @@ export const walletState = () => {
 };
 
 export const mintPresale = async (amount) => {
-  //check if onboard address is empty then connect wallet
-
-  //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
-  const transactionParameters = {
-    from: firstAccount[0],
-    to: contractAddress,
-    value: web3.utils.toHex(presaleprice * amount),
-    data: theContract.methods.mintPresale(amount).encodeABI(),
-  };
-  try {
-    const txHash = await window.ethereum.request({
-      method: "eth_sendTransaction",
-      params: [transactionParameters],
-    });
-    $(".alert").show();
-    $(".alert").text("The transaction is initiated. You can view it here: ");
-    $(".alert").append(
-      `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
-    );
-  } catch (error) {
-    if (error.code == 4001) {
+  if (signature_data[`${firstAccount[0]}`]) {
+    //get user specific wallet signature
+    let v = signature_data[`${firstAccount[0]}`].v;
+    let r = signature_data[`${firstAccount[0]}`].r;
+    let s = signature_data[`${firstAccount[0]}`].s;
+    let amount_allowed = signature_data[`${firstAccount[0]}`].qty_allowed;
+    //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
+    const transactionParameters = {
+      from: firstAccount[0],
+      to: contractAddress,
+      value: web3.utils.toHex(presaleprice * amount),
+      data: theContract.methods
+        .mintPresale(amount, v, r, s, amount_allowed)
+        .encodeABI(),
+    };
+    try {
+      const txHash = await window.ethereum.request({
+        method: "eth_sendTransaction",
+        params: [transactionParameters],
+      });
       $(".alert").show();
-      console.log(error.message);
-      $(".alert").text(`The transaction was aborted`);
-    } else {
-      $(".alert").show();
-      //open wallet to connect automatically if not connected
-      connectWallet();
-      console.log(error.message);
-      $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
+      $(".alert").text("The transaction is initiated. You can view it here: ");
+      $(".alert").append(
+        `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
+      );
+    } catch (error) {
+      if (error.code == 4001) {
+        $(".alert").show();
+        console.log(error.message);
+        $(".alert").text(`The transaction was aborted`);
+      } else {
+        $(".alert").show();
+        //open wallet to connect automatically if not connected
+        connectWallet();
+        console.log(error.message);
+        $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
+      }
     }
+  } else {
+    $(".alert").text(`You are not being whitelisted!`);
   }
 };
 
