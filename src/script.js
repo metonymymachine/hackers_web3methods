@@ -25,9 +25,9 @@ const contractABI = abi;
 const contractAddress = "0x019f5629A978bdcB6e26Dc164f5922508703f63c";
 let theContract;
 
-const publicprice = "15000000000000000";
-const presaleprice = "00000000000000000";
-
+const _price = "66000000000000000";
+const _allowlistPrice = "55000000000000000";
+const _mintpassPrice = "55000000000000000";
 const loadCurrentSupply = async () => {
   const supply = await theContract.methods.getCurrentId().call();
 
@@ -161,20 +161,21 @@ export const walletState = () => {
   }
 };
 
-export const mintPresale = async (amount) => {
+export const allowlist_mint = async (amount) => {
   if (signature_data[`${firstAccount[0]}`]) {
     //get user specific wallet signature
     let v = signature_data[`${firstAccount[0]}`].v;
     let r = signature_data[`${firstAccount[0]}`].r;
     let s = signature_data[`${firstAccount[0]}`].s;
     let amount_allowed = signature_data[`${firstAccount[0]}`].qty_allowed;
+    let free = signature_data[`${firstAccount[0]}`].free;
     //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
     const transactionParameters = {
       from: firstAccount[0],
       to: contractAddress,
-      value: web3.utils.toHex(presaleprice * amount),
+      value: web3.utils.toHex(_allowlistPrice * amount),
       data: theContract.methods
-        .mintPresale(amount, v, r, s, amount_allowed)
+        .allowlistMint(amount, v, r, s, amount_allowed, free)
         .encodeABI(),
     };
     try {
@@ -205,36 +206,48 @@ export const mintPresale = async (amount) => {
   }
 };
 
-export const mintPublic = async (amount) => {
-  //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
-  const transactionParameters = {
-    from: firstAccount[0],
-    to: contractAddress,
-    value: web3.utils.toHex(publicprice * amount),
-    data: theContract.methods.mintPublic(amount).encodeABI(),
-  };
-  try {
-    const txHash = await window.ethereum.request({
-      method: "eth_sendTransaction",
-      params: [transactionParameters],
-    });
-    $(".alert").show();
-    $(".alert").text("The transaction is initiated. You can view it here: ");
-    $(".alert").append(
-      `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
-    );
-  } catch (error) {
-    if (error.code == 4001) {
+export const cyclops_mint = async (amount) => {
+  if (signature_data[`${firstAccount[0]}`]) {
+    //get user specific wallet signature
+    let v = signature_data[`${firstAccount[0]}`].v;
+    let r = signature_data[`${firstAccount[0]}`].r;
+    let s = signature_data[`${firstAccount[0]}`].s;
+    let amount_allowed = signature_data[`${firstAccount[0]}`].qty_allowed;
+    let free = signature_data[`${firstAccount[0]}`].free;
+    //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
+    const transactionParameters = {
+      from: firstAccount[0],
+      to: contractAddress,
+      value: web3.utils.toHex("0" * amount),
+      data: theContract.methods
+        .cyclopsMint(amount, v, r, s, amount_allowed, free)
+        .encodeABI(),
+    };
+    try {
+      const txHash = await window.ethereum.request({
+        method: "eth_sendTransaction",
+        params: [transactionParameters],
+      });
       $(".alert").show();
-      console.log(error.message);
-      $(".alert").text(`The transaction was aborted`);
-    } else {
-      $(".alert").show();
-      console.log(error.message);
-      //open wallet to connect automatically if not connected
-      connectWallet();
-      $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
+      $(".alert").text("The transaction is initiated. You can view it here: ");
+      $(".alert").append(
+        `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
+      );
+    } catch (error) {
+      if (error.code == 4001) {
+        $(".alert").show();
+        console.log(error.message);
+        $(".alert").text(`The transaction was aborted`);
+      } else {
+        $(".alert").show();
+        //open wallet to connect automatically if not connected
+        connectWallet();
+        console.log(error.message);
+        $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
+      }
     }
+  } else {
+    $(".alert").text(`You are not being whitelisted!`);
   }
 };
 

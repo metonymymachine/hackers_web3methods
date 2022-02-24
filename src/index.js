@@ -4,13 +4,8 @@ import {
   get_root,
   loadPreSaleStatus,
   loadSaleStatus,
-  metonymyHodlerMint,
-  mint,
-  mintBundlePrice,
-  mintPresale,
-  mintPublic,
-  onboard,
-  supply,
+  allowlist_mint,
+  cyclops_mint,
   togglePresale,
   toggleSale,
   walletReset,
@@ -25,27 +20,27 @@ global.implementWallet = () => {
 };
 
 //minting for general public
-global.mintPublic = (amount) => {
-  mintPublic(amount);
+global.cyclops_mint = (amount) => {
+  cyclops_mint(amount);
 };
 
 //Presale mint
-global.mintPresale = (amount) => {
-  mintPresale(amount);
+global.allowlist_mint = (amount) => {
+  allowlist_mint(amount);
 };
 
 //bundle price minting
 
-global.mint_bunlde_price = (amount) => {
-  mintBundlePrice(amount);
-};
+// global.mint_bunlde_price = (amount) => {
+//   mintBundlePrice(amount);
+// };
 
 //wallet event listener
 global.walletChanges = () => {
   addWalletListener();
 };
 
-//reset the wallet
+//reset the walletxa
 global.walletReset = () => {
   walletReset();
 };

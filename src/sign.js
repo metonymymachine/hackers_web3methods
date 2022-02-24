@@ -8,7 +8,7 @@ console.log(process.env.PRIVATE_KEY);
 const fs = require("fs");
 let data = {};
 addresses.forEach(async (e, i) => {
-  const messageHash = web3.utils.soliditySha3(e.addr, e.qty_allowed);
+  const messageHash = web3.utils.soliditySha3(e.addr, e.qty_allowed, e.free);
 
   // Signs the messageHash with a given account
   const signature = await web3.eth.accounts.sign(
@@ -18,6 +18,7 @@ addresses.forEach(async (e, i) => {
   //add quantity to signature
   //add data to one big object
   signature["qty_allowed"] = e.qty_allowed;
+  signature["free"] = e.free;
   data[e.addr] = signature;
 
   //output json file as a whole at the end
