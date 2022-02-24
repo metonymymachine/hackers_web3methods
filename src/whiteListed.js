@@ -19,4 +19,9 @@ module.exports.addresses = [
     qty_allowed: 1,
     free: 0,
   }, // Fritz 2: 1 allowlist
+  {
+    addr: "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4", //remix test addr added by hamza
+    qty_allowed: 1,
+    free: 0,
+  },
 ];
