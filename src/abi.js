@@ -1,5 +1,15 @@
 export const abi = [
-  { inputs: [], stateMutability: "nonpayable", type: "constructor" },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "dependentContractAddress",
+        type: "address",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
   {
     anonymous: false,
     inputs: [
@@ -116,6 +126,20 @@ export const abi = [
   },
   {
     inputs: [
+      { internalType: "uint256", name: "mintCount", type: "uint256" },
+      { internalType: "uint8", name: "v", type: "uint8" },
+      { internalType: "bytes32", name: "r", type: "bytes32" },
+      { internalType: "bytes32", name: "s", type: "bytes32" },
+      { internalType: "uint256", name: "mint_allowed", type: "uint256" },
+      { internalType: "uint256", name: "free", type: "uint256" },
+    ],
+    name: "allowlistMint",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
       { internalType: "address", name: "to", type: "address" },
       { internalType: "uint256", name: "tokenId", type: "uint256" },
     ],
@@ -129,6 +153,20 @@ export const abi = [
     name: "balanceOf",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "mintCount", type: "uint256" },
+      { internalType: "uint8", name: "v", type: "uint8" },
+      { internalType: "bytes32", name: "r", type: "bytes32" },
+      { internalType: "bytes32", name: "s", type: "bytes32" },
+      { internalType: "uint256", name: "mint_allowed", type: "uint256" },
+      { internalType: "uint256", name: "free", type: "uint256" },
+    ],
+    name: "cyclopsMint",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -188,14 +226,7 @@ export const abi = [
   },
   {
     inputs: [{ internalType: "uint256", name: "mintCount", type: "uint256" }],
-    name: "mintPresale",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "mintCount", type: "uint256" }],
-    name: "mintPublic",
+    name: "mintpassMint",
     outputs: [],
     stateMutability: "payable",
     type: "function",
@@ -222,17 +253,17 @@ export const abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "renounceOwnership",
+    inputs: [{ internalType: "uint256", name: "mintCount", type: "uint256" }],
+    name: "publicMint",
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
   {
     inputs: [],
-    name: "root",
-    outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
-    stateMutability: "view",
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -297,13 +328,6 @@ export const abi = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "supply", type: "uint256" }],
-    name: "setPresaleSupply",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [{ internalType: "uint256", name: "price", type: "uint256" }],
     name: "setPrice",
     outputs: [],
@@ -311,8 +335,8 @@ export const abi = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "bytes32", name: "merkleroot", type: "bytes32" }],
-    name: "setRoot",
+    inputs: [{ internalType: "address", name: "addr", type: "address" }],
+    name: "setSigningAddress",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -368,6 +392,19 @@ export const abi = [
     name: "transferOwnership",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint8", name: "v", type: "uint8" },
+      { internalType: "bytes32", name: "r", type: "bytes32" },
+      { internalType: "bytes32", name: "s", type: "bytes32" },
+      { internalType: "uint256", name: "amountAllowed", type: "uint256" },
+      { internalType: "uint256", name: "free", type: "uint256" },
+    ],
+    name: "verifySignature",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
     type: "function",
   },
   {

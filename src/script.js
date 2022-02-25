@@ -22,7 +22,7 @@ const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
 export const web3ModalObj = web3Modal;
 
 const contractABI = abi;
-const contractAddress = "0x019f5629A978bdcB6e26Dc164f5922508703f63c";
+const contractAddress = "0xD4EaFA36a2Cc1d0015CF681ee406CF1856C4B8CE";
 let theContract;
 
 const _price = "66000000000000000";
