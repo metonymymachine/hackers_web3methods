@@ -135,6 +135,16 @@ export const connectWallet = async () => {
     console.log(firstAccount);
     //window.alert(firstAccount);
     $(".metamask-button-text").text(`Connected `);
+    //find how many this specific account can mint
+    //add text
+    if (signature_data[firstAccount[0]]) {
+      let amount_allowed = signature_data[`${firstAccount[0]}`].qty_allowed;
+      $("allow_list_text").text(
+        `You are allowed to mint ${amount_allowed} NFTS.`
+      );
+    } else {
+      $("allow_list_text").text(`You'r address is not included in allow list!`);
+    }
   } catch (e) {
     console.log("Could not get a wallet connection", e);
     return;

@@ -15,7 +15,7 @@ import {
 } from "./script";
 
 //connect to the wallet
-global.implementWallet = () => {
+global.connectWb3Wallet = () => {
   connectWallet();
 };
 
