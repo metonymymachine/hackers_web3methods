@@ -17,8 +17,8 @@ module.exports = {
   },
   plugins: [
     new NodePolyfillPlugin(),
-    new webpack.optimize.LimitChunkCountPlugin({
-      maxChunks: 1,
-    }),
+    // new webpack.optimize.LimitChunkCountPlugin({  //limit num of chunks bundled as output
+    //   maxChunks: 1,
+    // }),
   ],
 };
