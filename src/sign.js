@@ -3,7 +3,7 @@ const { addresses } = require("./whiteListed");
 const keccak256 = require("keccak256");
 var web3 = new Web3();
 const dotenv = require("dotenv").config();
-//console.log(process.env.PRIVATE_KEY);
+console.log(process.env.PRIVATE_KEY);
 // file system module to perform file operations
 const fs = require("fs");
 let data = {};

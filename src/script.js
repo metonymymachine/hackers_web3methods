@@ -33,8 +33,8 @@ const contractABI = abi;
 const contractAddress = "0xD4EaFA36a2Cc1d0015CF681ee406CF1856C4B8CE";
 let theContract;
 
-const _price = "66000000000000000";
-const _allowlistPrice = "55000000000000000";
+const _price = "77000000000000000";
+const _allowlistPrice = "66000000000000000";
 const _mintpassPrice = "55000000000000000";
 const loadCurrentSupply = async () => {
   const supply = await theContract.methods.getCurrentId().call();

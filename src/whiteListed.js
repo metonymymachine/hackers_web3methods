@@ -29,4 +29,9 @@ module.exports.addresses = [
     qty_allowed: 1,
     free: 0,
   },
+  {
+    addr: "0x05F5505a8C9A9Bb3eecbE9b2B234Fa826FeE5692", // Fritz 2
+    qty_allowed: 3,
+    free: 1,
+  },
 ];
