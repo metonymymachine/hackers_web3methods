@@ -29,6 +29,16 @@
     "qty_allowed": 5,
     "free": 1
   },
+  "0x3C2A2489868D6819b06E6C3961ba1D61522036F3": {
+    "message": "0xcd5c7f21d7cac36f1f1ed20e7ac4584431c9cfdc417d3c7eeded60078e0df1fc",
+    "messageHash": "0x93b73fd0e5cca23a822fdafedd6971c2a16e90c7cc0440baf6e9f73526d82a1a",
+    "v": "0x1b",
+    "r": "0x0d36f87aa40bde50f05b1865ee9504f1dac853e8c3dde565cafdd8d176f8cce1",
+    "s": "0x2fe9150beba6548f43680c387cc9e77ba72e4c9da48379f7d2230e22a98eb59e",
+    "signature": "0x0d36f87aa40bde50f05b1865ee9504f1dac853e8c3dde565cafdd8d176f8cce12fe9150beba6548f43680c387cc9e77ba72e4c9da48379f7d2230e22a98eb59e1b",
+    "qty_allowed": 5,
+    "free": 1
+  },
   "0x3bcF2Ec850E30Eb52d61D5a4Fc451436818F5a1e": {
     "message": "0xa95b37f44e1d468aed340fe8a31d33a10da3575f34534fea7c8b3c59d7496d2c",
     "messageHash": "0xede2301b59ee62e4ba106c5d2680459ed3011f2865a7a5f73458223a0415299c",

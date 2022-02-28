@@ -11,6 +11,14 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const signature_data = require("./output.json");
 import Web3Modal from "web3modal";
+import AWN from "awesome-notifications";
+// Set global options
+let globalOptions = {
+  position: "bottom-right",
+  animationDuration: "400",
+};
+// Initialize instance of AWN
+let notifier = new AWN(globalOptions);
 
 var web3;
 var web3Modal;
@@ -110,12 +118,6 @@ export const connectWallet = async () => {
           infuraId: "5b3b303e5c124bdfb7029389b1a0d599",
         },
       },
-      // metamask: {
-      //   id: "injected",
-      //   name: "MetaMask",
-      //   type: "injected",
-      //   check: "isMetaMask",
-      // },
     };
     web3Modal = new Web3Modal({
       network: "rinkeby", // optional
@@ -134,19 +136,27 @@ export const connectWallet = async () => {
     firstAccount = await web3.eth.getAccounts().then((data) => data);
     console.log(firstAccount);
     //window.alert(firstAccount);
-    $(".metamask-button-text").text(`Connected `);
+    $(".metamask-button").text(
+      `Connected ${firstAccount[0].slice(firstAccount[0].length - 4)}`
+    );
+    notifier.success("Wallet connected successfully!");
     //find how many this specific account can mint
     //add text
-    if (signature_data[firstAccount[0]]) {
+    if (signature_data[firstAccount[0]] != undefined) {
       let amount_allowed = signature_data[`${firstAccount[0]}`].qty_allowed;
-      $("allow_list_text").text(
-        `You are allowed to mint ${amount_allowed} NFTS.`
+      console.log(amount_allowed, "Amount allowed");
+      $(".allow_list_text").text(
+        `Your wallet is on our allowlist. You can mint ${amount_allowed} Cyclops.`
       );
     } else {
-      $("allow_list_text").text(`You'r address is not included in allow list!`);
+      $(".allow_list_text").text(
+        `Your address is not included in the allowlist! Please come back to the public mint on March 15th.`
+      );
+      console.log("Not in whitelist!");
     }
   } catch (e) {
     console.log("Could not get a wallet connection", e);
+    notifier.alert("Connect wallet aborted: Modal closed by user!");
     return;
   }
 };
@@ -194,7 +204,9 @@ export const allowlist_mint = async (amount) => {
         params: [transactionParameters],
       });
       $(".alert").show();
-      $(".alert").text("The transaction is initiated. You can view it here: ");
+      $(".alert").text(
+        "The transaction has been initiated. See details here: "
+      );
       $(".alert").append(
         `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
       );

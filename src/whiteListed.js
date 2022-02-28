@@ -15,6 +15,11 @@ module.exports.addresses = [
     free: 1,
   }, // Cem 1: 5 free
   {
+    addr: "0x3C2A2489868D6819b06E6C3961ba1D61522036F3",
+    qty_allowed: 5,
+    free: 1,
+  }, //cem's another wallet
+  {
     addr: "0x3bcF2Ec850E30Eb52d61D5a4Fc451436818F5a1e",
     qty_allowed: 1,
     free: 0,

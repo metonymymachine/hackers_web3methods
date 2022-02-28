@@ -3,6 +3,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./src/public/stylesheet/style.css" />
     <script
       src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
       integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
@@ -37,7 +38,7 @@
           >0x019f5629A978bdcB6e26Dc164f5922508703f63c</a
         >
       </h4>
-      <button class="btn btn-md btn-primary metamask-button-text mt-2 test-metamask-button">
+      <button class="btn btn-md btn-primary mt-2 test-metamask-button metamask-button">
         connect
       </button>
       <button class="btn btn-md btn-primary mt-2" onclick="allowlist_mint(1)">
@@ -94,11 +95,12 @@
       </div>
       <div class="alert"></div>
       <div class="net_version_alert"></div>
-      <div class="whitelist-alert">
+      <div class="allow_list_text">
         Connect Wallet to check if you are whitelisted!
       </div>
     </div>
-    <script src="/dist/main-cUNK.js"></script>
+    <script src="/dist/main-t6Jh.js"></script>
+    <script src="./src/public/javascript/index.var.js"></script>
     <script>
       //moniter sales changes
 
@@ -120,7 +122,7 @@
         // } else {
         //   implementWallet();
         // }
-        implementWallet();
+        connectWb3Wallet();
       });
     </script>
   </body>
