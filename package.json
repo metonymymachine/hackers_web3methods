@@ -7,7 +7,8 @@
     "dev:build": "npx webpack --mode=development",
     "prod:build": "npx webpack --mode=production",
     "merkle": "node MerkleGeneration.js",
-    "sign": "cd src && node sign.js"
+    "sign": "cd src/scripts && node sign.js",
+    "format:whitelist": "cd src/scripts && node cleanLists.js"
   },
   "keywords": [],
   "author": "",

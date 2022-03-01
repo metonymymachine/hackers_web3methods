@@ -4,7 +4,7 @@ const path = require("path");
 var randomstring = require("randomstring");
 module.exports = {
   //path to entry paint
-  entry: "./src/index.js",
+  entry: "./src/scripts/index.js",
   //path and filename of the final output
   output: {
     path: path.resolve(__dirname, "dist"),
