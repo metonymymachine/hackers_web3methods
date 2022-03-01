@@ -12,7 +12,7 @@ let input_cyclops_clean = JSON.parse(rawdata2);
 const keccak256 = require("keccak256");
 var web3 = new Web3();
 const dotenv = require("dotenv").config();
-//console.log(process.env.PRIVATE_KEY);
+console.log(process.env.PRIVATE_KEY);
 // file system module to perform file operations
 
 let data = {};

@@ -1,15 +1,18 @@
 # Web3modal Implementation for Cyclops PFP
 
-## Generating whitelist with allowed limit
+####  create ./src/.env and put the value PRIVATE_KEY in there 
 
-####  Edit ./src/whitelistAddresses
-####  Replace PRIVATE_KEY in ./src/.env
-####  Update wallet address with its specific amount allowed
+## Generating clean data
+#### we have two types of inputs, one for the allowlist and one for the cyclops holders
+#### we convert the raw data into formated data with the following command
+`npm run format:whitelist` 
+
+## Generating clean whitelists
 
 ## Command to generate after above step
 
 `npm run sign` 
- ##### Should output json file with hashes and signature
+ ##### Should output two json files with hashes and signature
 
 
 
