@@ -111,13 +111,6 @@ export const abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "_perWalletPresaleLimit",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [{ internalType: "address", name: "", type: "address" }],
     name: "addressMintedBalance",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
@@ -170,6 +163,13 @@ export const abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getAllowlistPrice",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
     name: "getApproved",
     outputs: [{ internalType: "address", name: "", type: "address" }],
@@ -186,6 +186,13 @@ export const abi = [
   {
     inputs: [],
     name: "getCurrentId",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getMintPassPrice",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -297,6 +304,13 @@ export const abi = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "uint256", name: "price", type: "uint256" }],
+    name: "setAllowlistPrice",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       { internalType: "address", name: "operator", type: "address" },
       { internalType: "bool", name: "approved", type: "bool" },
@@ -314,15 +328,15 @@ export const abi = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "limit", type: "uint256" }],
-    name: "setPerWallet",
+    inputs: [{ internalType: "uint256", name: "price", type: "uint256" }],
+    name: "setMintPassPrice",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [{ internalType: "uint256", name: "limit", type: "uint256" }],
-    name: "setPerWalletPresale",
+    name: "setPerWallet",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
