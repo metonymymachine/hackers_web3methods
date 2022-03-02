@@ -45,7 +45,7 @@ let cyclops_arr = [];
 
 console.log(cyclops_keys,"****************");
 cyclops_keys.forEach((e, i) => {
-  //console.log(input_allowlist_raw[e]);
+  //console.log(input_cyclops_raw[e]);
   let obj = {
     "addr": e,
     "free": 1,
