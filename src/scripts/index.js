@@ -12,6 +12,8 @@ import {
   walletState,
   web3ModalObj,
   withdraw,
+  allowListCounter,
+  mintpassMint,
 } from "./script";
 
 //connect to the wallet
@@ -27,6 +29,11 @@ global.cyclops_mint = (amount) => {
 //Presale mint
 global.allowlist_mint = (amount) => {
   allowlist_mint(amount);
+};
+
+//Presale mint
+global.mint_pass_mint = (amount) => {
+  mintpassMint(amount);
 };
 
 //bundle price minting

@@ -10,8 +10,9 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const signature_data_allowlist = require("../outputData/output_allowlist.json");
 const signature_data_cyclops = require("../outputData/output_cyclops.json");
-import Web3Modal from "web3modal";
+import Web3Modal, { local } from "web3modal";
 import AWN from "awesome-notifications";
+
 // Set global options
 let globalOptions = {
   position: "bottom-right",
@@ -30,7 +31,7 @@ const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
 export const web3ModalObj = web3Modal;
 
 const contractABI = abi;
-const contractAddress = "0xD4EaFA36a2Cc1d0015CF681ee406CF1856C4B8CE";
+const contractAddress = "0x06E47684010b39f3FB0CfdeF90FB5F6209F42841";
 let theContract;
 
 const _price = "77000000000000000";
@@ -145,10 +146,16 @@ export const connectWallet = async () => {
     if (signature_data_allowlist[firstAccount[0]] != undefined) {
       let amount_allowed =
         signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
+      let amount_allowed_cy =
+        signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
       console.log(amount_allowed, "Amount allowed");
       $(".allow_list_text").text(
-        `Your wallet is on our allowlist. You can mint ${amount_allowed} Cyclops.`
+        `You can claim ${amount_allowed_cy} free Cyclops and mint ${amount_allowed} additional Cyclops in the Presale!
+        `
       );
+      //set allowed in ls
+      localStorage.setItem("cyclops_allowed", amount_allowed_cy);
+      localStorage.setItem("allowlist_allowed", amount_allowed);
     } else {
       $(".allow_list_text").text(
         `Your address is not included in the allowlist! Please come back to the public mint on March 15th.`
@@ -157,7 +164,7 @@ export const connectWallet = async () => {
     }
   } catch (e) {
     console.log("Could not get a wallet connection", e);
-    notifier.alert("Connect wallet aborted: Modal closed by user!");
+    notifier.alert("Connect wallet closed by user.");
     return;
   }
 };
@@ -212,6 +219,9 @@ export const allowlist_mint = async (amount) => {
       $(".alert").append(
         `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
       );
+      notifier.success(
+        `The transaction is initiated. You can view it here: ${txHash}`
+      );
     } catch (error) {
       if (error.code == 4001) {
         $(".alert").show();
@@ -258,6 +268,9 @@ export const cyclops_mint = async (amount) => {
       $(".alert").append(
         `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
       );
+      notifier.success(
+        `The transaction is initiated. You can view it here: ${txHash}`
+      );
     } catch (error) {
       if (error.code == 4001) {
         $(".alert").show();
@@ -273,6 +286,50 @@ export const cyclops_mint = async (amount) => {
     }
   } else {
     $(".alert").text(`You are not being whitelisted!`);
+  }
+};
+
+export const mintpassMint = async (amount) => {
+  if (provider != null) {
+    //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
+    const transactionParameters = {
+      from: firstAccount[0],
+      to: contractAddress,
+      value: web3.utils.toHex(_mintpassPrice * amount),
+      data: theContract.methods.mintpassMint(amount).encodeABI(),
+    };
+    try {
+      const txHash = await window.ethereum.request({
+        method: "eth_sendTransaction",
+        params: [transactionParameters],
+      });
+      $(".alert").show();
+      $(".alert").text("The transaction is initiated. You can view it here: ");
+
+      $(".alert").append(
+        `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
+      );
+      notifier.success(
+        `The transaction is initiated. You can view it here: ${txHash}`
+      );
+    } catch (error) {
+      if (error.code == 4001) {
+        $(".alert").show();
+        console.log(error.message);
+        $(".alert").text(`The transaction was aborted`);
+      } else {
+        $(".alert").show();
+        console.log(error.message);
+        //open wallet to connect automatically if not connected
+        connectWallet();
+        $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
+      }
+    }
+  } else {
+    //if user isn't connect - connect wallet.
+    connectWallet();
+    //hide the connect wallet alert
+    $(".alert").hide();
   }
 };
 
@@ -364,7 +421,7 @@ export const addWalletListener = () => {
         let useraddress = `${addressArray[0].substring(
           0,
           2
-        )}..${addressArray[0].slice(length - 2)}`;
+        )}${addressArray[0].slice(length - 2)}`;
         $(".alert").hide();
         //add alert to btn
         $(".metamask-button-text").text(`Connected (${useraddress})`);
@@ -394,3 +451,26 @@ if (window.ethereum) {
     }
   });
 }
+
+//mint counters
+//counters
+
+// export const cyclops_minter_counter = () => {
+//   if (signature_data_allowlist[firstAccount[0]] != undefined) {
+//     let amount_allowed =
+//       signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
+
+//     return amount_allowed;
+//   }
+//   return 0;
+// };
+// export const allowlist_minter_counter = () => {
+//   if (signature_data_cyclops[firstAccount[0]] != undefined) {
+//     let amount_allowed =
+//       signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
+
+//     return amount_allowed;
+//   }
+
+//   return 0;
+// };
