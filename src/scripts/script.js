@@ -423,6 +423,27 @@ export const addWalletListener = () => {
           2
         )}${addressArray[0].slice(length - 2)}`;
         $(".alert").hide();
+        //find how many this specific account can mint
+        //add text
+        if (signature_data_allowlist[firstAccount[0]] != undefined) {
+          let amount_allowed =
+            signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
+          let amount_allowed_cy =
+            signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
+          console.log(amount_allowed, "Amount allowed");
+          $(".allow_list_text").text(
+            `You can claim ${amount_allowed_cy} free Cyclops and mint ${amount_allowed} additional Cyclops in the Presale!
+        `
+          );
+          //set allowed in ls
+          localStorage.setItem("cyclops_allowed", amount_allowed_cy);
+          localStorage.setItem("allowlist_allowed", amount_allowed);
+        } else {
+          $(".allow_list_text").text(
+            `Your address is not included in the allowlist! Please come back to the public mint on March 15th.`
+          );
+          console.log("Not in whitelist!");
+        }
         //add alert to btn
         $(".metamask-button-text").text(`Connected (${useraddress})`);
       } else {
