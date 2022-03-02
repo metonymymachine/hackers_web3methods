@@ -2,6 +2,7 @@
 import Onboard from "bnc-onboard";
 import Web3 from "web3";
 import { abi } from "./abi";
+import { abi_dependentcontract } from "./abi_dependentContract";
 import $ from "jquery";
 var WAValidator = require("wallet-validator");
 const { MerkleTree } = require("merkletreejs");
@@ -31,7 +32,9 @@ const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
 export const web3ModalObj = web3Modal;
 
 const contractABI = abi;
-const contractAddress = "0x06E47684010b39f3FB0CfdeF90FB5F6209F42841";
+const contractAddress = "0x71828C8afc7BBa27167f675607f06D22d400C0E2";
+const dependentcontractABI = abi_dependentcontract;
+const dependentcontractAddress = "0x6540a57cBb52d4A3d99c103Fb130732495803561";
 let theContract;
 
 const _price = "77000000000000000";
