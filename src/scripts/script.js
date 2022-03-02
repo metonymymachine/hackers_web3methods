@@ -36,6 +36,7 @@ const contractAddress = "0x71828C8afc7BBa27167f675607f06D22d400C0E2";
 const dependentcontractABI = abi_dependentcontract;
 const dependentcontractAddress = "0x6540a57cBb52d4A3d99c103Fb130732495803561";
 let theContract;
+let theDependentContract;
 
 const _price = "77000000000000000";
 const _allowlistPrice = "66000000000000000";
