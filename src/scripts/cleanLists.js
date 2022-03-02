@@ -49,7 +49,7 @@ cyclops_keys.forEach((e, i) => {
   let obj = {
     "addr": e,
     "free": 1,
-    "qty_allowed": input_allowlist_raw[e],
+    "qty_allowed": input_cyclops_raw[e],
   };
 
   cyclops_arr.push(obj);
