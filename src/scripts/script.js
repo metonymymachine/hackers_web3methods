@@ -154,7 +154,7 @@ export const connectWallet = async () => {
         signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
       console.log(amount_allowed, "Amount allowed");
       $(".allow_list_text").text(
-        `You can claim ${amount_allowed_cy} free Cyclops and mint ${amount_allowed} additional Cyclops in the Presale!
+        `You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner and mint ${amount_allowed} additional Cyclops in General WL!
         `
       );
       //set allowed in ls
@@ -162,13 +162,13 @@ export const connectWallet = async () => {
       localStorage.setItem("allowlist_allowed", amount_allowed);
     } else {
       $(".allow_list_text").text(
-        `Your address is not included in the allowlist! Please come back to the public mint on March 15th.`
+        `Your address is not included in the allowlist! Join our Discord for the upcoming Public Raffle Sale.`
       );
       console.log("Not in whitelist!");
     }
   } catch (e) {
     console.log("Could not get a wallet connection", e);
-    notifier.alert("Connect wallet closed by user.");
+    notifier.alert("Connected wallet closed by user.");
     return;
   }
 };
@@ -236,11 +236,11 @@ export const allowlist_mint = async (amount) => {
         //open wallet to connect automatically if not connected
         connectWallet();
         console.log(error.message);
-        $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
+        $(".alert").text(`Please connect a wallet to mint`);
       }
     }
   } else {
-    $(".alert").text(`You are not being whitelisted!`);
+    $(".alert").text(`You are not on the Allowlist!`);
   }
 };
 
@@ -285,11 +285,11 @@ export const cyclops_mint = async (amount) => {
         //open wallet to connect automatically if not connected
         connectWallet();
         console.log(error.message);
-        $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
+        $(".alert").text(`Please connect a wallet to mint`);
       }
     }
   } else {
-    $(".alert").text(`You are not being whitelisted!`);
+    $(".alert").text(`You are not on the Allowlist!`);
   }
 };
 
@@ -326,7 +326,7 @@ export const mintpassMint = async (amount) => {
         console.log(error.message);
         //open wallet to connect automatically if not connected
         connectWallet();
-        $(".alert").text(`Please connect a wallet first, To mint a Bobo`);
+        $(".alert").text(`Please connect a wallet to mint`);
       }
     }
   } else {
@@ -436,15 +436,14 @@ export const addWalletListener = () => {
             signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
           console.log(amount_allowed, "Amount allowed");
           $(".allow_list_text").text(
-            `You can claim ${amount_allowed_cy} free Cyclops and mint ${amount_allowed} additional Cyclops in the Presale!
-        `
+            `You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner and mint ${amount_allowed} additional Cyclops in General WL!        `
           );
           //set allowed in ls
           localStorage.setItem("cyclops_allowed", amount_allowed_cy);
           localStorage.setItem("allowlist_allowed", amount_allowed);
         } else {
           $(".allow_list_text").text(
-            `Your address is not included in the allowlist! Please come back to the public mint on March 15th.`
+            `Your address is not included in the allowlist! Join our Discord for the upcoming Public Raffle Sale.`
           );
           console.log("Not in whitelist!");
         }
