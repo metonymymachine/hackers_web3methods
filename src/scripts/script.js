@@ -317,7 +317,7 @@ export const allowlist_mint = async (amount) => {
     }
   } else {
     $(".alert").show();
-    $(".alert").text("Please connect your wallet");
+    // $(".alert").text("Please connect your wallet");
   }
 };
 
@@ -375,7 +375,7 @@ export const cyclops_mint = async (amount) => {
     }
   } else {
     $(".alert").show();
-    $(".alert").text("Please connect your wallet");
+    // $(".alert").text("Please connect your wallet");
   }
 };
 
@@ -415,7 +415,7 @@ export const mintpassMint = async (amount) => {
     }
   } else {
     $(".alert").show();
-    $(".alert").text("Please connect your wallet");
+    // $(".alert").text("Please connect your wallet");
   }
 };
 
