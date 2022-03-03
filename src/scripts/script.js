@@ -42,10 +42,10 @@ const contractAddress = "0xC4627F3B1727B20Aa30489e2DB973AE1E9BF9110"; // Mainnet
 let theContract;
 //For mintpass owners
 const dependentcontractABI = abi_dependentcontract;
-const dependentcontractAddress = "0x6540a57cBb52d4A3d99c103Fb130732495803561"; // Mainnet: 0xcB5E2e44b4d9e7ED003B295dF7a5FDF072e3D858 - Rinkeby: 0x6540a57cBb52d4A3d99c103Fb130732495803561
+const dependentcontractAddress = "0xcB5E2e44b4d9e7ED003B295dF7a5FDF072e3D858"; // Mainnet: 0xcB5E2e44b4d9e7ED003B295dF7a5FDF072e3D858 - Rinkeby: 0x6540a57cBb52d4A3d99c103Fb130732495803561
 
 let MPOWNERS_CONTRACT = createAlchemyWeb3(
-  "wss://eth-rinkeby.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC"
+  "wss://eth-mainnet.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC"
 );
 let theDependentContract = new MPOWNERS_CONTRACT.eth.Contract(
   dependentcontractABI,
@@ -149,7 +149,7 @@ export const connectWallet = async () => {
       },
     };
     web3Modal = new Web3Modal({
-      network: "rinkeby", // optional
+      network: "mainnet", // optional
       cacheProvider: true,
       providerOptions, // required
     });
@@ -160,7 +160,7 @@ export const connectWallet = async () => {
     localStorage.setItem("walletConnected", "1");
 
     web3 = createAlchemyWeb3(
-      "wss://eth-rinkeby.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC",
+      "wss://eth-mainnet.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC",
       { writeProvider: provider }
     );
     theContract = new web3.eth.Contract(contractABI, contractAddress);
