@@ -552,7 +552,7 @@ const getDependentContractBal = async () => {
         localStorage.setItem("mintpass_owner_owns", blnc);
         $(".allow_list_text")
           .text(`You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner.
-You can mint up to ${amount_allowed} Cyclops at a reduced price in Mintpass Owner!`);
+You can mint up to ${amount_allowed} Cyclops in General WL!`);
       }
     } else {
       console.log("user is not in whitelist");
