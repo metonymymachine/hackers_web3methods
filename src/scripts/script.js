@@ -535,7 +535,7 @@ const getDependentContractBal = async () => {
     if (signature_data_allowlist[`${firstAccount[0]}`] != undefined) {
       //set wallet text
 
-      const blnc = await theContract.methods
+      const blnc = await theDependentContract.methods
         .balanceOf(`${firstAccount[0]}`)
         .call()
         .then(function (res) {
@@ -544,8 +544,8 @@ const getDependentContractBal = async () => {
         .catch((err) => {
           console.log(err);
         });
-      console.log(blnc);
-      if (blnc != 0) {
+      console.log(blnc,"Mintpasses");
+      if (blnc > 0) {
         //to check on frontend is mintpass owner owns something
         localStorage.setItem("mintpass_owner_owns", blnc);
         $(".allow_list_text")
