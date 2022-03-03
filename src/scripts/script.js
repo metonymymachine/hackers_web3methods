@@ -30,7 +30,7 @@ let notifier = new AWN(globalOptions);
 
 var web3;
 var web3Modal;
-var provider = null;
+export var provider = null;
 var firstAccount;
 
 const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
