@@ -140,6 +140,12 @@ export const connectWallet = async () => {
           // Mikko's test key - don't copy as your mileage may vary
           infuraId: "5b3b303e5c124bdfb7029389b1a0d599",
         },
+        metamask: {
+          id: "injected",
+          name: "MetaMask",
+          type: "injected",
+          check: "isMetaMask",
+        },
       },
     };
     web3Modal = new Web3Modal({
@@ -151,7 +157,7 @@ export const connectWallet = async () => {
     provider = await web3Modal.connect();
     // web3 = new Web3(provider);
 
-    localStorage.setItem("walletConnected","1");
+    localStorage.setItem("walletConnected", "1");
 
     web3 = createAlchemyWeb3(
       "wss://eth-rinkeby.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC",
@@ -300,7 +306,7 @@ export const allowlist_mint = async (amount) => {
         if (error.code == 4001) {
           $(".alert").show();
           console.log(error.message);
-       //   $(".alert").text(`The transaction was aborted`);
+          //   $(".alert").text(`The transaction was aborted`);
           notifier.alert("The transaction was aborted!");
         } else {
           $(".alert").show();
@@ -354,7 +360,7 @@ export const cyclops_mint = async (amount) => {
         if (error.code == 4001) {
           $(".alert").show();
           console.log(error.message);
-        //  $(".alert").text(`The transaction was aborted`);
+          //  $(".alert").text(`The transaction was aborted`);
           notifier.alert("The transaction was aborted!");
         } else {
           $(".alert").show();
@@ -399,7 +405,7 @@ export const mintpassMint = async (amount) => {
       if (error.code == 4001) {
         $(".alert").show();
         console.log(error.message);
-     //   $(".alert").text(`The transaction was aborted`);
+        //   $(".alert").text(`The transaction was aborted`);
         notifier.alert("The transaction was aborted!");
       } else {
         $(".alert").show();
@@ -540,7 +546,7 @@ const getDependentContractBal = async () => {
         .catch((err) => {
           console.log(err);
         });
-      console.log(blnc,"Mintpasses");
+      console.log(blnc, "Mintpasses");
       if (blnc > 0) {
         //to check on frontend is mintpass owner owns something
         localStorage.setItem("mintpass_owner_owns", blnc);
