@@ -304,10 +304,7 @@ export const allowlist_mint = async (amount) => {
           notifier.alert("The transaction was aborted!");
         } else {
           $(".alert").show();
-          //open wallet to connect automatically if not connected
-          connectWallet();
-          console.log(error.message);
-          $(".alert").text(`Please connect a wallet to mint`);
+          notifier.warning("Please first connect your wallet");
         }
       }
     } else {
@@ -317,7 +314,7 @@ export const allowlist_mint = async (amount) => {
     }
   } else {
     $(".alert").show();
-    // $(".alert").text("Please connect your wallet");
+    notifier.warning("Please first connect your wallet");
   }
 };
 
@@ -361,10 +358,7 @@ export const cyclops_mint = async (amount) => {
           notifier.alert("The transaction was aborted!");
         } else {
           $(".alert").show();
-          //open wallet to connect automatically if not connected
-          connectWallet();
-          console.log(error.message);
-          $(".alert").text(`Please connect a wallet to mint`);
+          notifier.warning("Please first connect your wallet");
         }
       }
     } else {
@@ -375,7 +369,7 @@ export const cyclops_mint = async (amount) => {
     }
   } else {
     $(".alert").show();
-    // $(".alert").text("Please connect your wallet");
+    notifier.warning("Please first connect your wallet");
   }
 };
 
@@ -415,7 +409,7 @@ export const mintpassMint = async (amount) => {
     }
   } else {
     $(".alert").show();
-    // $(".alert").text("Please connect your wallet");
+    notifier.warning("Please first connect your wallet");
   }
 };
 
