@@ -38,11 +38,11 @@ const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
 export const web3ModalObj = web3Modal;
 
 const contractABI = abi;
-const contractAddress = "0xa175900b57c9C11DD6730fceA6a8E18Ed1882111";
+const contractAddress = "0xC4627F3B1727B20Aa30489e2DB973AE1E9BF9110"; // Mainnet: 0xC4627F3B1727B20Aa30489e2DB973AE1E9BF9110 - Rinkeby: 0xa175900b57c9C11DD6730fceA6a8E18Ed1882111
 let theContract;
 //For mintpass owners
 const dependentcontractABI = abi_dependentcontract;
-const dependentcontractAddress = "0x6540a57cBb52d4A3d99c103Fb130732495803561";
+const dependentcontractAddress = "0x6540a57cBb52d4A3d99c103Fb130732495803561"; // Mainnet: 0xcB5E2e44b4d9e7ED003B295dF7a5FDF072e3D858 - Rinkeby: 0x6540a57cBb52d4A3d99c103Fb130732495803561
 
 let MPOWNERS_CONTRACT = createAlchemyWeb3(
   "wss://eth-rinkeby.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC"
