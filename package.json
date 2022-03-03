@@ -21,6 +21,7 @@
     "bnc-onboard": "^1.19.2",
     "clean-webpack-plugin": "^4.0.0",
     "dotenv": "^16.0.0",
+    "ethereum-status-checker": "^1.0.1",
     "jquery": "^3.6.0",
     "keccak256": "^1.0.6",
     "merkletreejs": "^0.2.26",
