@@ -20,12 +20,12 @@ allow_list_keys.forEach((e, i) => {
   if (i + 1 == allow_list_keys.length) {
     console.log(allow_list_arr);
    // stringify JSON Object
-    var jsonContent = JSON.stringify(allow_list_arr);
+    var jsonContent_allow = JSON.stringify(allow_list_arr);
     //console.log(jsonContent);
 
     fs.writeFile(
       "../inputData/input_allowlist_clean.json",
-      jsonContent,
+      jsonContent_allow,
       "utf8",
       function (err) {
         if (err) {
@@ -54,15 +54,15 @@ cyclops_keys.forEach((e, i) => {
 
   cyclops_arr.push(obj);
 
-  if (i + 1 == allow_list_keys.length) {
-    console.log(allow_list_arr);
+  if (i + 1 == cyclops_keys.length) {
+    console.log(cyclops_arr);
     // stringify JSON Object
-    var jsonContent = JSON.stringify(cyclops_arr);
+    var jsonContent_Cyclops = JSON.stringify(cyclops_arr);
     //console.log(jsonContent);
 
     fs.writeFile(
       "../inputData/input_cyclops_clean.json",
-      jsonContent,
+      jsonContent_Cyclops,
       "utf8",
       function (err) {
         if (err) {
@@ -73,5 +73,6 @@ cyclops_keys.forEach((e, i) => {
         console.log("JSON file has been saved.");
       }
     );
+    
   }
 });
