@@ -1,18 +1,10 @@
-const allowlist = require("../outputData/output_allowlist.json");
-const cyclops = require("../outputData/output_cyclops.json");
 
-//console.log(allowlist);
+//For Nodejs
+const {statusChecker} = require('ethereum-status-checker');
 
-const calculateAllowedMint = () => {
-  let allowlistMint_num, cyclops_mint_num;
-
-  let userAddr = "0xA030ed6d2752a817747a30522B4f3F1b7f039c81";
-
-  allowlistMint_num =
-    allowlist[userAddr] != undefined ? allowlist[userAddr] : undefined;
-  cyclops_mint_num =
-    cyclops[userAddr].qty_allowed != undefined ? cyclops[userAddr] : undefined;
-  console.log(allowlistMint_num, cyclops_mint_num);
-};
-
-calculateAllowedMint();
+statusChecker(["0xce6c5d87b63806c77dd20649e8916e559e5b5459d25f6d59ede55299ad62b2d2"],"rinkeby")
+.then(result=>{
+    console.log("output",result)
+}).catch(err=>{
+    console.log("err",err)
+})

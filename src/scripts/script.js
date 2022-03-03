@@ -14,6 +14,12 @@ const signature_data_cyclops = require("../outputData/output_cyclops.json");
 import Web3Modal, { local } from "web3modal";
 import AWN from "awesome-notifications";
 
+//Vars for cyclops and allowlist quantity
+let amount_allowed, amount_allowed_cy;
+
+//For Nodejs
+const { statusChecker } = require("ethereum-status-checker");
+
 // Set global options
 let globalOptions = {
   position: "bottom-right",
@@ -33,10 +39,20 @@ export const web3ModalObj = web3Modal;
 
 const contractABI = abi;
 const contractAddress = "0x71828C8afc7BBa27167f675607f06D22d400C0E2";
+let theContract;
+//For mintpass owners
 const dependentcontractABI = abi_dependentcontract;
 const dependentcontractAddress = "0x6540a57cBb52d4A3d99c103Fb130732495803561";
-let theContract;
-let theDependentContract;
+
+let MPOWNERS_CONTRACT = createAlchemyWeb3(
+  "wss://eth-rinkeby.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC"
+);
+let theDependentContract = new MPOWNERS_CONTRACT.eth.Contract(
+  dependentcontractABI,
+  dependentcontractAddress
+);
+
+//Web interacting functions with main contract
 
 const _price = "77000000000000000";
 const _allowlistPrice = "66000000000000000";
@@ -63,6 +79,11 @@ setInterval(() => {
       });
   }
 }, 3000);
+
+//mintpass owner check recurring
+setInterval(() => {
+  getDependentContractBal();
+}, 1000);
 
 export const loadPreSaleStatus = async () => {
   if (provider != null) {
@@ -140,17 +161,16 @@ export const connectWallet = async () => {
     theContract = new web3.eth.Contract(contractABI, contractAddress);
     firstAccount = await web3.eth.getAccounts().then((data) => data);
     console.log(firstAccount);
-    //window.alert(firstAccount);
-    $(".metamask-button").text(
-      `Connected ${firstAccount[0].slice(firstAccount[0].length - 4)}`
-    );
+    //notification texts functions
     notifier.success("Wallet connected successfully!");
+    //setting mintpass limit
+    //getDependentContractBal();
     //find how many this specific account can mint
     //add text
     if (signature_data_allowlist[firstAccount[0]] != undefined) {
-      let amount_allowed =
+      amount_allowed =
         signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
-      let amount_allowed_cy =
+      amount_allowed_cy =
         signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
       console.log(amount_allowed, "Amount allowed");
       $(".allow_list_text").text(
@@ -166,12 +186,43 @@ export const connectWallet = async () => {
       );
       console.log("Not in whitelist!");
     }
+    //window.alert(firstAccount);
+    $(".metamask-button").text(
+      `Connected ${firstAccount[0].slice(firstAccount[0].length - 4)}`
+    );
   } catch (e) {
     console.log("Could not get a wallet connection", e);
     notifier.alert("Connected wallet closed by user.");
     return;
   }
 };
+
+// let utilFun = () => {
+//   notifier.success("Wallet connected successfully!");
+//   //setting mintpass limit
+//   //getDependentContractBal();
+//   //find how many this specific account can mint
+//   //add text
+//   if (signature_data_allowlist[firstAccount[0]] != undefined) {
+//     let amount_allowed =
+//       signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
+//     let amount_allowed_cy =
+//       signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
+//     console.log(amount_allowed, "Amount allowed");
+//     $(".allow_list_text").text(
+//       `You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner and mint ${amount_allowed} additional Cyclops in General WL!
+//       `
+//     );
+//     //set allowed in ls
+//     localStorage.setItem("cyclops_allowed", amount_allowed_cy);
+//     localStorage.setItem("allowlist_allowed", amount_allowed);
+//   } else {
+//     $(".allow_list_text").text(
+//       `Your address is not included in the allowlist! Join our Discord for the upcoming Public Raffle Sale.`
+//     );
+//     console.log("Not in whitelist!");
+//   }
+// };
 
 export const walletReset = () => {
   //onboard.walletReset();
@@ -194,102 +245,134 @@ export const walletState = () => {
 };
 
 export const allowlist_mint = async (amount) => {
-  if (signature_data_allowlist[`${firstAccount[0]}`]) {
-    //get user specific wallet signature
-    let v = signature_data_allowlist[`${firstAccount[0]}`].v;
-    let r = signature_data_allowlist[`${firstAccount[0]}`].r;
-    let s = signature_data_allowlist[`${firstAccount[0]}`].s;
-    let amount_allowed =
-      signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
-    let free = signature_data_allowlist[`${firstAccount[0]}`].free;
-    //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
-    const transactionParameters = {
-      from: firstAccount[0],
-      to: contractAddress,
-      value: web3.utils.toHex(_allowlistPrice * amount),
-      data: theContract.methods
-        .allowlistMint(amount, v, r, s, amount_allowed, free)
-        .encodeABI(),
-    };
-    try {
-      const txHash = await window.ethereum.request({
-        method: "eth_sendTransaction",
-        params: [transactionParameters],
-      });
-      $(".alert").show();
-      $(".alert").text(
-        "The transaction has been initiated. See details here: "
-      );
-      $(".alert").append(
-        `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
-      );
-      notifier.success(
-        `The transaction is initiated. You can view it here: ${txHash}`
-      );
-    } catch (error) {
-      if (error.code == 4001) {
+  if (provider != null) {
+    if (signature_data_allowlist[`${firstAccount[0]}`]) {
+      //get user specific wallet signature
+      let v = signature_data_allowlist[`${firstAccount[0]}`].v;
+      let r = signature_data_allowlist[`${firstAccount[0]}`].r;
+      let s = signature_data_allowlist[`${firstAccount[0]}`].s;
+      let amount_allowed =
+        signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
+      let free = signature_data_allowlist[`${firstAccount[0]}`].free;
+      //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
+      const transactionParameters = {
+        from: firstAccount[0],
+        to: contractAddress,
+        value: web3.utils.toHex(_allowlistPrice * amount),
+        data: theContract.methods
+          .allowlistMint(amount, v, r, s, amount_allowed, free)
+          .encodeABI(),
+      };
+      try {
+        const txHash = await window.ethereum.request({
+          method: "eth_sendTransaction",
+          params: [transactionParameters],
+        });
         $(".alert").show();
-        console.log(error.message);
-        $(".alert").text(`The transaction was aborted`);
-      } else {
-        $(".alert").show();
-        //open wallet to connect automatically if not connected
-        connectWallet();
-        console.log(error.message);
-        $(".alert").text(`Please connect a wallet to mint`);
+        $(".alert").text("Your mint has been started! You can check the ");
+        $(".alert").append(
+          `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>progress of your transaction.</a>`
+        );
+        notifier.success(
+          `The transaction is initiated. You can view it here: <a target='_blank' href='https://etherscan.io/tx/${txHash}'> Etherscan</a>`
+        );
+        //set Tnx hash in ls
+        // localStorage.setItem("tnx_hash", txHash);
+        // setTimeout(() => {
+        //   let status = getTransStatus();
+        //   switch (status) {
+        //     case true:
+        //       $(".confirmed_status_tnx").text("Confirmed Successfully!");
+        //       break;
+        //     case false:
+        //       $(".confirmed_status_tnx").text("Your transaction failed!");
+        //       break;
+        //     case null:
+        //       $(".confirmed_status_tnx").text("Pending Transaction");
+        //       break;
+
+        //     default:
+        //       break;
+        //   }
+        // }, 2000);
+      } catch (error) {
+        if (error.code == 4001) {
+          $(".alert").show();
+          console.log(error.message);
+          $(".alert").text(`The transaction was aborted`);
+        } else {
+          $(".alert").show();
+          //open wallet to connect automatically if not connected
+          connectWallet();
+          console.log(error.message);
+          $(".alert").text(`Please connect a wallet to mint`);
+        }
       }
+    } else {
+      $(".allow_list_text").text(
+        `Your address is not included in the allowlist! Join our Discord for the upcoming Public Raffle Sale.`
+      );
     }
   } else {
-    $(".alert").text(`You are not on the Allowlist!`);
+    $(".alert").show();
+    $(".alert").text("Please connect your wallet");
   }
 };
 
 export const cyclops_mint = async (amount) => {
-  if (signature_data_cyclops[`${firstAccount[0]}`]) {
-    //get user specific wallet signature
-    let v = signature_data_cyclops[`${firstAccount[0]}`].v;
-    let r = signature_data_cyclops[`${firstAccount[0]}`].r;
-    let s = signature_data_cyclops[`${firstAccount[0]}`].s;
-    let amount_allowed =
-      signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
-    let free = signature_data_cyclops[`${firstAccount[0]}`].free;
-    //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
-    const transactionParameters = {
-      from: firstAccount[0],
-      to: contractAddress,
-      value: web3.utils.toHex("0" * amount),
-      data: theContract.methods
-        .cyclopsMint(amount, v, r, s, amount_allowed, free)
-        .encodeABI(),
-    };
-    try {
-      const txHash = await window.ethereum.request({
-        method: "eth_sendTransaction",
-        params: [transactionParameters],
-      });
-      $(".alert").show();
-      $(".alert").text("The transaction is initiated. You can view it here: ");
-      $(".alert").append(
-        `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
-      );
-      notifier.success(
-        `The transaction is initiated. You can view it here: ${txHash}`
-      );
-    } catch (error) {
-      if (error.code == 4001) {
+  if (provider != null) {
+    if (signature_data_cyclops[`${firstAccount[0]}`]) {
+      //get user specific wallet signature
+      let v = signature_data_cyclops[`${firstAccount[0]}`].v;
+      let r = signature_data_cyclops[`${firstAccount[0]}`].r;
+      let s = signature_data_cyclops[`${firstAccount[0]}`].s;
+      let amount_allowed =
+        signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
+      let free = signature_data_cyclops[`${firstAccount[0]}`].free;
+      //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
+      const transactionParameters = {
+        from: firstAccount[0],
+        to: contractAddress,
+        value: web3.utils.toHex("0" * amount),
+        data: theContract.methods
+          .cyclopsMint(amount, v, r, s, amount_allowed, free)
+          .encodeABI(),
+      };
+      try {
+        const txHash = await window.ethereum.request({
+          method: "eth_sendTransaction",
+          params: [transactionParameters],
+        });
         $(".alert").show();
-        console.log(error.message);
-        $(".alert").text(`The transaction was aborted`);
-      } else {
-        $(".alert").show();
-        //open wallet to connect automatically if not connected
-        connectWallet();
-        console.log(error.message);
-        $(".alert").text(`Please connect a wallet to mint`);
+        $(".alert").text("Your mint has been started! You can check the ");
+        $(".alert").append(
+          `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>progress of your transaction.</a>`
+        );
+        notifier.success(
+          `The transaction is initiated. You can view it here: <a target='_blank' href='https://etherscan.io/tx/${txHash}'> Etherscan</a>`
+        );
+      } catch (error) {
+        if (error.code == 4001) {
+          $(".alert").show();
+          console.log(error.message);
+          $(".alert").text(`The transaction was aborted`);
+        } else {
+          $(".alert").show();
+          //open wallet to connect automatically if not connected
+          connectWallet();
+          console.log(error.message);
+          $(".alert").text(`Please connect a wallet to mint`);
+        }
       }
+    } else {
+      $(".alert").show();
+      $(".allow_list_text").text(
+        `Your address is not included in the allowlist! Join our Discord for the upcoming Public Raffle Sale.`
+      );
     }
   } else {
-    $(".alert").text(`You are not on the Allowlist!`);
+    $(".alert").show();
+    $(".alert").text("Please connect your wallet");
   }
 };
 
@@ -308,13 +391,12 @@ export const mintpassMint = async (amount) => {
         params: [transactionParameters],
       });
       $(".alert").show();
-      $(".alert").text("The transaction is initiated. You can view it here: ");
-
+      $(".alert").text("Your mint has been started! You can check the ");
       $(".alert").append(
-        `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>Etherscan</a>`
+        `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>progress of your transaction.</a>`
       );
       notifier.success(
-        `The transaction is initiated. You can view it here: ${txHash}`
+        `The transaction is initiated. You can view it here: <a target='_blank' href='https://etherscan.io/tx/${txHash}'> Etherscan</a>`
       );
     } catch (error) {
       if (error.code == 4001) {
@@ -324,16 +406,12 @@ export const mintpassMint = async (amount) => {
       } else {
         $(".alert").show();
         console.log(error.message);
-        //open wallet to connect automatically if not connected
-        connectWallet();
-        $(".alert").text(`Please connect a wallet to mint`);
+        $(".alert").text("An error occrued!");
       }
     }
   } else {
-    //if user isn't connect - connect wallet.
-    connectWallet();
-    //hide the connect wallet alert
-    $(".alert").hide();
+    $(".alert").show();
+    $(".alert").text("Please connect your wallet");
   }
 };
 
@@ -420,41 +498,29 @@ export const withdraw = async () => {
 export const addWalletListener = () => {
   if (window.ethereum) {
     window.ethereum.on("accountsChanged", (addressArray) => {
-      if (addressArray.length > 0) {
-        //get the user address and display it to metamask-btn class
-        let useraddress = `${addressArray[0].substring(
-          0,
-          2
-        )}${addressArray[0].slice(length - 2)}`;
-        $(".alert").hide();
-        //find how many this specific account can mint
-        //add text
-        if (signature_data_allowlist[firstAccount[0]] != undefined) {
-          let amount_allowed =
-            signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
-          let amount_allowed_cy =
-            signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
-          console.log(amount_allowed, "Amount allowed");
-          $(".allow_list_text").text(
-            `You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner and mint ${amount_allowed} additional Cyclops in General WL!        `
-          );
-          //set allowed in ls
-          localStorage.setItem("cyclops_allowed", amount_allowed_cy);
-          localStorage.setItem("allowlist_allowed", amount_allowed);
-        } else {
-          $(".allow_list_text").text(
-            `Your address is not included in the allowlist! Join our Discord for the upcoming Public Raffle Sale.`
-          );
-          console.log("Not in whitelist!");
-        }
-        //add alert to btn
-        $(".metamask-button-text").text(`Connected (${useraddress})`);
+      if (signature_data_allowlist[firstAccount[0]] != undefined) {
+        let amount_allowed =
+          signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
+        let amount_allowed_cy =
+          signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
+        console.log(amount_allowed, "Amount allowed");
+        $(".allow_list_text").text(
+          `You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner and mint ${amount_allowed} additional Cyclops in General WL!
+          `
+        );
+        //set allowed in ls
+        localStorage.setItem("cyclops_allowed", amount_allowed_cy);
+        localStorage.setItem("allowlist_allowed", amount_allowed);
+        $(".metamask-button").text(
+          `Connected ${firstAccount[0].slice(firstAccount[0].length - 4)}`
+        );
       } else {
-        $(".alert").text("Please connect a wallet");
+        $(".allow_list_text").text(
+          `Your address is not included in the allowlist! Join our Discord for the upcoming Public Raffle Sale.`
+        );
+        console.log("Not in whitelist!");
       }
     });
-  } else {
-    $(".alert").text("Please connect a wallet");
   }
 };
 
@@ -476,25 +542,45 @@ if (window.ethereum) {
   });
 }
 
-//mint counters
-//counters
+//Get balance from the dependent contract for a specific user
 
-// export const cyclops_minter_counter = () => {
-//   if (signature_data_allowlist[firstAccount[0]] != undefined) {
-//     let amount_allowed =
-//       signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
+const getDependentContractBal = async () => {
+  if (provider != null) {
+    const blnc = await theContract.methods
+      .balanceOf(`${firstAccount[0]}`)
+      .call()
+      .then(function (res) {
+        return res.toString();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log(blnc);
+    //to check on frontend is mintpass owner owns something
+    localStorage.setItem("mintpass_owner_owns", blnc);
+    $(".allow_list_text")
+      .text(`You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner.
+    You can mint up to ${amount_allowed} Cyclops at a reduced price in Mintpass Owner!`);
+  } else {
+    console.log("User wallet not connected yet!");
+  }
+};
 
-//     return amount_allowed;
-//   }
-//   return 0;
-// };
-// export const allowlist_minter_counter = () => {
-//   if (signature_data_cyclops[firstAccount[0]] != undefined) {
-//     let amount_allowed =
-//       signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
+//status checking for specific transaction
 
-//     return amount_allowed;
-//   }
-
-//   return 0;
-// };
+const getTransStatus = () => {
+  if (localStorage.getItem("tnx_hash") != null) {
+    statusChecker([`${localStorage.getItem("tnx_hash")}`], "rinkeby")
+      .then((result) => {
+        console.log("output", result);
+        let status = result.output[0].Status;
+        return status;
+      })
+      .catch((err) => {
+        console.log("err", err);
+        return err;
+      });
+  } else {
+    console.log("tnx hash not defined...");
+  }
+};
