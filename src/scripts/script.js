@@ -300,7 +300,7 @@ export const allowlist_mint = async (amount) => {
         if (error.code == 4001) {
           $(".alert").show();
           console.log(error.message);
-          $(".alert").text(`The transaction was aborted`);
+       //   $(".alert").text(`The transaction was aborted`);
           notifier.alert("The transaction was aborted!");
         } else {
           $(".alert").show();
@@ -357,7 +357,7 @@ export const cyclops_mint = async (amount) => {
         if (error.code == 4001) {
           $(".alert").show();
           console.log(error.message);
-          $(".alert").text(`The transaction was aborted`);
+        //  $(".alert").text(`The transaction was aborted`);
           notifier.alert("The transaction was aborted!");
         } else {
           $(".alert").show();
@@ -405,7 +405,7 @@ export const mintpassMint = async (amount) => {
       if (error.code == 4001) {
         $(".alert").show();
         console.log(error.message);
-        $(".alert").text(`The transaction was aborted`);
+     //   $(".alert").text(`The transaction was aborted`);
         notifier.alert("The transaction was aborted!");
       } else {
         $(".alert").show();
