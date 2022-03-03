@@ -151,6 +151,8 @@ export const connectWallet = async () => {
     provider = await web3Modal.connect();
     // web3 = new Web3(provider);
 
+    localStorage.setItem("walletConnected","1");
+
     web3 = createAlchemyWeb3(
       "wss://eth-rinkeby.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC",
       { writeProvider: provider }
