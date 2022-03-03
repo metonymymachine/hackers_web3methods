@@ -38,7 +38,7 @@ const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
 export const web3ModalObj = web3Modal;
 
 const contractABI = abi;
-const contractAddress = "0x71828C8afc7BBa27167f675607f06D22d400C0E2";
+const contractAddress = "0xa175900b57c9C11DD6730fceA6a8E18Ed1882111";
 let theContract;
 //For mintpass owners
 const dependentcontractABI = abi_dependentcontract;
@@ -299,6 +299,7 @@ export const allowlist_mint = async (amount) => {
           $(".alert").show();
           console.log(error.message);
           $(".alert").text(`The transaction was aborted`);
+          notifier.alert("The transaction was aborted!");
         } else {
           $(".alert").show();
           //open wallet to connect automatically if not connected
@@ -355,6 +356,7 @@ export const cyclops_mint = async (amount) => {
           $(".alert").show();
           console.log(error.message);
           $(".alert").text(`The transaction was aborted`);
+          notifier.alert("The transaction was aborted!");
         } else {
           $(".alert").show();
           //open wallet to connect automatically if not connected
@@ -402,6 +404,7 @@ export const mintpassMint = async (amount) => {
         $(".alert").show();
         console.log(error.message);
         $(".alert").text(`The transaction was aborted`);
+        notifier.alert("The transaction was aborted!");
       } else {
         $(".alert").show();
         console.log(error.message);
@@ -501,7 +504,7 @@ export const addWalletListener = () => {
         `Connected ${firstAccount[0].slice(firstAccount[0].length - 4)}`
       );
       $(".allow_list_text").text(
-        "Connected Account changed, Please refresh the site and connect again!"
+        "Metamask Wallet has been changed, please refresh the site and re-connect again"
       );
     });
   }
@@ -542,11 +545,13 @@ const getDependentContractBal = async () => {
           console.log(err);
         });
       console.log(blnc);
-      //to check on frontend is mintpass owner owns something
-      localStorage.setItem("mintpass_owner_owns", blnc);
-      $(".allow_list_text")
-        .text(`You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner.
-    You can mint up to ${amount_allowed} Cyclops at a reduced price in Mintpass Owner!`);
+      if (blnc != 0) {
+        //to check on frontend is mintpass owner owns something
+        localStorage.setItem("mintpass_owner_owns", blnc);
+        $(".allow_list_text")
+          .text(`You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner.
+You can mint up to ${amount_allowed} Cyclops at a reduced price in Mintpass Owner!`);
+      }
     } else {
       console.log("user is not in whitelist");
       $(".allow_list_text").text(
