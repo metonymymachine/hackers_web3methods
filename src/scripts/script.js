@@ -14,6 +14,9 @@ const signature_data_cyclops = require("../outputData/output_cyclops.json");
 import Web3Modal, { local } from "web3modal";
 import AWN from "awesome-notifications";
 
+let alchemy_api = "wss://eth-rinkeby.alchemyapi.io/v2/t82OF0MzIcUKcNf_AxDSkVDAouxvS6W3" // RINKEBY
+// let alchemy_api = "wss://eth-mainnet.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC" // MAINNET
+
 //Vars for cyclops and allowlist quantity
 let amount_allowed, amount_allowed_cy;
 
@@ -37,15 +40,18 @@ const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
 
 export const web3ModalObj = web3Modal;
 
+// LINES TO CHANGE FOR THE SWTITCH BETWEEN MAINNET AND RINKEBY: 42, 46 51, 51, 161
 const contractABI = abi;
-const contractAddress = "0xC4627F3B1727B20Aa30489e2DB973AE1E9BF9110"; // Mainnet: 0xC4627F3B1727B20Aa30489e2DB973AE1E9BF9110 - Rinkeby: 0xa175900b57c9C11DD6730fceA6a8E18Ed1882111
+const contractAddress = "0xa175900b57c9C11DD6730fceA6a8E18Ed1882111"; // RINKEBY
+// Mainnet: 0xC4627F3B1727B20Aa30489e2DB973AE1E9BF9110 - Rinkeby: 0xa175900b57c9C11DD6730fceA6a8E18Ed1882111
 let theContract;
 //For mintpass owners
 const dependentcontractABI = abi_dependentcontract;
-const dependentcontractAddress = "0xcB5E2e44b4d9e7ED003B295dF7a5FDF072e3D858"; // Mainnet: 0xcB5E2e44b4d9e7ED003B295dF7a5FDF072e3D858 - Rinkeby: 0x6540a57cBb52d4A3d99c103Fb130732495803561
+const dependentcontractAddress = "0x6540a57cBb52d4A3d99c103Fb130732495803561"; // RINKEBY
+// Mainnet: 0xcB5E2e44b4d9e7ED003B295dF7a5FDF072e3D858 - Rinkeby: 0x6540a57cBb52d4A3d99c103Fb130732495803561
 
 let MPOWNERS_CONTRACT = createAlchemyWeb3(
-  "wss://eth-mainnet.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC"
+  alchemy_api
 );
 let theDependentContract = new MPOWNERS_CONTRACT.eth.Contract(
   dependentcontractABI,
@@ -64,7 +70,7 @@ const loadCurrentSupply = async () => {
 };
 
 // Get the supply and attach
-// run this function every 3 sec
+// run this function every 5 sec
 // class required to display would be .supply
 setInterval(() => {
   if (provider != null) {
@@ -78,7 +84,7 @@ setInterval(() => {
         $(".supply").text("Sorry error occured!");
       });
   }
-}, 3000);
+}, 5000);
 
 //mintpass owner check recurring
 
@@ -149,7 +155,7 @@ export const connectWallet = async () => {
       },
     };
     web3Modal = new Web3Modal({
-      network: "mainnet", // optional
+      // network: "mainnet", // optional
       cacheProvider: true,
       providerOptions, // required
     });
@@ -160,7 +166,7 @@ export const connectWallet = async () => {
     localStorage.setItem("walletConnected", "1");
 
     web3 = createAlchemyWeb3(
-      "wss://eth-mainnet.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC",
+      alchemy_api,      
       { writeProvider: provider }
     );
     theContract = new web3.eth.Contract(contractABI, contractAddress);
