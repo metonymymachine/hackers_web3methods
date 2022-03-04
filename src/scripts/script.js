@@ -5,12 +5,14 @@ import { abi } from "./abi";
 import { abi_dependentcontract } from "./abi_dependentContract";
 import $ from "jquery";
 var WAValidator = require("wallet-validator");
+
 const { MerkleTree } = require("merkletreejs");
 const keccak256 = require("keccak256");
 import WalletConnectProvider from "@walletconnect/web3-provider";
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const signature_data_allowlist = require("../outputData/output_allowlist.json");
 const signature_data_cyclops = require("../outputData/output_cyclops.json");
+
 import Web3Modal, { local } from "web3modal";
 import AWN from "awesome-notifications";
 
@@ -38,6 +40,7 @@ export var provider = null;
 var firstAccount;
 //for mntpass amount
 var MntPss;
+
 
 const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
 
@@ -168,116 +171,14 @@ export const connectWallet = async () => {
     theContract = new web3.eth.Contract(contractABI, contractAddress);
     firstAccount = await web3.eth.getAccounts().then((data) => data);
     console.log(firstAccount);
+    //Eevry address has to be checksumed on both scripts before creating signature and frontend
+    let checkSummed = web3.utils.toChecksumAddress(firstAccount[0]);
+    firstAccount[0] = checkSummed;
     //call mntpss for specific addr when wallet connected!
     getMntPassAmount(firstAccount[0]); //Get mintpass user owns
     //notification texts functions
     notifier.success("Wallet connected successfully!");
 
-    // // if a person is on the cyclopslist AND on the allowlist
-    // // we need to check if the person is ALSO on the Cyclops list
-    // if (
-    //   signature_data_allowlist[firstAccount[0]] != undefined &&
-    //   signature_data_cyclops[firstAccount[0]] != undefined
-    // ) {
-    //   //check if users owns a mntpass as well
-    //   if (MntPss > 0) {
-    //     amount_allowed =
-    //       signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
-    //     amount_allowed_cy =
-    //       signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
-    //     console.log("User is on allowlist & cyclops list");
-    //     $(".allow_list_text").text(
-    //       `You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner and mint ${amount_allowed} additional Cyclops in Mintpass!
-    //     `
-    //     );
-    //     //set allowed in ls
-    //     localStorage.setItem("cyclops_allowed", amount_allowed_cy);
-    //     localStorage.setItem("allowlist_allowed", amount_allowed);
-    //     localStorage.setItem("mintpass_owner_owns", MntPss);
-    //   } else {
-    //     amount_allowed =
-    //       signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
-    //     amount_allowed_cy =
-    //       signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
-    //     console.log("User is on allowlist & cyclops list");
-    //     $(".allow_list_text").text(
-    //       `You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner and mint ${amount_allowed} additional Cyclops in General WL!
-    //     `
-    //     );
-    //     //set allowed in ls
-    //     localStorage.setItem("cyclops_allowed", amount_allowed_cy);
-    //     localStorage.setItem("allowlist_allowed", amount_allowed);
-    //   }
-    // }
-    // //check if a person is only on the allowlist
-    // else if (signature_data_allowlist[firstAccount[0]] != undefined) {
-    //   //check if users owns a mntpass as well
-    //   if (MntPss > 0) {
-    //     amount_allowed =
-    //       signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
-
-    //     console.log("User is on mntpass & allow list");
-    //     $(".allow_list_text").text(
-    //       `You can ${amount_allowed} mint cyclops and you have a mintpass
-    //       `
-    //     );
-    //     //set allowed in ls
-    //     localStorage.setItem("allowlist_allowed", amount_allowed);
-    //     localStorage.setItem("mintpass_owner_owns", MntPss);
-    //   } else {
-    //     amount_allowed =
-    //       signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
-    //     console.log("User is only on allowlist no mntpass");
-    //     $(".allow_list_text").text(
-    //       `You can mint up to ${amount_allowed} Cyclops in General WL!
-    //     `
-    //     );
-    //     //set allowed in ls
-    //     localStorage.setItem("allowlist_allowed", amount_allowed);
-    //   }
-    // }
-
-    // // check if the person is ONLY on the Cyclops List
-    // else if (signature_data_cyclops[firstAccount[0]] != undefined) {
-    //   //check if users owns a mntpass as well
-    //   if (MntPss > 0) {
-    //     amount_allowed_cy =
-    //       signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
-
-    //     console.log("User is on mntpass & cyclops list");
-    //     $(".allow_list_text").text(
-    //       `You can mint up to ${amount_allowed_cy} Cyclops in special owners & user owns mintpass!
-    //       `
-    //     );
-    //     //set allowed in ls
-    //     localStorage.setItem("cyclops_allowed", amount_allowed_cy);
-    //     localStorage.setItem("mintpass_owner_owns", MntPss);
-    //   } else {
-    //     amount_allowed_cy =
-    //       signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
-    //     console.log("User is only on cyclops list no mintpass");
-    //     $(".allow_list_text").text(
-    //       `You can mint up to ${amount_allowed_cy} Cyclops in special owners mint!
-    //     `
-    //     );
-    //     //set allowed in ls
-    //     localStorage.setItem("cyclops_allowed", amount_allowed_cy);
-    //   }
-    // }
-
-    // // check if the person owns a mintpass
-    // else if (MntPss > 0) {
-    //   // code to check the mintpass owner balance
-    //   // getDependentContractBal();
-    //   localStorage.setItem("mintpass_owner_owns", blnc);
-    //   $(".allow_list_text").text(`You only have a mtnpass`);
-    // } else {
-    //   $(".allow_list_text").text(
-    //     `Your address is not included in the allowlist and you do not own a Mintpass. Join our Discord for the upcoming Public Raffle Sale.`
-    //   );
-    //   console.log("Not in whitelist!");
-    // }
-    //window.alert(firstAccount);
     $(".metamask-button").text(
       `Connected ${firstAccount[0].slice(firstAccount[0].length - 4)}`
     );
@@ -395,8 +296,8 @@ const getMntPassAmount = async (acc) => {
         // getDependentContractBal();
         localStorage.setItem("mintpass_owner_owns", MntPss);
         $(".allow_list_text").text(
-          `You can mint with your mintpass at a reduced price!`);
-
+          `You can mint with your mintpass at a reduced price!`
+        );
       } else {
         $(".allow_list_text").text(
           `Your address is not included in the allowlist and you do not own a Mintpass. Join our Discord for the upcoming Public Raffle Sale.`
@@ -688,57 +589,3 @@ if (window.ethereum) {
     }
   });
 }
-
-//Get balance from the dependent contract for a specific user
-
-// const getDependentContractBal = async () => {
-//   if (provider != null) {
-//     if (signature_data_allowlist[`${firstAccount[0]}`] != undefined) {
-//       //set wallet text
-
-//       const blnc = await theDependentContract.methods
-//         .balanceOf(`${firstAccount[0]}`)
-//         .call()
-//         .then(function (res) {
-//           return res.toString();
-//         })
-//         .catch((err) => {
-//           console.log(err);
-//         });
-//       console.log(blnc, "Mintpasses");
-//       if (blnc > 0) {
-//         //to check on frontend is mintpass owner owns something
-//         localStorage.setItem("mintpass_owner_owns", blnc);
-//         $(".allow_list_text")
-//           .text(`You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner.
-// You can mint up to ${amount_allowed} Cyclops in General WL!`);
-//       }
-//     } else {
-//       console.log("user is not in whitelist");
-//       $(".allow_list_text").text(
-//         `Your address is not included in the allowlist! Join our Discord for the upcoming Public Raffle Sale.`
-//       );
-//     }
-//   } else {
-//     console.log("User wallet not connected yet!");
-//   }
-// };
-
-//status checking for specific transaction
-
-// const getTransStatus = () => {
-//   if (localStorage.getItem("tnx_hash") != null) {
-//     statusChecker([`${localStorage.getItem("tnx_hash")}`], "rinkeby")
-//       .then((result) => {
-//         console.log("output", result);
-//         let status = result.output[0].Status;
-//         return status;
-//       })
-//       .catch((err) => {
-//         console.log("err", err);
-//         return err;
-//       });
-//   } else {
-//     console.log("tnx hash not defined...");
-//   }
-// };
