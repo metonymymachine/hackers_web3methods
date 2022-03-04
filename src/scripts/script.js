@@ -16,9 +16,9 @@ const signature_data_cyclops = require("../outputData/output_cyclops.json");
 import Web3Modal, { local } from "web3modal";
 import AWN from "awesome-notifications";
 
-let alchemy_api =
-  "wss://eth-rinkeby.alchemyapi.io/v2/t82OF0MzIcUKcNf_AxDSkVDAouxvS6W3"; // RINKEBY
-// let alchemy_api = "wss://eth-mainnet.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC" // MAINNET
+// let alchemy_api =
+//"wss://eth-rinkeby.alchemyapi.io/v2/t82OF0MzIcUKcNf_AxDSkVDAouxvS6W3"; // RINKEBY
+let alchemy_api = "wss://eth-mainnet.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC" // MAINNET
 
 //Vars for cyclops and allowlist quantity
 let amount_allowed, amount_allowed_cy;
@@ -46,14 +46,14 @@ const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
 
 export const web3ModalObj = web3Modal;
 
-// LINES TO CHANGE FOR THE SWTITCH BETWEEN MAINNET AND RINKEBY: 42, 46 51, 51, 161
+// LINES TO CHANGE FOR THE SWTITCH BETWEEN MAINNET AND RINKEBY: 20, 21, 51, 56, 160
 const contractABI = abi;
-const contractAddress = "0xa175900b57c9C11DD6730fceA6a8E18Ed1882111"; // RINKEBY
+const contractAddress = "0xC4627F3B1727B20Aa30489e2DB973AE1E9BF9110"; // MAINNET
 // Mainnet: 0xC4627F3B1727B20Aa30489e2DB973AE1E9BF9110 - Rinkeby: 0xa175900b57c9C11DD6730fceA6a8E18Ed1882111
 let theContract;
 //For mintpass owners
 const dependentcontractABI = abi_dependentcontract;
-const dependentcontractAddress = "0x6540a57cBb52d4A3d99c103Fb130732495803561"; // RINKEBY
+const dependentcontractAddress = "0xcB5E2e44b4d9e7ED003B295dF7a5FDF072e3D858"; // MAINNET
 // Mainnet: 0xcB5E2e44b4d9e7ED003B295dF7a5FDF072e3D858 - Rinkeby: 0x6540a57cBb52d4A3d99c103Fb130732495803561
 
 let MPOWNERS_CONTRACT = createAlchemyWeb3(alchemy_api);
@@ -157,7 +157,7 @@ export const connectWallet = async () => {
       },
     };
     web3Modal = new Web3Modal({
-      // network: "mainnet", // optional
+      network: "mainnet", // optional
       cacheProvider: true,
       providerOptions, // required
     });
