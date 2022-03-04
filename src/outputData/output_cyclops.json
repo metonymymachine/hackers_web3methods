@@ -1,4 +1,24 @@
 {
+  "0x3C3B62c23c2B67fD73d87aF61E2EeC8c4FF40699": {
+    "message": "0x6a940961e196c42935ccb3e53bafb9fb1e124fad3485db6061db7cb0215b5e10",
+    "messageHash": "0xb2ece3f1cb8c4ce746f15b79ab5e4f6a523201befdaede7bfb506adbaa1d9802",
+    "v": "0x1c",
+    "r": "0xc618fe5fd0f8427a299166894938b12e8a3baf69ea9022174fbd21792bac7623",
+    "s": "0x7eccb34ef498eeb2369bac16540e71486c8cc1c4b20b617197d256b7f9bfc41b",
+    "signature": "0xc618fe5fd0f8427a299166894938b12e8a3baf69ea9022174fbd21792bac76237eccb34ef498eeb2369bac16540e71486c8cc1c4b20b617197d256b7f9bfc41b1c",
+    "qty_allowed": 2,
+    "free": 1
+  },
+  "0xD518F7f8f59c1c8c942b0656823529B79e2c70a9": {
+    "message": "0x8c60e3d1293c7869c72a899e45f03e03773c844df2cfdf0bea78e8461a1c7db0",
+    "messageHash": "0xd90c0b6abc69f494bf0ae3702b4950b12aa799c65e1198a4d41a48bf128979a4",
+    "v": "0x1b",
+    "r": "0x4c4ac530885a20237b115c33f9c955ea88440eefb4e44dcc8b52f1b80d4e1079",
+    "s": "0x682580e2b55fe58fd4fefbdd971b3b3465f8fe6277fee8dd9d928de46cb0265f",
+    "signature": "0x4c4ac530885a20237b115c33f9c955ea88440eefb4e44dcc8b52f1b80d4e1079682580e2b55fe58fd4fefbdd971b3b3465f8fe6277fee8dd9d928de46cb0265f1b",
+    "qty_allowed": 2,
+    "free": 1
+  },
   "0x4d157da655d58C37C57583CbA3827dD3f5Bf4469": {
     "message": "0xbb03fecb02e9a314489a0c0e7cf89516dc3bf43918511b21e430ce7d79cbfbb5",
     "messageHash": "0x32a61cff361f79bf715aaed1628dc837492d6433c4fa3c269ae7989a57c370da",

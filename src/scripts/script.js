@@ -18,7 +18,8 @@ import AWN from "awesome-notifications";
 
 // let alchemy_api =
 //"wss://eth-rinkeby.alchemyapi.io/v2/t82OF0MzIcUKcNf_AxDSkVDAouxvS6W3"; // RINKEBY
-let alchemy_api = "wss://eth-mainnet.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC" // MAINNET
+let alchemy_api =
+  "wss://eth-mainnet.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC"; // MAINNET
 
 //Vars for cyclops and allowlist quantity
 let amount_allowed, amount_allowed_cy;
@@ -40,7 +41,6 @@ export var provider = null;
 var firstAccount;
 //for mntpass amount
 var MntPss;
-
 
 const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
 
