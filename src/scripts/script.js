@@ -86,8 +86,6 @@ setInterval(() => {
   }
 }, 5000);
 
-//mintpass owner check recurring
-
 export const loadPreSaleStatus = async () => {
   if (provider != null) {
     const preSaleActive = await theContract.methods.PresaleIsActive.call()
@@ -174,12 +172,10 @@ export const connectWallet = async () => {
     console.log(firstAccount);
     //notification texts functions
     notifier.success("Wallet connected successfully!");
-    //check mintpass ownership
-    getDependentContractBal();
-    //setting mintpass limit
-    //getDependentContractBal();
-    //find how many this specific account can mint
-    //add text
+ 
+
+    // if a person is on the cyclopslist AND on the allowlist
+    // we need to check if the person is ALSO on the Cyclops list
     if (signature_data_allowlist[firstAccount[0]] != undefined) {
       amount_allowed =
         signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
@@ -193,12 +189,39 @@ export const connectWallet = async () => {
       //set allowed in ls
       localStorage.setItem("cyclops_allowed", amount_allowed_cy);
       localStorage.setItem("allowlist_allowed", amount_allowed);
-    } else {
+    } 
+    //check if a person is only on the allowlist
+    else if (signature_data_allowlist[firstAccount[0]] != undefined) {
+      amount_allowed =
+      signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
+      console.log(amount_allowed, "Amount allowed");
       $(".allow_list_text").text(
-        `Your address is not included in the allowlist! Join our Discord for the upcoming Public Raffle Sale.`
+        `You can mint up to ${amount_allowed} Cyclops in General WL!
+        `
+      );
+      //set allowed in ls
+      localStorage.setItem("allowlist_allowed", amount_allowed);
+
+    }
+
+    // check if the person is ONLY on the Cyclops List
+    else if () {
+      // code to check the mintpass owner balance
+      // getDependentContractBal();
+    }
+
+// check if the person owns a mintpass
+    else if () {
+      // code to check the mintpass owner balance
+      // getDependentContractBal();
+    }
+
+    else {
+      $(".allow_list_text").text(
+        `Your address is not included in the allowlist and you do not own a Mintpass. Join our Discord for the upcoming Public Raffle Sale.`
       );
       console.log("Not in whitelist!");
-    }
+    };
     //window.alert(firstAccount);
     $(".metamask-button").text(
       `Connected ${firstAccount[0].slice(firstAccount[0].length - 4)}`
