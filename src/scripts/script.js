@@ -311,7 +311,7 @@ const getMntPassAmount = async (acc) => {
             signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
           console.log("User is on allowlist & cyclops list");
           $(".allow_list_text").text(
-            `You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner and mint ${amount_allowed} additional Cyclops in Mintpass!
+            `You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner and mint ${amount_allowed} additional Cyclops in General WL. With your Mintpass you can additionally mint up to 10 Cyclops!
         `
           );
           //set allowed in ls
@@ -370,7 +370,7 @@ const getMntPassAmount = async (acc) => {
 
           console.log("User is on mntpass & cyclops list");
           $(".allow_list_text").text(
-            `You can mint up to ${amount_allowed_cy} Cyclops in special owners & user owns mintpass!
+            `You can mint up to ${amount_allowed_cy} Cyclops in Special Owners and you can mint with your mintpass!
           `
           );
           //set allowed in ls
@@ -381,7 +381,7 @@ const getMntPassAmount = async (acc) => {
             signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
           console.log("User is only on cyclops list no mintpass");
           $(".allow_list_text").text(
-            `You can mint up to ${amount_allowed_cy} Cyclops in special owners mint!
+            `You can mint up to ${amount_allowed_cy} Cyclops in Special Owners mint!
         `
           );
           //set allowed in ls
@@ -394,7 +394,9 @@ const getMntPassAmount = async (acc) => {
         // code to check the mintpass owner balance
         // getDependentContractBal();
         localStorage.setItem("mintpass_owner_owns", MntPss);
-        $(".allow_list_text").text(`You only have a mtnpass`);
+        $(".allow_list_text").text(
+          `You can mint with your mintpass at a reduced price!`);
+
       } else {
         $(".allow_list_text").text(
           `Your address is not included in the allowlist and you do not own a Mintpass. Join our Discord for the upcoming Public Raffle Sale.`
