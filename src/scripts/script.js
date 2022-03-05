@@ -165,9 +165,21 @@ export const connectWallet = async () => {
     provider = await web3Modal.connect();
     // web3 = new Web3(provider);
 
+    //check for chainid
+
+    // if (Number(chainid) != 1) {
+
+    // }
+
     localStorage.setItem("walletConnected", "1");
 
     web3 = createAlchemyWeb3(alchemy_api, { writeProvider: provider });
+    //chain name detection
+    console.log(provider.networkVersion);
+    if (Number(provider.networkVersion) != Number(1)) {
+      new AWN().modal("<b>Please switch to ETH Mainnet</b> <br> ");
+    }
+
     theContract = new web3.eth.Contract(contractABI, contractAddress);
     firstAccount = await web3.eth.getAccounts().then((data) => data);
     console.log(firstAccount);
@@ -584,7 +596,7 @@ if (window.ethereum) {
     }
     if (Number(networkId) != 1) {
       $(".net_version_alert").show();
-      $(".net_version_alert").text("Please connect to mainnet");
+      notifier.warning("Please switch to ETH Mainnet");
       console.log("This is an unknown network.");
     }
   });
