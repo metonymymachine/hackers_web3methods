@@ -177,7 +177,9 @@ export const connectWallet = async () => {
     //chain name detection
     console.log(provider.networkVersion);
     if (Number(provider.networkVersion) != Number(1)) {
-      new AWN().modal("<b>Please switch to ETH Mainnet</b> <br> ");
+      new AWN().modal(
+        "<b >You are connected to the wrong network.<br> Please switch to ETH Mainnet</b>"
+      );
     }
 
     theContract = new web3.eth.Contract(contractABI, contractAddress);
@@ -596,7 +598,9 @@ if (window.ethereum) {
     }
     if (Number(networkId) != 1) {
       $(".net_version_alert").show();
-      notifier.warning("Please switch to ETH Mainnet");
+      notifier.warning(
+        "<b style=`color:#f93267;`>You are connected to the wrong network. Please switch to ETH Mainnet</b>"
+      );
       console.log("This is an unknown network.");
     }
   });
