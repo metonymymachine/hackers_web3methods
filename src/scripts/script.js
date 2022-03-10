@@ -258,8 +258,7 @@ const getMntPassAmount = async (acc) => {
 
           console.log("User is on mntpass & allow list");
           $(".allow_list_text").text(
-            `You can mint up to ${amount_allowed_cy} Cyclops in WL and you can mint with your mintpass!
-          `
+            `You can mint up to ${amount_allowed} Cyclops in the Public Sale Raffle and you can mint 10 with your mintpass!`
           );
           //set allowed in ls
           localStorage.setItem("allowlist_allowed", amount_allowed);
@@ -315,7 +314,7 @@ const getMntPassAmount = async (acc) => {
         );
       } else {
         $(".allow_list_text").text(
-          `Your address is not included in the allowlist and you do not own a Mintpass. Join our Discord for the upcoming Public Raffle Sale.`
+          `Your address is not included in the allowlist and you do not own a Mintpass. Join our Discord for the Next Phase of the Public Raffle Sale.`
         );
         console.log("Not in whitelist!");
       }
