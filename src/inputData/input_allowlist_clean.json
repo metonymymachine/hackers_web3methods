@@ -2140,6 +2140,26 @@
     "qty_allowed": 4
   },
   {
+    "addr": "0xc37d3e6cb71a27cd05d39480877e0e3be7b501ea",
+    "free": 0,
+    "qty_allowed": 4
+  },
+  {
+    "addr": "0x8b807644552125bd0cdad2188e175896c0386b9b",
+    "free": 0,
+    "qty_allowed": 4
+  },
+  {
+    "addr": "0x5184cabc982a194c11db6ada53336559db62d101",
+    "free": 0,
+    "qty_allowed": 4
+  },
+  {
+    "addr": "0xb053037adb3fe85f5a34b05228dcd639c1742893",
+    "free": 0,
+    "qty_allowed": 4
+  },
+  {
     "addr": "0xe59521d5fd3e4bb6b48562916132fec29e472a63",
     "free": 0,
     "qty_allowed": 4
@@ -2311,6 +2331,36 @@
   },
   {
     "addr": "0xcc073e4c1930a974bbf9f07cfc845e639c3026af",
+    "free": 0,
+    "qty_allowed": 4
+  },
+  {
+    "addr": "0xB053037adB3FE85f5a34B05228dCd639c1742893",
+    "free": 0,
+    "qty_allowed": 4
+  },
+  {
+    "addr": "0xc1f3A44D64fa4F1F184ff6592B8CC3B31Edef946",
+    "free": 0,
+    "qty_allowed": 4
+  },
+  {
+    "addr": "0x5184CABc982a194c11db6AdA53336559db62D101",
+    "free": 0,
+    "qty_allowed": 4
+  },
+  {
+    "addr": "0x35246320b05994aCA3c31A3Aea3eaf42C139683F",
+    "free": 0,
+    "qty_allowed": 4
+  },
+  {
+    "addr": "0xC094119873f9EbaD7e595707758a136F0b5a672D",
+    "free": 0,
+    "qty_allowed": 4
+  },
+  {
+    "addr": "0x4417FCad41239A385ce1Ea7ff4Fd70dd33fE7693",
     "free": 0,
     "qty_allowed": 4
   }
