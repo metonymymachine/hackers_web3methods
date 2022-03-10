@@ -1,7 +1,6 @@
 import {
   addWalletListener,
   connectWallet,
-  get_root,
   loadPreSaleStatus,
   loadSaleStatus,
   allowlist_mint,
@@ -14,7 +13,7 @@ import {
   withdraw,
   allowListCounter,
   mintpassMint,
-  provider
+  provider,
 } from "./script";
 
 //connect to the wallet
@@ -37,9 +36,9 @@ global.mint_pass_mint = (amount) => {
   mintpassMint(amount);
 };
 
-global.provider_ = ()=>{
+global.provider_ = () => {
   return provider;
-}
+};
 
 //bundle price minting
 
