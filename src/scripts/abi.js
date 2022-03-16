@@ -156,20 +156,6 @@ export const abi = [
     type: "function",
   },
   {
-    inputs: [
-      { internalType: "uint256", name: "mintCount", type: "uint256" },
-      { internalType: "uint8", name: "v", type: "uint8" },
-      { internalType: "bytes32", name: "r", type: "bytes32" },
-      { internalType: "bytes32", name: "s", type: "bytes32" },
-      { internalType: "uint256", name: "mint_allowed", type: "uint256" },
-      { internalType: "uint256", name: "free", type: "uint256" },
-    ],
-    name: "cyclopsMint",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "getAllowlistPrice",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
@@ -433,6 +419,20 @@ export const abi = [
     name: "withdraw",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "mintCount", type: "uint256" },
+      { internalType: "uint8", name: "v", type: "uint8" },
+      { internalType: "bytes32", name: "r", type: "bytes32" },
+      { internalType: "bytes32", name: "s", type: "bytes32" },
+      { internalType: "uint256", name: "mint_allowed", type: "uint256" },
+      { internalType: "uint256", name: "free", type: "uint256" },
+    ],
+    name: "zombieMint",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
 ];

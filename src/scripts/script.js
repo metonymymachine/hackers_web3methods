@@ -19,7 +19,7 @@ import AWN from "awesome-notifications";
 // let alchemy_api =
 //"wss://eth-rinkeby.alchemyapi.io/v2/t82OF0MzIcUKcNf_AxDSkVDAouxvS6W3"; // RINKEBY
 let alchemy_api =
-  "wss://eth-mainnet.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC"; // MAINNET
+  "wss://eth-rinkeby.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC"; // MAINNET
 
 //Vars for cyclops and allowlist quantity
 let amount_allowed, amount_allowed_cy;
@@ -48,13 +48,13 @@ export const web3ModalObj = web3Modal;
 
 // LINES TO CHANGE FOR THE SWTITCH BETWEEN MAINNET AND RINKEBY: 20, 21, 51, 56, 160
 const contractABI = abi;
-const contractAddress = "0xC4627F3B1727B20Aa30489e2DB973AE1E9BF9110"; // MAINNET
-// Mainnet: 0xC4627F3B1727B20Aa30489e2DB973AE1E9BF9110 - Rinkeby: 0xa175900b57c9C11DD6730fceA6a8E18Ed1882111
+const contractAddress = "0xa63eEdF0b52752e7Bbab62429Ae9C5d0Db7D9826"; // MAINNET
+// Mainne not provided: 0xC4627F3B1727B20Aa30489e2DB973AE1E9BF9110 - Rinkeby: 0xa63eEdF0b52752e7Bbab62429Ae9C5d0Db7D9826
 let theContract;
 //For mintpass owners
 const dependentcontractABI = abi_dependentcontract;
-const dependentcontractAddress = "0xcB5E2e44b4d9e7ED003B295dF7a5FDF072e3D858"; // MAINNET
-// Mainnet: 0xcB5E2e44b4d9e7ED003B295dF7a5FDF072e3D858 - Rinkeby: 0x6540a57cBb52d4A3d99c103Fb130732495803561
+const dependentcontractAddress = "0x73AF8134139E12f23BAFa4505Bc59EbAaA621B93"; // MAINNET
+// not provided Mainnet: 0xcB5E2e44b4d9e7ED003B295dF7a5FDF072e3D858 - Rinkeby: 0xa63eEdF0b52752e7Bbab62429Ae9C5d0Db7D9826
 
 let MPOWNERS_CONTRACT = createAlchemyWeb3(alchemy_api);
 let theDependentContract = new MPOWNERS_CONTRACT.eth.Contract(
@@ -64,9 +64,9 @@ let theDependentContract = new MPOWNERS_CONTRACT.eth.Contract(
 
 //Web interacting functions with main contract
 
-const _price = "77000000000000000";
-const _allowlistPrice = "77000000000000000"; //for public sale raffle
-const _mintpassPrice = "55000000000000000";
+const _price = "25000000000000000";
+const _allowlistPrice = "20000000000000000"; //for public sale raffle
+const _mintpassPrice = "10000000000000000";
 const loadCurrentSupply = async () => {
   const supply = await theContract.methods.getCurrentId().call();
 
@@ -214,40 +214,40 @@ const getMntPassAmount = async (acc) => {
 
       // if a person is on the cyclopslist AND on the allowlist
       // we need to check if the person is ALSO on the Cyclops list
-      // if (
-      //   signature_data_allowlist[firstAccount[0]] != undefined &&
-      //   signature_data_cyclops[firstAccount[0]] != undefined
-      // ) {
-      //   //check if users owns a mntpass as well
-      //   if (MntPss > 0) {
-      //     amount_allowed =
-      //       signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
-      //     amount_allowed_cy =
-      //       signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
-      // //     console.log("User is on allowlist & cyclops list");
-      //     $(".allow_list_text").text(
-      //       `You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner and mint ${amount_allowed} additional Cyclops in General WL. With your Mintpass you can additionally mint up to 10 Cyclops!
-      //   `
-      //     );
-      //     //set allowed in ls
-      //     localStorage.setItem("cyclops_allowed", amount_allowed_cy);
-      //     localStorage.setItem("allowlist_allowed", amount_allowed);
-      //     localStorage.setItem("mintpass_owner_owns", MntPss);
-      //   } else {
-      //     amount_allowed =
-      //       signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
-      //     amount_allowed_cy =
-      //       signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
-      //     console.log("User is on allowlist & cyclops list");
-      //     $(".allow_list_text").text(
-      //       `You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner and mint ${amount_allowed} additional Cyclops in General WL!
-      //   `
-      //     );
-      //     //set allowed in ls
-      //     localStorage.setItem("cyclops_allowed", amount_allowed_cy);
-      //     localStorage.setItem("allowlist_allowed", amount_allowed);
-      //   }
-      // }
+      if (
+        signature_data_allowlist[firstAccount[0]] != undefined &&
+        signature_data_cyclops[firstAccount[0]] != undefined
+      ) {
+        //check if users owns a mntpass as well
+        if (MntPss > 0) {
+          amount_allowed =
+            signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
+          amount_allowed_cy =
+            signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
+          //     console.log("User is on allowlist & cyclops list");
+          $(".allow_list_text").text(
+            `You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner and mint ${amount_allowed} additional Cyclops in General WL. With your Mintpass you can additionally mint up to 10 Cyclops!
+        `
+          );
+          //set allowed in ls
+          localStorage.setItem("cyclops_allowed", amount_allowed_cy);
+          localStorage.setItem("allowlist_allowed", amount_allowed);
+          localStorage.setItem("mintpass_owner_owns", MntPss);
+        } else {
+          amount_allowed =
+            signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
+          amount_allowed_cy =
+            signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
+          console.log("User is on allowlist & cyclops list");
+          $(".allow_list_text").text(
+            `You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner and mint ${amount_allowed} additional Cyclops in General WL!
+        `
+          );
+          //set allowed in ls
+          localStorage.setItem("cyclops_allowed", amount_allowed_cy);
+          localStorage.setItem("allowlist_allowed", amount_allowed);
+        }
+      }
       //check if a person is only on the allowlist
       //else
       if (signature_data_allowlist[firstAccount[0]] != undefined) {
@@ -277,32 +277,32 @@ const getMntPassAmount = async (acc) => {
       }
 
       // check if the person is ONLY on the Cyclops List
-      // else if (signature_data_cyclops[firstAccount[0]] != undefined) {
-      //   //check if users owns a mntpass as well
-      //   if (MntPss > 0) {
-      //     amount_allowed_cy =
-      //       signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
+      else if (signature_data_cyclops[firstAccount[0]] != undefined) {
+        //check if users owns a mntpass as well
+        if (MntPss > 0) {
+          amount_allowed_cy =
+            signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
 
-      //     console.log("User is on mntpass & cyclops list");
-      //     $(".allow_list_text").text(
-      //       `You can mint up to ${amount_allowed_cy} Cyclops in Special Owners and you can mint with your mintpass!
-      //     `
-      //     );
-      //     //set allowed in ls
-      //     localStorage.setItem("cyclops_allowed", amount_allowed_cy);
-      //     localStorage.setItem("mintpass_owner_owns", MntPss);
-      //   } else {
-      //     amount_allowed_cy =
-      //       signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
-      //     console.log("User is only on cyclops list no mintpass");
-      //     $(".allow_list_text").text(
-      //       `You can mint up to ${amount_allowed_cy} Cyclops in Special Owners mint!
-      //   `
-      //     );
-      //     //set allowed in ls
-      //     localStorage.setItem("cyclops_allowed", amount_allowed_cy);
-      //   }
-      // }
+          console.log("User is on mntpass & cyclops list");
+          $(".allow_list_text").text(
+            `You can mint up to ${amount_allowed_cy} Cyclops in Special Owners and you can mint with your mintpass!
+          `
+          );
+          //set allowed in ls
+          localStorage.setItem("cyclops_allowed", amount_allowed_cy);
+          localStorage.setItem("mintpass_owner_owns", MntPss);
+        } else {
+          amount_allowed_cy =
+            signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
+          console.log("User is only on cyclops list no mintpass");
+          $(".allow_list_text").text(
+            `You can mint up to ${amount_allowed_cy} Cyclops in Special Owners mint!
+        `
+          );
+          //set allowed in ls
+          localStorage.setItem("cyclops_allowed", amount_allowed_cy);
+        }
+      }
 
       // check if the person owns a mintpass
       else if (MntPss > 0) {
