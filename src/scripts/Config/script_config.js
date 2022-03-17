@@ -18,6 +18,10 @@ const _price = "25000000000000000";
 const _allowlistPrice = "20000000000000000"; //for public sale raffle
 const _mintpassPrice = "10000000000000000";
 
+// UI name for the tokens
+const _token = "Zombie";
+const _tokens = "Zombies";
+
 //notifier module global options
 let globalOptions = {
   position: "bottom-right",
