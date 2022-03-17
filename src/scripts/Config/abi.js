@@ -1,5 +1,15 @@
-export const abi_dependentcontract = [
-  { inputs: [], stateMutability: "nonpayable", type: "constructor" },
+export const contractABI = [
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "dependentContractAddress",
+        type: "address",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
   {
     anonymous: false,
     inputs: [
@@ -102,8 +112,8 @@ export const abi_dependentcontract = [
   },
   {
     inputs: [],
-    name: "_perWalletPresaleLimit",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    name: "_signingAddress",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",
     type: "function",
   },
@@ -112,6 +122,20 @@ export const abi_dependentcontract = [
     name: "addressMintedBalance",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "mintCount", type: "uint256" },
+      { internalType: "uint8", name: "v", type: "uint8" },
+      { internalType: "bytes32", name: "r", type: "bytes32" },
+      { internalType: "bytes32", name: "s", type: "bytes32" },
+      { internalType: "uint256", name: "mint_allowed", type: "uint256" },
+      { internalType: "uint256", name: "free", type: "uint256" },
+    ],
+    name: "allowlistMint",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -127,6 +151,13 @@ export const abi_dependentcontract = [
   {
     inputs: [{ internalType: "address", name: "owner", type: "address" }],
     name: "balanceOf",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getAllowlistPrice",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -154,7 +185,7 @@ export const abi_dependentcontract = [
   },
   {
     inputs: [],
-    name: "getPresalePrice",
+    name: "getMintPassPrice",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -187,18 +218,8 @@ export const abi_dependentcontract = [
     type: "function",
   },
   {
-    inputs: [
-      { internalType: "uint256", name: "mintCount", type: "uint256" },
-      { internalType: "bytes32[]", name: "proof", type: "bytes32[]" },
-    ],
-    name: "mintPresale",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
     inputs: [{ internalType: "uint256", name: "mintCount", type: "uint256" }],
-    name: "mintPublic",
+    name: "mintpassMint",
     outputs: [],
     stateMutability: "payable",
     type: "function",
@@ -225,17 +246,17 @@ export const abi_dependentcontract = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "renounceOwnership",
+    inputs: [{ internalType: "uint256", name: "mintCount", type: "uint256" }],
+    name: "publicMint",
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
   {
     inputs: [],
-    name: "root",
-    outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
-    stateMutability: "view",
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -269,6 +290,13 @@ export const abi_dependentcontract = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "uint256", name: "price", type: "uint256" }],
+    name: "setAllowlistPrice",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       { internalType: "address", name: "operator", type: "address" },
       { internalType: "bool", name: "approved", type: "bool" },
@@ -286,24 +314,15 @@ export const abi_dependentcontract = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "uint256", name: "price", type: "uint256" }],
+    name: "setMintPassPrice",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [{ internalType: "uint256", name: "limit", type: "uint256" }],
     name: "setPerWallet",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "limit", type: "uint256" }],
-    name: "setPerWalletPresale",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "uint256", name: "presaleprice", type: "uint256" },
-    ],
-    name: "setPresalePrice",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -316,15 +335,8 @@ export const abi_dependentcontract = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "bytes32", name: "merkleroot", type: "bytes32" }],
-    name: "setRoot",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "supply", type: "uint256" }],
-    name: "setTotalSupply",
+    inputs: [{ internalType: "address", name: "addr", type: "address" }],
+    name: "setSigningAddress",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -390,10 +402,37 @@ export const abi_dependentcontract = [
     type: "function",
   },
   {
+    inputs: [
+      { internalType: "uint8", name: "v", type: "uint8" },
+      { internalType: "bytes32", name: "r", type: "bytes32" },
+      { internalType: "bytes32", name: "s", type: "bytes32" },
+      { internalType: "uint256", name: "amountAllowed", type: "uint256" },
+      { internalType: "uint256", name: "free", type: "uint256" },
+    ],
+    name: "verifySignature",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "withdraw",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "mintCount", type: "uint256" },
+      { internalType: "uint8", name: "v", type: "uint8" },
+      { internalType: "bytes32", name: "r", type: "bytes32" },
+      { internalType: "bytes32", name: "s", type: "bytes32" },
+      { internalType: "uint256", name: "mint_allowed", type: "uint256" },
+      { internalType: "uint256", name: "free", type: "uint256" },
+    ],
+    name: "zombieMint",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
 ];

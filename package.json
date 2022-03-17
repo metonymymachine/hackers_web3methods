@@ -6,9 +6,8 @@
   "scripts": {
     "dev:build": "npx webpack --mode=development",
     "prod:build": "npx webpack --mode=production",
-    "merkle": "node MerkleGeneration.js",
-    "sign": "cd src/scripts && node sign.js",
-    "format:whitelist": "cd src/scripts && node cleanLists.js"
+    "sign": "cd src/scripts/Utils && node sign.js",
+    "format:whitelist": "cd src/scripts/Utils && node cleanLists.js"
   },
   "keywords": [],
   "author": "",

@@ -2,9 +2,9 @@ var Web3 = require("web3");
 const fs = require("fs");
 // const input_allowlist_clean = require("../inputData/input_allowlist_clean.json");
 // const input_cyclops_clean = require("../inputData/input_cyclops_clean.json");
-var rawdata = fs.readFileSync("../inputData/input_allowlist_clean.json");
+var rawdata = fs.readFileSync("../../inputData/input_allowlist_clean.json");
 var input_allowlist_clean = JSON.parse(rawdata);
-var rawdata2 = fs.readFileSync("../inputData/input_cyclops_clean.json");
+var rawdata2 = fs.readFileSync("../../inputData/input_cyclops_clean.json");
 var input_cyclops_clean = JSON.parse(rawdata2);
 
 const keccak256 = require("keccak256");
@@ -37,7 +37,7 @@ input_allowlist_clean.forEach(async (e, i) => {
     console.log(data);
 
     fs.writeFile(
-      "../outputData/output_allowlist.json",
+      "../../outputData/output_allowlist.json",
       jsonContent,
       "utf8",
       function (err) {
@@ -76,7 +76,7 @@ input_cyclops_clean.forEach(async (e, i) => {
     console.log(jsonContent);
 
     fs.writeFile(
-      "../outputData/output_cyclops.json",
+      "../../outputData/output_cyclops.json",
       jsonContent,
       "utf8",
       function (err) {

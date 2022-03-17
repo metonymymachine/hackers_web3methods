@@ -9,12 +9,10 @@ import {
   toggleSale,
   walletReset,
   walletState,
-  web3ModalObj,
   withdraw,
   allowListCounter,
   mintpassMint,
-  provider,
-} from "./script";
+} from "./web3/script";
 
 //connect to the wallet
 global.connectWb3Wallet = () => {
@@ -35,16 +33,6 @@ global.allowlist_mint = (amount) => {
 global.mint_pass_mint = (amount) => {
   mintpassMint(amount);
 };
-
-global.provider_ = () => {
-  return provider;
-};
-
-//bundle price minting
-
-// global.mint_bunlde_price = (amount) => {
-//   mintBundlePrice(amount);
-// };
 
 //wallet event listener
 global.walletChanges = () => {
@@ -91,4 +79,4 @@ global.root = () => {
 global.state = () => {
   walletState();
 };
-global.web3modal = web3ModalObj;
+
