@@ -12,7 +12,7 @@ import Web3Modal from "web3modal";
 import AWN from "awesome-notifications";
 const { statusChecker } = require("ethereum-status-checker");
 
-const {
+let {
   contractAddress,
   dependentcontractAddress,
   alchemy_api,
@@ -26,6 +26,9 @@ const {
   web3,
   firstAccount,
   globalOptions,
+  _token,
+  _tokens,
+  MntPss,
 } = require("../Config/script_config");
 
 // Initialize instance of AWN
@@ -160,6 +163,7 @@ export const connectWallet = async () => {
       network: "mainnet", // optional
       cacheProvider: true,
       providerOptions, // required
+      disableInjectedProvider: false,
     });
     web3Modal.clearCachedProvider();
     provider = await web3Modal.connect();
@@ -224,7 +228,7 @@ const addressStatus = async (acc) => {
             signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
           //     console.log("User is on allowlist & cyclops list");
           $(".allow_list_text").text(
-            `You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner and mint ${amount_allowed} additional Cyclops in General WL. With your Mintpass you can additionally mint up to 10 Cyclops!
+            `You can claim up to ${amount_allowed_cy} ${_tokens} in Specials Owner and mint ${amount_allowed} additional ${_tokens} in General WL. With your Mintpass you can additionally mint up to 10 ${_tokens}!
         `
           );
           //set allowed in ls
@@ -238,7 +242,7 @@ const addressStatus = async (acc) => {
             signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
           console.log("User is on allowlist & cyclops list");
           $(".allow_list_text").text(
-            `You can claim up to ${amount_allowed_cy} Cyclops in Specials Owner and mint ${amount_allowed} additional Cyclops in General WL!
+            `You can claim up to ${amount_allowed_cy} ${_tokens} in Specials Owner and mint ${amount_allowed} additional ${_tokens} in General WL!
         `
           );
           //set allowed in ls
@@ -256,7 +260,7 @@ const addressStatus = async (acc) => {
 
           console.log("User is on mntpass & allow list");
           $(".allow_list_text").text(
-            `You can mint up to ${amount_allowed} Cyclops in the Public Sale Raffle and you can mint 10 with your mintpass!`
+            `You can mint up to ${amount_allowed} ${_tokens} in the Public Sale Raffle and you can mint 10 with your mintpass!`
           );
           //set allowed in ls
           localStorage.setItem("allowlist_allowed", amount_allowed);
@@ -266,7 +270,7 @@ const addressStatus = async (acc) => {
             signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
           console.log("User is only on allowlist no mntpass");
           $(".allow_list_text").text(
-            `You can mint up to ${amount_allowed} Cyclops in the Public Raffle Mint!
+            `You can mint up to ${amount_allowed} ${_tokens} in the Public Raffle Mint!
         `
           );
           //set allowed in ls
@@ -283,7 +287,7 @@ const addressStatus = async (acc) => {
 
           console.log("User is on mntpass & cyclops list");
           $(".allow_list_text").text(
-            `You can mint up to ${amount_allowed_cy} Cyclops in Special Owners and you can mint with your mintpass!
+            `You can mint up to ${amount_allowed_cy} ${_tokens} in Special Owners and you can mint with your mintpass!
           `
           );
           //set allowed in ls
@@ -294,7 +298,7 @@ const addressStatus = async (acc) => {
             signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
           console.log("User is only on cyclops list no mintpass");
           $(".allow_list_text").text(
-            `You can mint up to ${amount_allowed_cy} Cyclops in Special Owners mint!
+            `You can mint up to ${amount_allowed_cy} ${_tokens} in Special Owners mint!
         `
           );
           //set allowed in ls
