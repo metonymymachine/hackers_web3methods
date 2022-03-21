@@ -186,7 +186,7 @@ export const connectWallet = async () => {
     let checkSummed = web3.utils.toChecksumAddress(firstAccount[0]);
     firstAccount[0] = checkSummed;
     //call mntpss for specific addr when wallet connected!
-    addressStatus(firstAccount[0]); //Get mintpass user owns
+   // addressStatus(firstAccount[0]); //Get mintpass user owns
     //notification texts functions
     notifier.success("Wallet connected successfully!");
 
