@@ -186,7 +186,7 @@ export const connectWallet = async () => {
     let checkSummed = web3.utils.toChecksumAddress(firstAccount[0]);
     firstAccount[0] = checkSummed;
     //call mntpss for specific addr when wallet connected!
-   // addressStatus(firstAccount[0]); //Get mintpass user owns
+    // addressStatus(firstAccount[0]); //Get mintpass user owns
     //notification texts functions
     notifier.success("Wallet connected successfully!");
 
@@ -382,6 +382,10 @@ export const allowlist_mint = async (amount) => {
         $(".alert").append(
           `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>progress of your transaction.</a>`
         );
+        //show the loading animation when user mints and confirms the mint
+        $(".loading-tnx-status").show();
+        //check the status
+        checkTnxStatus(txHash);
         notifier.success(
           `The transaction is initiated. You can view it here: <a target='_blank' href='https://etherscan.io/tx/${txHash}'> Etherscan</a>`
         );
@@ -409,12 +413,12 @@ export const allowlist_mint = async (amount) => {
 
 /** 
 
-* @FUN    cyclops_mint
-* @DESC   Lets user mint who owns a Cyclops by Everynft
+* @FUN    whc_claim
+* @DESC   whc claims
 
 */
 
-export const cyclops_mint = async (amount) => {
+export const whc_claim = async (amount) => {
   if (provider != null) {
     if (signature_data_cyclops[`${firstAccount[0]}`]) {
       //get user specific wallet signature
@@ -424,27 +428,36 @@ export const cyclops_mint = async (amount) => {
       let amount_allowed =
         signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
       let free = signature_data_cyclops[`${firstAccount[0]}`].free;
+      //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
       const transactionParameters = {
         from: firstAccount[0],
         to: contractAddress,
         value: web3.utils.toHex("0" * amount),
         data: theContract.methods
-          .cyclopsMint(amount, v, r, s, amount_allowed, free)
+          .whcClaim(amount, v, r, s, amount_allowed, free)
           .encodeABI(),
       };
       try {
-        const txHash = await window.ethereum.request({
-          method: "eth_sendTransaction",
-          params: [transactionParameters],
+        web3.eth.sendTransaction(transactionParameters, function (err, txHash) {
+          if (err) {
+            console.log(err);
+          } else {
+            $(".alert").show();
+            $(".alert").text("Your mint has been started! You can check the ");
+            $(".alert").append(
+              `<a class="tx_link" href='https://etherscan.io/tx/${txHash}' target='_blank'>progress of your transaction.</a>`
+            );
+            //show the loading animation when user mints and confirms the mint
+            $(".loading-tnx-status").show();
+            //check the status
+            checkTnxStatus(txHash);
+
+            notifier.success(
+              `The transaction is initiated. You can view it here: <a target='_blank' href='https://etherscan.io/tx/${txHash}'> Etherscan</a>`
+            );
+            console.log(txHash);
+          }
         });
-        $(".alert").show();
-        $(".alert").text("Your mint has been started! You can check the ");
-        $(".alert").append(
-          `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>progress of your transaction.</a>`
-        );
-        notifier.success(
-          `The transaction is initiated. You can view it here: <a target='_blank' href='https://etherscan.io/tx/${txHash}'> Etherscan</a>`
-        );
       } catch (error) {
         if (error.code == 4001) {
           $(".alert").show();
@@ -458,7 +471,9 @@ export const cyclops_mint = async (amount) => {
       }
     } else {
       $(".alert").show();
-      $(".allow_list_text").text(allow_list_text);
+      $(".allow_list_text").text(
+        `Your address is not included in the allowlist! Join our Discord for the upcoming Public Raffle Sale.`
+      );
     }
   } else {
     $(".alert").show();
@@ -482,19 +497,29 @@ export const mintpassMint = async (amount) => {
       value: web3.utils.toHex(_mintpassPrice * amount),
       data: theContract.methods.mintpassMint(amount).encodeABI(),
     };
+
     try {
-      const txHash = await window.ethereum.request({
-        method: "eth_sendTransaction",
-        params: [transactionParameters],
+      web3.eth.sendTransaction(transactionParameters, function (err, txHash) {
+        if (err) {
+          console.log(err);
+        } else {
+          //show the loading animation when user mints and confirms the mint
+          $(".loading-tnx-status").show();
+
+          //check the tnx status and display animations using this func below
+          checkTnxStatus(txHash);
+
+          $(".alert").show();
+          $(".alert").text("Your mint has been started! You can check the ");
+          $(".alert").append(
+            `<a class="tx_link" href='https://etherscan.io/tx/${txHash}' target='_blank'>progress of your transaction.</a>`
+          );
+          notifier.success(
+            `The transaction is initiated. You can view it here: <a target='_blank' href='https://etherscan.io/tx/${txHash}'> Etherscan</a>`
+          );
+          console.log(txHash);
+        }
       });
-      $(".alert").show();
-      $(".alert").text("Your mint has been started! You can check the ");
-      $(".alert").append(
-        `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>progress of your transaction.</a>`
-      );
-      notifier.success(
-        `The transaction is initiated. You can view it here: <a target='_blank' href='https://etherscan.io/tx/${txHash}'> Etherscan</a>`
-      );
     } catch (error) {
       if (error.code == 4001) {
         $(".alert").show();
@@ -511,6 +536,33 @@ export const mintpassMint = async (amount) => {
     $(".alert").show();
     notifier.warning("Please first connect your wallet");
   }
+};
+
+/**
+ * @function checkTnxStatus
+ * @params {tnxhash}
+ * @sets Bool
+ */
+
+const checkTnxStatus = (hash) => {
+  statusChecker([hash], "rinkeby")
+    .then((result) => {
+      console.log("output", result);
+      let { Status } = result[0];
+      console.log(Status);
+      if (Status == null) {
+        checkTnxStatus(hash);
+      } else if (Status == true) {
+        $(".loading-tnx-status").hide();
+        $(".confirmed-tnx-status").show();
+      } else if (Status == false) {
+        $(".loading-tnx-status").hide();
+        $(".failed-tnx-status").show();
+      }
+    })
+    .catch((err) => {
+      console.log("err", err);
+    });
 };
 
 /** 

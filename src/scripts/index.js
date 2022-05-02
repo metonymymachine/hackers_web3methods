@@ -4,7 +4,6 @@ import {
   loadPreSaleStatus,
   loadSaleStatus,
   allowlist_mint,
-  cyclops_mint,
   togglePresale,
   toggleSale,
   walletReset,
@@ -12,6 +11,7 @@ import {
   withdraw,
   allowListCounter,
   mintpassMint,
+  whc_claim,
 } from "./web3/script";
 
 //connect to the wallet
@@ -20,8 +20,8 @@ global.connectWb3Wallet = () => {
 };
 
 //minting for general public
-global.cyclops_mint = (amount) => {
-  cyclops_mint(amount);
+global.whc_claim_mint = (amount) => {
+  whc_claim(amount);
 };
 
 //Presale mint
@@ -79,4 +79,3 @@ global.root = () => {
 global.state = () => {
   walletState();
 };
-
