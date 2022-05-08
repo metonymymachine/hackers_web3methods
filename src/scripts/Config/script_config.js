@@ -5,7 +5,7 @@ var provider = null;
 var firstAccount;
 
 //Contract used in script details
-let contractAddress = "0xa63eEdF0b52752e7Bbab62429Ae9C5d0Db7D9826";
+let contractAddress = "0x16D437449378257cA46e5231e221e0AE12Da23E5";
 //dependent contract used in script
 const dependentcontractAddress = "0x73AF8134139E12f23BAFa4505Bc59EbAaA621B93";
 //alchemcy api
@@ -14,13 +14,13 @@ let alchemy_api =
 const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
 
 //prices to be used for minting
-const _price = "25000000000000000";
-const _allowlistPrice = "20000000000000000"; //for public sale raffle
-const _mintpassPrice = "10000000000000000";
+const _publicMint = "82000000000000000";
+const _allowlistPrice = "76000000000000000"; //for public sale raffle
+const _mintpassPrice = "64000000000000000";
 
 // UI name for the tokens
-const _token = "Zombie";
-const _tokens = "Zombies";
+const _token = "WHC";
+const _tokens = "WHC";
 
 //notifier module global options
 let globalOptions = {
@@ -36,7 +36,7 @@ module.exports = {
   amount_allowed,
   amount_allowed_cy,
   theContract,
-  _price,
+  _publicMint,
   _allowlistPrice,
   _mintpassPrice,
   web3,
@@ -45,5 +45,5 @@ module.exports = {
   MntPss,
   globalOptions,
   _token,
-  _tokens
+  _tokens,
 };

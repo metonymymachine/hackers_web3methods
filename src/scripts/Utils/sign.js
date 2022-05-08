@@ -1,11 +1,11 @@
 var Web3 = require("web3");
 const fs = require("fs");
 // const input_allowlist_clean = require("../inputData/input_allowlist_clean.json");
-// const input_cyclops_clean = require("../inputData/input_cyclops_clean.json");
+// const input_claimList_clean = require("../inputData/input_claimList_clean.json");
 var rawdata = fs.readFileSync("../../inputData/input_allowlist_clean.json");
 var input_allowlist_clean = JSON.parse(rawdata);
-var rawdata2 = fs.readFileSync("../../inputData/input_cyclops_clean.json");
-var input_cyclops_clean = JSON.parse(rawdata2);
+var rawdata2 = fs.readFileSync("../../inputData/input_claimList_clean.json");
+var input_claimList_clean = JSON.parse(rawdata2);
 
 const keccak256 = require("keccak256");
 var web3 = new Web3();
@@ -52,7 +52,7 @@ input_allowlist_clean.forEach(async (e, i) => {
   }
 });
 
-input_cyclops_clean.forEach(async (e, i) => {
+input_claimList_clean.forEach(async (e, i) => {
   console.log(e);
   let messageHash = web3.utils.soliditySha3(e.addr, e.qty_allowed, e.free);
 
@@ -69,14 +69,14 @@ input_cyclops_clean.forEach(async (e, i) => {
   console.log(data_two);
 
   //output json file as a whole at the end
-  if (i + 1 == input_cyclops_clean.length) {
+  if (i + 1 == input_claimList_clean.length) {
     console.log(data);
     // stringify JSON Object
     var jsonContent = JSON.stringify(data_two);
     console.log(jsonContent);
 
     fs.writeFile(
-      "../../outputData/output_cyclops.json",
+      "../../outputData/output_claimList.json",
       jsonContent,
       "utf8",
       function (err) {

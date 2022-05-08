@@ -1,6 +1,6 @@
 const fs = require("fs");
 const input_allowlist_raw = require("../../inputData/input_allowlist_raw.json");
-const input_cyclops_raw = require("../../inputData/input_cyclops_raw.json");
+const input_claimList_raw = require("../../inputData/input_claimList_raw.json");
 
 //get json keys array to loop thru and get the values and formate
 let allow_list_keys = Object.keys(input_allowlist_raw);
@@ -38,16 +38,16 @@ allow_list_keys.forEach((e, i) => {
 });
 
 //get json keys array to loop thru and get the values and formate
-let cyclops_keys = Object.keys(input_cyclops_raw);
+let cyclops_keys = Object.keys(input_claimList_raw);
 let cyclops_arr = [];
 
 console.log(cyclops_keys, "****************");
 cyclops_keys.forEach((e, i) => {
-  //console.log(input_cyclops_raw[e]);
+  //console.log(input_claimList_raw[e]);
   let obj = {
     addr: e,
     free: 1,
-    qty_allowed: input_cyclops_raw[e],
+    qty_allowed: input_claimList_raw[e],
   };
 
   cyclops_arr.push(obj);
@@ -59,7 +59,7 @@ cyclops_keys.forEach((e, i) => {
     //console.log(jsonContent);
 
     fs.writeFile(
-      "../../inputData/input_cyclops_clean.json",
+      "../../inputData/input_claimList_clean.json",
       jsonContent_Cyclops,
       "utf8",
       function (err) {

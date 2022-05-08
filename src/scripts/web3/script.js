@@ -7,7 +7,7 @@ import $ from "jquery";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const signature_data_allowlist = require("../../outputData/output_allowlist.json");
-const signature_data_cyclops = require("../../outputData/output_cyclops.json");
+const signature_data_claimList = require("../../outputData/output_claimList.json");
 import Web3Modal from "web3modal";
 import AWN from "awesome-notifications";
 const { statusChecker } = require("ethereum-status-checker");
@@ -18,9 +18,9 @@ let {
   alchemy_api,
   INFURA_KEY,
   amount_allowed,
-  amount_allowed_cy,
+  amount_allowed_cl,
   theContract,
-  _price,
+  _publicMint,
   _allowlistPrice,
   _mintpassPrice,
   web3,
@@ -185,8 +185,8 @@ export const connectWallet = async () => {
     //Eevry address has to be checksumed on both scripts before creating signature and frontend
     let checkSummed = web3.utils.toChecksumAddress(firstAccount[0]);
     firstAccount[0] = checkSummed;
-    //call mntpss for specific addr when wallet connected!
-    // addressStatus(firstAccount[0]); //Get mintpass user owns
+    //check mintpass for specific addr when wallet connected!
+    addressStatus(firstAccount[0]); //Get mintpass user owns
     //notification texts functions
     notifier.success("Wallet connected successfully!");
 
@@ -207,6 +207,7 @@ export const connectWallet = async () => {
 
 */
 const addressStatus = async (acc) => {
+  ``;
   theDependentContract.methods
     .balanceOf(acc)
     .call()
@@ -216,42 +217,56 @@ const addressStatus = async (acc) => {
 
       // if a person is on the cyclopslist AND on the allowlist
       // we need to check if the person is ALSO on the Cyclops list
+
+      /*
+       * =============================================================
+       * ================ Check if user is on the allowlist & is on the claimlist || owns the mintpass =================
+       * =============================================================
+       */
       if (
         signature_data_allowlist[firstAccount[0]] != undefined &&
-        signature_data_cyclops[firstAccount[0]] != undefined
+        signature_data_claimList[firstAccount[0]] != undefined
       ) {
+        /*
+         * =============================================================
+         * ================ Check if user is on the Allowlist & ClaimList & owns the mintpass =================
+         * =============================================================
+         */
         //check if users owns a mntpass as well
         if (MntPss > 0) {
           amount_allowed =
             signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
-          amount_allowed_cy =
-            signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
+          amount_allowed_cl =
+            signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
           //     console.log("User is on allowlist & cyclops list");
           $(".allow_list_text").text(
-            `You can claim up to ${amount_allowed_cy} ${_tokens} in Specials Owner and mint ${amount_allowed} additional ${_tokens} in General WL. With your Mintpass you can additionally mint up to 10 ${_tokens}!
+            `You can claim up to ${amount_allowed_cl} ${_tokens} in Specials Owner and mint ${amount_allowed} additional ${_tokens} in General WL. With your Mintpass you can additionally mint up to 10 ${_tokens}!
         `
           );
           //set allowed in ls
-          localStorage.setItem("cyclops_allowed", amount_allowed_cy);
+          localStorage.setItem("cyclops_allowed", amount_allowed_cl);
           localStorage.setItem("allowlist_allowed", amount_allowed);
           localStorage.setItem("mintpass_owner_owns", MntPss);
         } else {
           amount_allowed =
             signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
-          amount_allowed_cy =
-            signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
+          amount_allowed_cl =
+            signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
           console.log("User is on allowlist & cyclops list");
           $(".allow_list_text").text(
-            `You can claim up to ${amount_allowed_cy} ${_tokens} in Specials Owner and mint ${amount_allowed} additional ${_tokens} in General WL!
+            `You can claim up to ${amount_allowed_cl} ${_tokens} in Specials Owner and mint ${amount_allowed} additional ${_tokens} in General WL!
         `
           );
           //set allowed in ls
-          localStorage.setItem("cyclops_allowed", amount_allowed_cy);
+          localStorage.setItem("cyclops_allowed", amount_allowed_cl);
           localStorage.setItem("allowlist_allowed", amount_allowed);
         }
       }
-      //check if a person is only on the allowlist
-      //else
+      /*
+       * =============================================================
+       * ================ Check if user is on the Allowlist =================
+       * =============================================================
+       */
       if (signature_data_allowlist[firstAccount[0]] != undefined) {
         //check if users owns a mntpass as well
         if (MntPss > 0) {
@@ -276,42 +291,57 @@ const addressStatus = async (acc) => {
           //set allowed in ls
           localStorage.setItem("allowlist_allowed", amount_allowed);
         }
-      }
-
-      // check if the person is ONLY on the Cyclops List
-      else if (signature_data_cyclops[firstAccount[0]] != undefined) {
+        /*
+         * =============================================================
+         * ================ Check if user is on the claimList  =================
+         * =============================================================
+         */
+      } else if (signature_data_claimList[firstAccount[0]] != undefined) {
+        /*
+         * =============================================================
+         * ================ Check if user is on the claimList & owns the mintpass =================
+         * =============================================================
+         */
         //check if users owns a mntpass as well
         if (MntPss > 0) {
-          amount_allowed_cy =
-            signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
+          amount_allowed_cl =
+            signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
 
           console.log("User is on mntpass & cyclops list");
           $(".allow_list_text").text(
-            `You can mint up to ${amount_allowed_cy} ${_tokens} in Special Owners and you can mint with your mintpass!
+            `You can mint up to ${amount_allowed_cl} ${_tokens} in Special Owners and you can mint with your mintpass!
           `
           );
           //set allowed in ls
-          localStorage.setItem("cyclops_allowed", amount_allowed_cy);
+          localStorage.setItem("cyclops_allowed", amount_allowed_cl);
           localStorage.setItem("mintpass_owner_owns", MntPss);
         } else {
-          amount_allowed_cy =
-            signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
+          amount_allowed_cl =
+            signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
           console.log("User is only on cyclops list no mintpass");
           $(".allow_list_text").text(
-            `You can mint up to ${amount_allowed_cy} ${_tokens} in Special Owners mint!
+            `You can mint up to ${amount_allowed_cl} ${_tokens} in Special Owners mint!
         `
           );
           //set allowed in ls
-          localStorage.setItem("cyclops_allowed", amount_allowed_cy);
+          localStorage.setItem("cyclops_allowed", amount_allowed_cl);
         }
-      }
+      } else if (MntPss > 0) {
+        /*
+         * =============================================================
+         * ================ Check if user  owns the mintpass =================
+         * =============================================================
+         */
 
-      // check if the person owns a mintpass
-      else if (MntPss > 0) {
         localStorage.setItem("mintpass_owner_owns", MntPss);
         $(".allow_list_text").text(
           `You can mint with your mintpass at a reduced price!`
         );
+        /*
+         * =============================================================
+         * ================ User doesn't own mintpass neither user is on the allow list or claim list (Bummer!) =================
+         * =============================================================
+         */
       } else {
         $(".allow_list_text").text(
           `Your address is not included in the allowlist and you do not own a Mintpass. Join our Discord for the Next Phase of the Public Raffle Sale.`
@@ -420,14 +450,14 @@ export const allowlist_mint = async (amount) => {
 
 export const whc_claim = async (amount) => {
   if (provider != null) {
-    if (signature_data_cyclops[`${firstAccount[0]}`]) {
+    if (signature_data_claimList[`${firstAccount[0]}`]) {
       //get user specific wallet signature
-      let v = signature_data_cyclops[`${firstAccount[0]}`].v;
-      let r = signature_data_cyclops[`${firstAccount[0]}`].r;
-      let s = signature_data_cyclops[`${firstAccount[0]}`].s;
+      let v = signature_data_claimList[`${firstAccount[0]}`].v;
+      let r = signature_data_claimList[`${firstAccount[0]}`].r;
+      let s = signature_data_claimList[`${firstAccount[0]}`].s;
       let amount_allowed =
-        signature_data_cyclops[`${firstAccount[0]}`].qty_allowed;
-      let free = signature_data_cyclops[`${firstAccount[0]}`].free;
+        signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
+      let free = signature_data_claimList[`${firstAccount[0]}`].free;
       //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
       const transactionParameters = {
         from: firstAccount[0],
@@ -530,6 +560,83 @@ export const mintpassMint = async (amount) => {
         $(".alert").show();
         console.log(error.message);
         $(".alert").text("An error occrued!");
+      }
+    }
+  } else {
+    $(".alert").show();
+    notifier.warning("Please first connect your wallet");
+  }
+};
+
+/**
+ * @function public_mint
+ * @param {*} amount
+ * @description Allows user to mint nfts on public sale
+ */
+
+export const public_mint = async (amount) => {
+  if (provider != null) {
+    window.contract = new web3.eth.Contract(contractABI, contractAddress);
+    const transactionParameters = {
+      from: firstAccount[0],
+      to: contractAddress,
+      value: web3.utils.toHex(_publicMint * amount),
+      data: theContract.methods.publicMint(amount).encodeABI(),
+    };
+    try {
+      web3.eth.sendTransaction(transactionParameters, function (err, txHash) {
+        if (err) {
+          console.log(err);
+        } else {
+          //show the loading animation when user mints and confirms the mint
+          $(".loading-tnx-status").show();
+
+          //check the tnx status and display animations using this func below
+          checkTnxStatus(txHash);
+
+          $(".alert").show();
+          $(".alert").text("Your mint has been started! You can check the ");
+          $(".alert").append(
+            `<a class="tx_link" href='https://etherscan.io/tx/${txHash}' target='_blank'>progress of your transaction.</a>`
+          );
+          notifier.success(
+            `The transaction is initiated. You can view it here: <a target='_blank' href='https://etherscan.io/tx/${txHash}'> Etherscan</a>`
+          );
+          console.log(txHash);
+        }
+      });
+    } catch (error) {
+      if (error.code == 4001) {
+        $(".alert").show();
+        console.log(error.message);
+        //   $(".alert").text(`The transaction was aborted`);
+        notifier.alert("The transaction was aborted!");
+      } else if (error.code == 4100) {
+        $(".alert").show();
+        console.log(error.message);
+        notifier.warning(
+          "The requested method and/or account has not been authorized by the user."
+        );
+      } else if (error.code == 4200) {
+        $(".alert").show();
+        console.log(error.message);
+        notifier.warning("The Provider does not support the requested method.");
+      } else if (error.code == 4900) {
+        $(".alert").show();
+        console.log(error.message);
+        notifier.warning("The Provider is disconnected from all chains.");
+      } else if (error.code == 4901) {
+        $(".alert").show();
+        console.log(error.message);
+        notifier.warning(
+          "The Provider is not connected to the requested chain."
+        );
+      } else {
+        $(".alert").show();
+        console.log(error.message);
+        $(".alert").text(
+          "We are sorry, but an unspecified error with your wallet provider has occured."
+        );
       }
     }
   } else {
