@@ -1,5 +1,5 @@
 //Vars for using in script no need to temper
-let amount_allowed, amount_allowed_cy, theContract, MntPss;
+let amount_allowed, amount_allowed_cl, theContract, MntPss;
 var web3;
 var provider = null;
 var firstAccount;
@@ -34,7 +34,7 @@ module.exports = {
   alchemy_api,
   INFURA_KEY,
   amount_allowed,
-  amount_allowed_cy,
+  amount_allowed_cl,
   theContract,
   _publicMint,
   _allowlistPrice,

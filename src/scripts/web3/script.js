@@ -8,6 +8,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const signature_data_allowlist = require("../../outputData/output_allowlist.json");
 const signature_data_claimList = require("../../outputData/output_claimList.json");
+const signature_data_mintpasslist = require("../../outputData/output_mintpasslist.json");
 import Web3Modal from "web3modal";
 import AWN from "awesome-notifications";
 const { statusChecker } = require("ethereum-status-checker");
@@ -240,8 +241,7 @@ const addressStatus = async (acc) => {
             signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
           //     console.log("User is on allowlist & cyclops list");
           $(".allow_list_text").text(
-            `You can claim up to ${amount_allowed_cl} ${_tokens} in Specials Owner and mint ${amount_allowed} additional ${_tokens} in General WL. With your Mintpass you can additionally mint up to 10 ${_tokens}!
-        `
+            `You are eligible for ${amount_allowed_cl} Claims and are on the general allowlist for additional 3 Mints and 3 x WHC with your EveryNFT Mintpass. `
           );
           //set allowed in ls
           localStorage.setItem("cyclops_allowed", amount_allowed_cl);
@@ -254,8 +254,7 @@ const addressStatus = async (acc) => {
             signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
           console.log("User is on allowlist & cyclops list");
           $(".allow_list_text").text(
-            `You can claim up to ${amount_allowed_cl} ${_tokens} in Specials Owner and mint ${amount_allowed} additional ${_tokens} in General WL!
-        `
+            `You are eligible for ${amount_allowed_cl} Claims and are on the general allowlist for additional 3 Mints. `
           );
           //set allowed in ls
           localStorage.setItem("cyclops_allowed", amount_allowed_cl);
@@ -275,7 +274,7 @@ const addressStatus = async (acc) => {
 
           console.log("User is on mntpass & allow list");
           $(".allow_list_text").text(
-            `You can mint up to ${amount_allowed} ${_tokens} in the Public Sale Raffle and you can mint 10 with your mintpass!`
+            `You are eligible for 3 Mints with your EveryNFT Mintpass and are on the general allowlist for additional 3 Mints. `
           );
           //set allowed in ls
           localStorage.setItem("allowlist_allowed", amount_allowed);
@@ -285,8 +284,7 @@ const addressStatus = async (acc) => {
             signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
           console.log("User is only on allowlist no mntpass");
           $(".allow_list_text").text(
-            `You can mint up to ${amount_allowed} ${_tokens} in the Public Raffle Mint!
-        `
+            `You are eligible to mint up to 3 x WHC through the General Allowlist. `
           );
           //set allowed in ls
           localStorage.setItem("allowlist_allowed", amount_allowed);
@@ -309,8 +307,7 @@ const addressStatus = async (acc) => {
 
           console.log("User is on mntpass & cyclops list");
           $(".allow_list_text").text(
-            `You can mint up to ${amount_allowed_cl} ${_tokens} in Special Owners and you can mint with your mintpass!
-          `
+            `You are eligible for ${amount_allowed_cl} Claims and can mint 3 x WHC with your EveryNFT Mintpass.`
           );
           //set allowed in ls
           localStorage.setItem("cyclops_allowed", amount_allowed_cl);
@@ -320,8 +317,7 @@ const addressStatus = async (acc) => {
             signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
           console.log("User is only on cyclops list no mintpass");
           $(".allow_list_text").text(
-            `You can mint up to ${amount_allowed_cl} ${_tokens} in Special Owners mint!
-        `
+            `You are eligible for ${amount_allowed_cl} Claims.`
           );
           //set allowed in ls
           localStorage.setItem("cyclops_allowed", amount_allowed_cl);
@@ -335,7 +331,7 @@ const addressStatus = async (acc) => {
 
         localStorage.setItem("mintpass_owner_owns", MntPss);
         $(".allow_list_text").text(
-          `You can mint with your mintpass at a reduced price!`
+          `You can mint 3 x WHC with your EveryNFT Mintpass.`
         );
         /*
          * =============================================================
@@ -344,7 +340,7 @@ const addressStatus = async (acc) => {
          */
       } else {
         $(".allow_list_text").text(
-          `Your address is not included in the allowlist and you do not own a Mintpass. Join our Discord for the Next Phase of the Public Raffle Sale.`
+          `Your address is not included in the allowlist and you do not own a Mintpass. Join our Discord for the Next Phase of the WHC.`
         );
         console.log("Not in whitelist!");
       }
@@ -520,47 +516,60 @@ export const whc_claim = async (amount) => {
 
 export const mintpassMint = async (amount) => {
   if (provider != null) {
-    //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
-    const transactionParameters = {
-      from: firstAccount[0],
-      to: contractAddress,
-      value: web3.utils.toHex(_mintpassPrice * amount),
-      data: theContract.methods.mintpassMint(amount).encodeABI(),
-    };
+    if (signature_data_mintpasslist[`${firstAccount[0]}`]) {
+      //get user specific wallet signature
+      let v = signature_data_mintpasslist[`${firstAccount[0]}`].v;
+      let r = signature_data_mintpasslist[`${firstAccount[0]}`].r;
+      let s = signature_data_mintpasslist[`${firstAccount[0]}`].s;
+      let amount_allowed =
+        signature_data_mintpasslist[`${firstAccount[0]}`].qty_allowed;
+      let free = signature_data_mintpasslist[`${firstAccount[0]}`].free;
+      //  window.contract = new web3.eth.Contract(contractABI, contractAddress);
+      const transactionParameters = {
+        from: firstAccount[0],
+        to: contractAddress,
+        value: web3.utils.toHex(_mintpassPrice * amount),
+        data: theContract.methods
+          .mintpassMint(amount, v, r, s, amount_allowed, free)
+          .encodeABI(),
+      };
+      try {
+        web3.eth.sendTransaction(transactionParameters, function (err, txHash) {
+          if (err) {
+            console.log(err);
+          } else {
+            $(".alert").show();
+            $(".alert").text("Your mint has been started! You can check the ");
+            $(".alert").append(
+              `<a class="tx_link" href='https://etherscan.io/tx/${txHash}' target='_blank'>progress of your transaction.</a>`
+            );
+            //show the loading animation when user mints and confirms the mint
+            $(".loading-tnx-status").show();
+            //check the status
+            checkTnxStatus(txHash);
 
-    try {
-      web3.eth.sendTransaction(transactionParameters, function (err, txHash) {
-        if (err) {
-          console.log(err);
-        } else {
-          //show the loading animation when user mints and confirms the mint
-          $(".loading-tnx-status").show();
-
-          //check the tnx status and display animations using this func below
-          checkTnxStatus(txHash);
-
+            notifier.success(
+              `The transaction is initiated. You can view it here: <a target='_blank' href='https://etherscan.io/tx/${txHash}'> Etherscan</a>`
+            );
+            console.log(txHash);
+          }
+        });
+      } catch (error) {
+        if (error.code == 4001) {
           $(".alert").show();
-          $(".alert").text("Your mint has been started! You can check the ");
-          $(".alert").append(
-            `<a class="tx_link" href='https://etherscan.io/tx/${txHash}' target='_blank'>progress of your transaction.</a>`
-          );
-          notifier.success(
-            `The transaction is initiated. You can view it here: <a target='_blank' href='https://etherscan.io/tx/${txHash}'> Etherscan</a>`
-          );
-          console.log(txHash);
+          console.log(error.message);
+          //  $(".alert").text(`The transaction was aborted`);
+          notifier.alert("The transaction was aborted!");
+        } else {
+          $(".alert").show();
+          notifier.warning("Please first connect your wallet");
         }
-      });
-    } catch (error) {
-      if (error.code == 4001) {
-        $(".alert").show();
-        console.log(error.message);
-        //   $(".alert").text(`The transaction was aborted`);
-        notifier.alert("The transaction was aborted!");
-      } else {
-        $(".alert").show();
-        console.log(error.message);
-        $(".alert").text("An error occrued!");
       }
+    } else {
+      $(".alert").show();
+      $(".allow_list_text").text(
+        `Your address is not included in the allowlist! Join our Discord for the upcoming Public Raffle Sale.`
+      );
     }
   } else {
     $(".alert").show();

@@ -12,6 +12,7 @@ import {
   allowListCounter,
   mintpassMint,
   whc_claim,
+  public_mint,
 } from "./web3/script";
 
 //connect to the wallet
@@ -19,9 +20,14 @@ global.connectWb3Wallet = () => {
   connectWallet();
 };
 
-//minting for general public
+//minting for whc claims
 global.whc_claim_mint = (amount) => {
   whc_claim(amount);
+};
+
+//minting for general public
+global.public_mint = (amount) => {
+  public_mint(amount);
 };
 
 //Presale mint
