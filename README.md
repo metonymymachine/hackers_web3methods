@@ -1,4 +1,4 @@
-# Web3modal Implementation for Cyclops PFP
+# Web3modal Implementation for Hackers PFP
 
 ####  create ./src/.env and put the value PRIVATE_KEY in there 
 
