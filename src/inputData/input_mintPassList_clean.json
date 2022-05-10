@@ -1,1 +1,37 @@
-[{"addr":"0x9D05bd884b5A90c9BD7CBE6d0fD15ca16606eEfC","free":2,"qty_allowed":3},{"addr":"0x6CdE5a424dEA4c63ec3782F38300B469052301C8","free":2,"qty_allowed":3},{"addr":"0x7d52923Ca0135F59B15986FCADeC7107758BbeFd","free":2,"qty_allowed":3},{"addr":"0x05F5505a8C9A9Bb3eecbE9b2B234Fa826FeE5692","free":2,"qty_allowed":3},{"addr":"0x0D895fc4895E8a84AA2537E72c0b1eB95D6C1488","free":2,"qty_allowed":3}]
+[
+    {
+        "addr": "0x9D05bd884b5A90c9BD7CBE6d0fD15ca16606eEfC",
+        "free": 2,
+        "qty_allowed": 3
+    },
+    {
+        "addr": "0x6CdE5a424dEA4c63ec3782F38300B469052301C8",
+        "free": 2,
+        "qty_allowed": 3
+    },
+    {
+        "addr": "0x7d52923Ca0135F59B15986FCADeC7107758BbeFd",
+        "free": 2,
+        "qty_allowed": 3
+    },
+    {
+        "addr": "0x05F5505a8C9A9Bb3eecbE9b2B234Fa826FeE5692",
+        "free": 2,
+        "qty_allowed": 3
+    },
+    {
+        "addr": "0x0D895fc4895E8a84AA2537E72c0b1eB95D6C1488",
+        "free": 2,
+        "qty_allowed": 3
+    },
+    {
+        "addr": "0x3C3B62c23c2B67fD73d87aF61E2EeC8c4FF40699",
+        "free": 2,
+        "qty_allowed": 3
+    },
+    {
+        "addr": "0xDe5F0472A8b6BFA5c70C95B4BB8E9bAfD0b3af75",
+        "free": 2,
+        "qty_allowed": 3
+    }
+]
