@@ -26,22 +26,28 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <title>Cyclops PFP Smart Contract Backend</title>
+    <title>WHC PFP Smart Contract Backend</title>
   </head>
   <body>
     <div class="container-fluid mt-3">
-      <h1>Cyclops PFP Smart-Contract Backend</h1>
+      <h1>WHC PFP Smart-Contract Backend</h1>
       <h4>
         <a
-          href="https://rinkeby.etherscan.io/address/0x019f5629a978bdcb6e26dc164f5922508703f63c"
+          href="https://rinkeby.etherscan.io/address/0x16D437449378257cA46e5231e221e0AE12Da23E5"
           target="_blank"
-          >0x019f5629A978bdcB6e26Dc164f5922508703f63c</a
+          >0x16D437449378257cA46e5231e221e0AE12Da23E5</a
         >
       </h4>
       <button
         class="btn btn-md btn-primary mt-2 test-metamask-button metamask-button"
       >
         connect
+      </button>
+      <button class="btn btn-md btn-primary mt-2" onclick="whc_claim_mint(1)">
+        Claim 1
+      </button>
+      <button class="btn btn-md btn-primary mt-2" onclick="mint_pass_mint(1)">
+        Mintpass Mint 1
       </button>
       <button class="btn btn-md btn-primary mt-2" onclick="allowlist_mint(1)">
         Allowlist Mint 1
@@ -52,19 +58,19 @@
       <button class="btn btn-md btn-primary mt-2" onclick="allowlist_mint(3)">
         Allowlist Mint 3
       </button>
-      <button class="btn btn-md btn-primary mt-2" onclick="mintPublic(1)">
+      <button class="btn btn-md btn-primary mt-2" onclick="public_mint(1)">
         Public Mint 1
       </button>
-      <button class="btn btn-md btn-primary mt-2" onclick="mintPublic(3)">
+      <button class="btn btn-md btn-primary mt-2" onclick="public_mint(3)">
         Public Mint 3
       </button>
-      <button class="btn btn-md btn-primary mt-2" onclick="mintPublic(5)">
+      <button class="btn btn-md btn-primary mt-2" onclick="public_mint(5)">
         Public Mint 5
       </button>
-      <button class="btn btn-md btn-primary mt-2" onclick="mintPublic(7)">
+      <button class="btn btn-md btn-primary mt-2" onclick="public_mint(7)">
         Public Mint 7
       </button>
-      <button class="btn btn-md btn-primary mt-2" onclick="mintPublic(9)">
+      <button class="btn btn-md btn-primary mt-2" onclick="public_mint(9)">
         Public Mint 9
       </button>
       <button class="btn btn-md btn-primary mt-2" onclick="walletReset()">
@@ -104,7 +110,7 @@
       <div class="confirmed-tnx-status">Confirmed tnx</div>
       <div class="failed-tnx-status">Failed Tnx</div>
     </div>
-    <script src="/dist/main-CzPP.js"></script>
+    <script src="/dist/main-90eJ.js"></script>
     <script src="./src/public/javascript/index.var.js"></script>
     <script>
       $(".loading-tnx-status").hide();

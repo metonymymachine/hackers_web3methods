@@ -414,7 +414,7 @@ export const allowlist_mint = async (amount) => {
 
 */
 
-export const whc_claim = async (amount) => {
+export const claim = async (amount) => {
   if (provider != null) {
     if (signature_data_claimList[`${firstAccount[0]}`]) {
       //get user specific wallet signature
@@ -430,7 +430,7 @@ export const whc_claim = async (amount) => {
         to: contractAddress,
         value: web3.utils.toHex("0" * amount),
         data: theContract.methods
-          .whcClaim(amount, v, r, s, amount_allowed, free)
+          .claim(amount, v, r, s, amount_allowed, free)
           .encodeABI(),
       };
       try {

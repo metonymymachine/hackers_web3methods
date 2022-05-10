@@ -11,7 +11,7 @@ import {
   withdraw,
   allowListCounter,
   mintpassMint,
-  whc_claim,
+  claim,
   public_mint,
 } from "./web3/script";
 
@@ -21,8 +21,8 @@ global.connectWb3Wallet = () => {
 };
 
 //minting for whc claims
-global.whc_claim_mint = (amount) => {
-  whc_claim(amount);
+global.claim_mint = (amount) => {
+  claim(amount);
 };
 
 //minting for general public
