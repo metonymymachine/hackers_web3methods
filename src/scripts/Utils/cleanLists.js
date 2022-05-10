@@ -74,7 +74,7 @@ cyclops_keys.forEach((e, i) => {
   }
 });
 
-let mint_pass_keys = Object.keys(input_allowlist_raw);
+let mint_pass_keys = Object.keys(input_mintPassList);
 let mintpass_list_arr = [];
 
 mint_pass_keys.forEach((e, i) => {

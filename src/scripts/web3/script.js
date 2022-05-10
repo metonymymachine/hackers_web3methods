@@ -208,146 +208,116 @@ export const connectWallet = async () => {
 
 */
 const addressStatus = async (acc) => {
-  ``;
-  theDependentContract.methods
-    .balanceOf(acc)
-    .call()
-    .then(function (res) {
-      MntPss = res.toString();
-      console.log(`${acc} MNTPS =>`, MntPss);
+  // if a person is on the cyclopslist AND on the allowlist
+  // we need to check if the person is ALSO on the Cyclops list
 
-      // if a person is on the cyclopslist AND on the allowlist
-      // we need to check if the person is ALSO on the Cyclops list
-
-      /*
-       * =============================================================
-       * ================ Check if user is on the allowlist & is on the claimlist || owns the mintpass =================
-       * =============================================================
-       */
-      if (
-        signature_data_allowlist[firstAccount[0]] != undefined &&
-        signature_data_claimList[firstAccount[0]] != undefined
-      ) {
-        /*
-         * =============================================================
-         * ================ Check if user is on the Allowlist & ClaimList & owns the mintpass =================
-         * =============================================================
-         */
-        //check if users owns a mntpass as well
-        if (MntPss > 0) {
-          amount_allowed =
-            signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
-          amount_allowed_cl =
-            signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
-          //     console.log("User is on allowlist & cyclops list");
-          $(".allow_list_text").text(
-            `You are eligible for ${amount_allowed_cl} Claims and are on the general allowlist for additional 3 Mints and 3 x WHC with your EveryNFT Mintpass. `
-          );
-          //set allowed in ls
-          localStorage.setItem("cyclops_allowed", amount_allowed_cl);
-          localStorage.setItem("allowlist_allowed", amount_allowed);
-          localStorage.setItem("mintpass_owner_owns", MntPss);
-        } else {
-          amount_allowed =
-            signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
-          amount_allowed_cl =
-            signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
-          console.log("User is on allowlist & cyclops list");
-          $(".allow_list_text").text(
-            `You are eligible for ${amount_allowed_cl} Claims and are on the general allowlist for additional 3 Mints. `
-          );
-          //set allowed in ls
-          localStorage.setItem("cyclops_allowed", amount_allowed_cl);
-          localStorage.setItem("allowlist_allowed", amount_allowed);
-        }
-      }
-      /*
-       * =============================================================
-       * ================ Check if user is on the Allowlist =================
-       * =============================================================
-       */
-      if (signature_data_allowlist[firstAccount[0]] != undefined) {
-        //check if users owns a mntpass as well
-        if (MntPss > 0) {
-          amount_allowed =
-            signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
-
-          console.log("User is on mntpass & allow list");
-          $(".allow_list_text").text(
-            `You are eligible for 3 Mints with your EveryNFT Mintpass and are on the general allowlist for additional 3 Mints. `
-          );
-          //set allowed in ls
-          localStorage.setItem("allowlist_allowed", amount_allowed);
-          localStorage.setItem("mintpass_owner_owns", MntPss);
-        } else {
-          amount_allowed =
-            signature_data_allowlist[`${firstAccount[0]}`].qty_allowed;
-          console.log("User is only on allowlist no mntpass");
-          $(".allow_list_text").text(
-            `You are eligible to mint up to 3 x WHC through the General Allowlist. `
-          );
-          //set allowed in ls
-          localStorage.setItem("allowlist_allowed", amount_allowed);
-        }
-        /*
-         * =============================================================
-         * ================ Check if user is on the claimList  =================
-         * =============================================================
-         */
-      } else if (signature_data_claimList[firstAccount[0]] != undefined) {
-        /*
-         * =============================================================
-         * ================ Check if user is on the claimList & owns the mintpass =================
-         * =============================================================
-         */
-        //check if users owns a mntpass as well
-        if (MntPss > 0) {
-          amount_allowed_cl =
-            signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
-
-          console.log("User is on mntpass & cyclops list");
-          $(".allow_list_text").text(
-            `You are eligible for ${amount_allowed_cl} Claims and can mint 3 x WHC with your EveryNFT Mintpass.`
-          );
-          //set allowed in ls
-          localStorage.setItem("cyclops_allowed", amount_allowed_cl);
-          localStorage.setItem("mintpass_owner_owns", MntPss);
-        } else {
-          amount_allowed_cl =
-            signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
-          console.log("User is only on cyclops list no mintpass");
-          $(".allow_list_text").text(
-            `You are eligible for ${amount_allowed_cl} Claims.`
-          );
-          //set allowed in ls
-          localStorage.setItem("cyclops_allowed", amount_allowed_cl);
-        }
-      } else if (MntPss > 0) {
-        /*
-         * =============================================================
-         * ================ Check if user  owns the mintpass =================
-         * =============================================================
-         */
-
-        localStorage.setItem("mintpass_owner_owns", MntPss);
-        $(".allow_list_text").text(
-          `You can mint 3 x WHC with your EveryNFT Mintpass.`
-        );
-        /*
-         * =============================================================
-         * ================ User doesn't own mintpass neither user is on the allow list or claim list (Bummer!) =================
-         * =============================================================
-         */
-      } else {
-        $(".allow_list_text").text(
-          `Your address is not included in the allowlist and you do not own a Mintpass. Join our Discord for the Next Phase of the WHC.`
-        );
-        console.log("Not in whitelist!");
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  /*
+   * =============================================================
+   * ================ Check if user is on the allowlist & is on the claimlist & owns the mintpass =================
+   * =============================================================
+   */
+  if (
+    signature_data_allowlist[firstAccount[0]] != undefined &&
+    signature_data_claimList[firstAccount[0]] != undefined &&
+    signature_data_mintpasslist[firstAccount[0]] != undefined
+  ) {
+    amount_allowed_cl =
+      signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
+    //     console.log("User is on allowlist & cyclops list");
+    $(".allow_list_text").text(
+      `You are eligible for ${amount_allowed_cl} Claims and are on the general allowlist for additional 3 Mints and 3 x WHC with your EveryNFT Mintpass. `
+    );
+    //set allowed in ls
+    localStorage.setItem("cyclops_allowed", amount_allowed_cl);
+  } else if (
+    /*
+     * =============================================================
+     * ================ Check if user is on the Allowlist && claimlist =================
+     * =============================================================
+     */
+    signature_data_allowlist[firstAccount[0]] != undefined &&
+    signature_data_claimList[firstAccount[0]] != undefined
+  ) {
+    amount_allowed_cl =
+      signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
+    //     console.log("User is on allowlist & cyclops list");
+    $(".allow_list_text").text(
+      `You are eligible for ${amount_allowed_cl} Claims and are on the general allowlist for additional 3 Mints. `
+    );
+    //set allowed in ls
+    localStorage.setItem("cyclops_allowed", amount_allowed_cl);
+  } else if (
+    /*
+     * =============================================================
+     * ================ Check if user is on the Allowlist && mintpass list =================
+     * =============================================================
+     */
+    signature_data_allowlist[firstAccount[0]] != undefined &&
+    signature_data_mintpasslist[firstAccount[0]] != undefined
+  ) {
+    $(".allow_list_text").text(
+      `You on the general allowlist for additional 3 Mints and 3 x WHC with your EveryNFT Mintpass. `
+    );
+  } else if (
+    /*
+     * =============================================================
+     * ================ Check if user is on the claimlist & mintpass list =================
+     * =============================================================
+     */
+    signature_data_claimList[firstAccount[0]] != undefined &&
+    signature_data_mintpasslist[firstAccount[0]] != undefined
+  ) {
+    amount_allowed_cl =
+      signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
+    //     console.log("User is on allowlist & cyclops list");
+    $(".allow_list_text").text(
+      `You are eligible for ${amount_allowed_cl} Claims and are on the Mintpass list for additional 3 Mints. `
+    );
+    //set allowed in ls
+    localStorage.setItem("cyclops_allowed", amount_allowed_cl);
+  } else if (
+    /*
+     * =============================================================
+     * ================ Check if user is on the Allowlist  =================
+     * =============================================================
+     */
+    signature_data_allowlist[firstAccount[0]] != undefined
+  ) {
+    $(".allow_list_text").text(
+      `You are are on the general allowlist for 3 Mints. `
+    );
+  } else if (
+    /*
+     * =============================================================
+     * ================ Check if user is on the mintpass list  =================
+     * =============================================================
+     */
+    signature_data_mintpasslist[firstAccount[0]] != undefined
+  ) {
+    $(".allow_list_text").text(
+      `You are are on the Mintpass list for 3 Mints. `
+    );
+  } else if (
+    /*
+     * =============================================================
+     * ================ Check if user is on the claimlist  =================
+     * =============================================================
+     */
+    signature_data_claimList[firstAccount[0]] != undefined
+  ) {
+    amount_allowed_cl =
+      signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
+    //     console.log("User is on allowlist & cyclops list");
+    $(".allow_list_text").text(
+      `You are eligible for ${amount_allowed_cl} Claims. `
+    );
+    //set allowed in ls
+    localStorage.setItem("cyclops_allowed", amount_allowed_cl);
+  } else {
+    $(".allow_list_text").text(
+      `You are not on the allowlist for our pre-sale. The public sale starts on May 13th, 6pm GMT.`
+    );
+  }
 };
 
 /** 
