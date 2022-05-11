@@ -398,7 +398,7 @@ export const allowlist_mint = async (amount) => {
       }
     } else {
       $(".allow_list_text").text(
-        `Your address is not included in the allowlist! Join our Discord for the upcoming Public Raffle Sale.`
+        `You are not on the allowlist for our pre-sale. The public sale starts on May 13th, 6pm GMT.`
       );
     }
   } else {
@@ -468,7 +468,7 @@ export const claim = async (amount) => {
     } else {
       $(".alert").show();
       $(".allow_list_text").text(
-        `Your address is not included in the allowlist! Join our Discord for the upcoming Public Raffle Sale.`
+        `You are not on the allowlist for our pre-sale. The public sale starts on May 13th, 6pm GMT.`
       );
     }
   } else {
@@ -538,7 +538,7 @@ export const mintpassMint = async (amount) => {
     } else {
       $(".alert").show();
       $(".allow_list_text").text(
-        `Your address is not included in the allowlist! Join our Discord for the upcoming Public Raffle Sale.`
+        `You are not on the allowlist for our pre-sale. The public sale starts on May 13th, 6pm GMT.`
       );
     }
   } else {

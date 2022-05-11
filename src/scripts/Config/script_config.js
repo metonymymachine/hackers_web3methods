@@ -10,7 +10,7 @@ let contractAddress = "0x16D437449378257cA46e5231e221e0AE12Da23E5";
 const dependentcontractAddress = "0x73AF8134139E12f23BAFa4505Bc59EbAaA621B93";
 //alchemcy api
 let alchemy_api =
-  "wss://eth-rinkeby.alchemyapi.io/v2/jteXmFElZcQhvSIuZckM-3c9AA-_CrcC";
+  "wss://eth-rinkeby.alchemyapi.io/v2/ESx7lVzbks2ViNPdQrNHwmZkdB3wydux";
 const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
 
 //prices to be used for minting
