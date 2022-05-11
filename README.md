@@ -1,6 +1,6 @@
 # Web3modal Implementation for Hackers PFP
 
-####  create ./src/Utils/.env and put the value PRIVATE_KEY in there 
+####  create ./src/scripts/Utils/.env and put the value PRIVATE_KEY in there 
 
 ## Generating clean data
 #### we have two types of inputs, one for the allowlist and one for the cyclops holders

@@ -5,7 +5,7 @@ var provider = null;
 var firstAccount;
 
 //Contract used in script details
-let contractAddress = "0x16D437449378257cA46e5231e221e0AE12Da23E5";
+let contractAddress = "0x06e5878817D85B881Bb68F8DD885048607e86662";
 //dependent contract used in script
 const dependentcontractAddress = "0x73AF8134139E12f23BAFa4505Bc59EbAaA621B93";
 //alchemcy api
@@ -15,7 +15,7 @@ const INFURA_KEY = "5b3b303e5c124bdfb7029389b1a0d599";
 
 //prices to be used for minting
 const _publicMint = "82000000000000000";
-const _allowlistPrice = "76000000000000000"; //for public sale raffle
+const _allowlistPrice = "76000000000000000";
 const _mintpassPrice = "64000000000000000";
 
 // UI name for the tokens
