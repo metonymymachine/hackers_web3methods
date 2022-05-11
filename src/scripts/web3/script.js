@@ -174,11 +174,11 @@ export const connectWallet = async () => {
     web3 = createAlchemyWeb3(alchemy_api, { writeProvider: provider });
     //chain name detection
     console.log(provider.networkVersion);
-    if (Number(provider.networkVersion) != Number(1)) {
-      new AWN().modal(
-        "<b >You are connected to the wrong network.<br> Please switch to ETH Mainnet</b>"
-      );
-    }
+    // if (Number(provider.networkVersion) != Number(1)) {
+    //   new AWN().modal(
+    //     "<b >You are connected to the wrong network.<br> Please switch to ETH Mainnet</b>"
+    //   );
+    // }
 
     theContract = new web3.eth.Contract(contractABI, contractAddress);
     firstAccount = await web3.eth.getAccounts().then((data) => data);
@@ -225,7 +225,7 @@ const addressStatus = async (acc) => {
       signature_data_claimList[`${firstAccount[0]}`].qty_allowed;
     //     console.log("User is on allowlist & cyclops list");
     $(".allow_list_text").text(
-      `You are eligible for ${amount_allowed_cl} Claims and are on the general allowlist for additional 3 Mints and 3 x WHC with your EveryNFT Mintpass. `
+      `You are eligible for ${amount_allowed_cl} Claims and can mint 3 x WHC with your EveryNFT Mintpass.`
     );
     //set allowed in ls
     localStorage.setItem("cyclops_allowed", amount_allowed_cl);
