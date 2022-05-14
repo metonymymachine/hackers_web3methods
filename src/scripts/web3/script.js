@@ -638,11 +638,15 @@ const checkTnxStatus = (hash) => {
       if (Status == null) {
         checkTnxStatus(hash);
       } else if (Status == true) {
-        $(".loading-tnx-status").hide();
-        $(".confirmed-tnx-status").css("display", "grid");
+        let tx_sending = document.getElementsByClassName("tx_sending");
+        tx_sending[0].style.display = "none";
+        let tx_success = document.getElementsByClassName("tx_success");
+        tx_success[0].style.display = "grid";
       } else if (Status == false) {
-        $(".loading-tnx-status").hide();
-        $(".failed-tnx-status").css("display", "grid");
+        let tx_sending = document.getElementsByClassName("tx_sending");
+        tx_sending[0].style.display = "grid";
+        let tx_success = document.getElementsByClassName("tx_success");
+        tx_success[0].style.display = "none";
       }
     })
     .catch((err) => {
