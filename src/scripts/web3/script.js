@@ -56,7 +56,6 @@ let theDependentContract = new MPOWNERS_CONTRACT.eth.Contract(
 
 const loadCurrentSupply = async () => {
   const supply = await theContract.methods.getCurrentId().call();
-
   return supply;
 };
 
@@ -71,7 +70,7 @@ setInterval(() => {
   if (provider != null) {
     loadCurrentSupply()
       .then((val) => {
-        $(".supply").text(`${6666 - val}/6.666`);
+        $(".supply").text(`${1583 - val}/1583`);
         console.log(val, "Running supply");
       })
       .catch((err) => {
@@ -640,10 +639,10 @@ const checkTnxStatus = (hash) => {
         checkTnxStatus(hash);
       } else if (Status == true) {
         $(".loading-tnx-status").hide();
-        $(".confirmed-tnx-status").show();
+        $(".confirmed-tnx-status").css("display", "grid");
       } else if (Status == false) {
         $(".loading-tnx-status").hide();
-        $(".failed-tnx-status").show();
+        $(".failed-tnx-status").css("display", "grid");
       }
     })
     .catch((err) => {
