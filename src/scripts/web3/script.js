@@ -378,7 +378,7 @@ export const allowlist_mint = async (amount) => {
           `<a href='https://etherscan.io/tx/${txHash}' target='_blank'>progress of your transaction.</a>`
         );
         //show the loading animation when user mints and confirms the mint
-        $(".loading-tnx-status").show();
+        $(".tx_sending").css("display", "grid");
         //check the status
         checkTnxStatus(txHash);
         notifier.success(
@@ -443,7 +443,7 @@ export const claim = async (amount) => {
               `<a class="tx_link" href='https://etherscan.io/tx/${txHash}' target='_blank'>progress of your transaction.</a>`
             );
             //show the loading animation when user mints and confirms the mint
-            $(".loading-tnx-status").show();
+            $(".tx_sending").css("display", "grid");
             //check the status
             checkTnxStatus(txHash);
 
@@ -513,7 +513,7 @@ export const mintpassMint = async (amount) => {
               `<a class="tx_link" href='https://etherscan.io/tx/${txHash}' target='_blank'>progress of your transaction.</a>`
             );
             //show the loading animation when user mints and confirms the mint
-            $(".loading-tnx-status").show();
+            $(".tx_sending").css("display", "grid");
             //check the status
             checkTnxStatus(txHash);
 
@@ -567,7 +567,7 @@ export const public_mint = async (amount) => {
           console.log(err);
         } else {
           //show the loading animation when user mints and confirms the mint
-          $(".loading-tnx-status").show();
+          $(".tx_sending").css("display", "grid");
 
           //check the tnx status and display animations using this func below
           checkTnxStatus(txHash);
