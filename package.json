@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:build": "npx webpack --mode=development",
-    "prod:build": "npx webpack --mode=production",
+    "dev": "npx webpack --mode=development",
+    "prod": "npx webpack --mode=production",
     "sign": "cd src/scripts/Utils && node sign.js",
-    "format:whitelist": "cd src/scripts/Utils && node cleanLists.js"
+    "clean": "cd src/scripts/Utils && node cleanLists.js"
   },
   "keywords": [],
   "author": "",
