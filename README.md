@@ -21,7 +21,7 @@
 ### Creating bundled file for frontend
 #### Above steps need to be done first!
 
-`npm run prod` for production build
+`npm run bundle` for production build
 
 `npm run dev` for development build
 

@@ -11,7 +11,7 @@ allow_list_keys.forEach((e, i) => {
   let obj = {
     addr: e,
     free: 0,
-    qty_allowed: 3, //input_allowlist_raw[e],
+    qty_allowed: input_allowlist_raw[e],
   };
   allow_list_arr.push(obj);
 
@@ -82,7 +82,7 @@ mint_pass_keys.forEach((e, i) => {
   let obj = {
     addr: e,
     free: 2,
-    qty_allowed: 3, //input_allowlist_raw[e],
+    qty_allowed: input_mintPassList[e],
   };
   mintpass_list_arr.push(obj);
 

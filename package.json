@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx webpack --mode=development",
-    "prod": "npx webpack --mode=production",
+    "bundle": "npx webpack --mode=production",
     "sign": "cd src/scripts/Utils && node sign.js",
     "clean": "cd src/scripts/Utils && node cleanLists.js"
   },
