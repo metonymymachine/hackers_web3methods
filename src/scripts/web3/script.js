@@ -314,7 +314,7 @@ const addressStatus = async (acc) => {
     localStorage.setItem("cyclops_allowed", amount_allowed_cl);
   } else {
     $(".allow_list_text").text(
-      `You are not on the allowlist for our pre-sale. The public sale starts on May 13th, 6pm GMT.`
+      `You are not on the allowlist for our pre-sale. The public sale starts on May 26th, 6pm GMT.`
     );
   }
 };
@@ -397,7 +397,7 @@ export const allowlist_mint = async (amount) => {
       }
     } else {
       $(".allow_list_text").text(
-        `You are not on the allowlist for our pre-sale. The public sale starts on May 13th, 6pm GMT.`
+        `You are not on the allowlist for our pre-sale. The public sale starts on May 26th, 6pm GMT.`
       );
     }
   } else {
@@ -467,7 +467,7 @@ export const claim = async (amount) => {
     } else {
       $(".alert").show();
       $(".allow_list_text").text(
-        `You are not on the allowlist for our pre-sale. The public sale starts on May 13th, 6pm GMT.`
+        `You are not on the allowlist for our pre-sale. The public sale starts on May 26th, 6pm GMT.`
       );
     }
   } else {
@@ -537,7 +537,7 @@ export const mintpassMint = async (amount) => {
     } else {
       $(".alert").show();
       $(".allow_list_text").text(
-        `You are not on the allowlist for our pre-sale. The public sale starts on May 13th, 6pm GMT.`
+        `You are not on the allowlist for our pre-sale. The public sale starts on May 26th, 6pm GMT.`
       );
     }
   } else {
