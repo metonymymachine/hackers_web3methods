@@ -5,7 +5,7 @@ var provider = null;
 var firstAccount;
 
 //Contract used in script details
-let contractAddress = "0xB282071972EE5F9d0B438e9468a62a17BC4e5Ad9"; // Mainnet 25.5.2022
+let contractAddress = "0xF7E139CB289247366d8b039d84775A750cE51488"; // Mainnet 25.5.2022
 //dependent contract used in script
 const dependentcontractAddress = "0x73AF8134139E12f23BAFa4505Bc59EbAaA621B93";
 //alchemcy api
