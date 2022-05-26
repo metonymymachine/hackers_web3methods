@@ -314,7 +314,7 @@ const addressStatus = async (acc) => {
     localStorage.setItem("cyclops_allowed", amount_allowed_cl);
   } else {
     $(".allow_list_text").text(
-      `You are not on the allowlist for our pre-sale. The public sale starts on May 26th, 6pm GMT.`
+      `You can mint up to 4 WHC per Transaction..`
     );
   }
 };
